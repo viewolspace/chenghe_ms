@@ -1,235 +1,226 @@
 var webName = getWebName();
 
 layui.config({
-	base: webName + '/js/modules/',
+    base: webName + '/js/modules/',
     version: 2018011001
 });
 
 var requireModules = [
-	'element',
-	'form',
-	'layer',
-	'request',
-	'form-util',
-	'user-api',
-	'table-util',
-	'btns',
-	'authority',
-	'toast',
-    'table',
-	'valid-login'
+    'element',
+    'form',
+    'layer',
+    'request',
+    'form-util',
+    'ad-api',
+    'btns',
+    'authority',
+    'toast',
+    'table'
 
 ];
 
 registeModule(window, requireModules, {
-	'good-api': 'api/good-api'
+    'good-api': 'api/good-api'
 });
 
 //参数有顺序
-layui.use(requireModules, function(
-	element,
-	form,
-	layer,
-	request,
-	formUtil,
-	userApi,
-	tableUtil,
-	btns,
-	authority,
-	toast,
+layui.use(requireModules, function (
+    element,
+    form,
+    layer,
+    request,
+    formUtil,
+    adApi,
+    btns,
+    authority,
+    toast,
     table
 ) {
 
-	var $ = layui.jquery;
+    var $ = layui.jquery;
     var $table = table;
     var mainTable;
-	var MyController = {
-		init: function() {
-			var navId = request.getFixUrlParams("navId");
+    var MyController = {
+        init: function () {
+            var navId = request.getFixUrlParams("navId");
 
-			var totalBtns = authority.getNavBtns(navId);
-			var btnObjs = btns.getBtns(totalBtns);
-			MyController.pageBtns = btns.getPageBtns(btnObjs);
-			MyController.switchPageBtns = btns.getSwitchPageBtns(btnObjs);
+            var totalBtns = authority.getNavBtns(navId);
+            var btnObjs = btns.getBtns(totalBtns);
+            MyController.pageBtns = btns.getPageBtns(btnObjs);
+            MyController.switchPageBtns = btns.getSwitchPageBtns(btnObjs);
 
-			MyController.rowBtns = btns.getRowBtns(btnObjs);
-			MyController.rowSwitchBtns = btns.getSwitchBtns(MyController.rowBtns);
-			MyController.rowIconBtns = btns.getIconBtns(MyController.rowBtns);
+            MyController.rowBtns = btns.getRowBtns(btnObjs);
+            MyController.rowSwitchBtns = btns.getSwitchBtns(MyController.rowBtns);
+            MyController.rowIconBtns = btns.getIconBtns(MyController.rowBtns);
 
-			$('#page-btns').html(btns.renderBtns(MyController.pageBtns)+btns.renderSwitchBtns(MyController.switchPageBtns));
+            $('#page-btns').html(btns.renderBtns(MyController.pageBtns) + btns.renderSwitchBtns(MyController.switchPageBtns));
             btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));
 
             mainTable = MyController.renderTable();
-			MyController.bindEvent();
-		},
-		getQueryCondition: function() {
-			var condition = formUtil.composeData($("#condition"));
-			return condition;
-		},
-		renderTable: function() {
+            MyController.bindEvent();
+        },
+        getQueryCondition: function () {
+            var condition = formUtil.composeData($("#condition"));
+            return condition;
+        },
+        renderTable: function () {
             return $table.render({
-                elem: '#user-list'
-                ,height: 'full-100'
-                ,url: userApi.getUrl('getAll').url
-				,method: 'post'
-                ,page: true //开启分页
-                ,limits:[10,50,100,200]
-                ,cols: [[ //表头
-                    {type:'numbers'},
-                    {field: 'id', title: '用户ID', width:100},
-                    {field: 'userName', title: '账号', width:120},
-                    {field: 'realName', title: '真实姓名', width:220},
-                    {field: 'phone', title: '手机号', width:150},
-                    {field: 'userStatus', title: '状态', width:100, templet: function (d) {
-                        if(d.userStatus == 1){
-                        	return '<span>正常</span>';
-                        } else {
-                        	return '<span>冻结</span>';
+                elem: '#ad-list'
+                , height: 'full-100'
+                , url: adApi.getUrl('adList').url
+                , method: 'post'
+                , page: true
+                , limits: [10, 50, 100, 200]
+                , cols: [[
+                    {type: 'numbers'},
+                    {field: 'id', title: '广告ID', width: 100},
+                    {field: 'categoryId', title: '广告分类ID', width: 120},
+                    {
+                        field: 'imageUrl', title: '图片地址', width: 100, templet: function (d) {
+                            if (d.imageUrl) {
+                                return "<img src='" + d.imageUrl + "' />";
+                            } else {
+                                return "";
+                            }
                         }
-                    }},
-                    {field: 'roleName', title: '角色', width:120},
-                    {field: 'lastLoginTime', title: '登录时间', width:160, templet: function (d) {
-                    	if(d.lastLoginTime){
-                            return moment(d.lastLoginTime).format("YYYY-MM-DD HH:mm:ss");
-						} else {
-                    		return "";
-						}
+                    },
+                    {field: 'url', title: '跳转地址', width: 150},
+                    {field: 'num', title: '顺序', width: 120},
+                    {
+                        field: 'status', title: '状态', width: 100, templet: function (d) {
+                            if (d.status == 0) {
+                                return '<span>有效</span>';
+                            } else {
+                                return '<span>无效</span>';
+                            }
+                        }
+                    },
+                    {
+                        field: 'cTime', title: '创建时间', width: 160, templet: function (d) {
+                            if (d.cTime) {
+                                return moment(d.cTime).format("YYYY-MM-DD HH:mm:ss");
+                            } else {
+                                return "";
+                            }
 
-                    }},
-                    {fixed: 'right',width:220, align:'center', toolbar: '#barDemo'}
+                        }
+                    },
+                    {
+                        field: 'mTime', title: '修改时间', width: 160, templet: function (d) {
+                            if (d.mTime) {
+                                return moment(d.mTime).format("YYYY-MM-DD HH:mm:ss");
+                            } else {
+                                return "";
+                            }
+
+                        }
+                    },
+                    {fixed: 'right', width: 140, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
-		},
+        },
 
-		add: function() {
-			var index = layer.open({
-				type: 2,
-				title: "添加用户",
-				area: '80%',
-				offset: '10%',
-				scrollbar: false,
-				content: webName + '/views/user/user-add.html',
-				success: function(ly, index) {
-					layer.iframeAuto(index);
-				}
-			});
-		},
-
-		modify: function(rowdata) {
-			var url = request.composeUrl(webName + '/views/user/user-update.html', rowdata);
-			var index = layer.open({
-				type: 2,
-				title: "修改用户",
-				area: '80%',
-				offset: '10%',
-				scrollbar: false,
-				content: url,
-				success: function(ly, index) {
-					layer.iframeAuto(index);
-				}
-			});
-		},
-
-        view: function(rowdata) {
-            var url = request.composeUrl(webName + '/views/user/user-view.html', rowdata);
+        add: function () {
             var index = layer.open({
                 type: 2,
-                title: "查看用户",
-                area: '60%',
+                title: "添加广告",
+                area: '80%',
                 offset: '10%',
                 scrollbar: false,
-                content: url,
-                success: function(ly, index) {
+                content: webName + '/views/advertise/advertise-add.html',
+                success: function (ly, index) {
                     layer.iframeAuto(index);
                 }
             });
         },
 
-		delete: function(rowdata) {
-			layer.confirm('确认删除数据?', {
-				icon: 3,
-				title: '提示',
-				closeBtn: 0
-			}, function(index) {
-				layer.load(0, {
-					shade: 0.5
-				});
-				layer.close(index);
+        modify: function (rowdata) {
+            var url = request.composeUrl(webName + '/views/advertise/advertise-update.html', rowdata);
+            var index = layer.open({
+                type: 2,
+                title: "修改广告",
+                area: '80%',
+                offset: '10%',
+                scrollbar: false,
+                content: url,
+                success: function (ly, index) {
+                    layer.iframeAuto(index);
+                }
+            });
+        },
 
-				request.request(userApi.getUrl('deleteUser'), {
-					id: rowdata.id
-				}, function() {
-					layer.closeAll('loading');
-					toast.success('成功删除！');
-					MyController.refresh();
-				},true,function(){
-					layer.closeAll('loading');
-				});
-			});
-		},
+        view: function (rowdata) {
+            var url = request.composeUrl(webName + '/views/advertise/advertise-view.html', rowdata);
+            var index = layer.open({
+                type: 2,
+                title: "查看广告",
+                area: '60%',
+                offset: '10%',
+                scrollbar: false,
+                content: url,
+                success: function (ly, index) {
+                    layer.iframeAuto(index);
+                }
+            });
+        },
 
-        resetPwd: function(rowdata) {
-            layer.confirm('确认重置用户密码吗?', {
+        delete: function (rowdata) {
+            layer.confirm('确认删除数据?', {
                 icon: 3,
                 title: '提示',
                 closeBtn: 0
-            }, function(index) {
+            }, function (index) {
                 layer.load(0, {
                     shade: 0.5
                 });
                 layer.close(index);
 
-                request.request(userApi.getUrl('resetPwd'), {
+                request.request(adApi.getUrl('deleteAd'), {
                     id: rowdata.id
-                }, function() {
+                }, function () {
                     layer.closeAll('loading');
-                    toast.success('重置成功！');
+                    toast.success('成功删除！');
                     MyController.refresh();
-                },true,function(){
+                }, true, function () {
                     layer.closeAll('loading');
                 });
             });
         },
 
-		refresh: function() {
+        refresh: function () {
             mainTable.reload();
-		},
+        },
 
-		bindEvent: function() {
-            $table.on('tool(test)', function(obj){
+        bindEvent: function () {
+            $table.on('tool(test)', function (obj) {
                 var data = obj.data;
-                if(obj.event === 'row-view'){
+                if (obj.event === 'row-view') {
                     MyController.view(data);
-                } else if(obj.event === 'row-edit'){//编辑
+                } else if (obj.event === 'row-edit') {//编辑
                     MyController.modify(data);
-                } else if(obj.event === 'row-delete'){//删除
+                } else if (obj.event === 'row-delete') {//删除
                     MyController.delete(data);
-                } else if(obj.event === 'row-reset-pwd'){//重置密码
-                    MyController.resetPwd(data);
                 }
-
-
             });
 
-			//点击查询按钮
-			$('#search-btn').on('click', function() {
+            //点击查询按钮
+            $('#search-btn').on('click', function () {
                 mainTable.reload({
                     where: MyController.getQueryCondition()
                 });
-			});
+            });
 
             //点击刷新
             $('body').on('click', '.refresh', MyController.refresh);
-			//点击添加
-			$('body').on('click', '.add', MyController.add);
+            //点击添加
+            $('body').on('click', '.add', MyController.add);
+        }
+    };
 
-		}
-	};
+    window.list = {
+        refresh: MyController.refresh
+    };
 
-	window.list = {
-		refresh: MyController.refresh
-	}
-
-	MyController.init();
+    MyController.init();
 
 });

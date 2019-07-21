@@ -1,6 +1,6 @@
 
 /**
- * 用户管理api
+ * 职位分类
  */
 var requireModules =[
 	'base-url'
@@ -12,43 +12,27 @@ layui.define('base-url', function(exports) {
 	var baseApi = layui['base-url'];
 
 	var url = {
-		namespace: '../user/',
-		"getAll": {//查询系统用户列表
-			url: "userlist.do"
-		},
-		"addSysUser": {//新增系统用户
+		namespace: '../positionCategory/',
+		"addCategory": {
 			type: 'POST',
-			url: "addUser.do"
+			url: "addCategory.do"
 		},
-        "addUserGroup": {//设置用户分组(关联账户)
+        "updateCategory": {
             type: 'POST',
-            url: "addUserGroup.do"
+            url: "updateCategory.do"
         },
-		"updateSysUser": {//修改系统用户
+		"deleteCategory": {
+			url: "deleteCategory.do"
+		},
+		"categoryList": {
 			type: 'POST',
-			url: "updateUser.do"
+			url: "categoryList.do"
 		},
-		"deleteUser": {//删除系统用户
-			url: "deleteUser.do"
-		},
-		"updatePwd": {//修改密码
-			type: 'POST',
-			url: "updatePwd.do"
-		},
-        "resetPwd": {//重置密码
-            type: 'POST',
-            url: "resetPwd.do"
-        },
-		"onlineUserList": {//查询在线用户
-			url: "onlineUserList.do"
-		},
-		"getOnlineUser": {//根据sessionId查询在线用户
-			url: "getOnlineUser.do"
-		},
-		"changeSessionStatus": {//剔除用户
-			url: "changeSessionStatus.do"
+		"listDataDic": {
+			url: "listDataDic.do"
 		}
-	}
+	};
+
 	//下面这种避免不同api相同key取值相同的问题
 	var result = $.extend({}, baseApi, url);
 

@@ -9,7 +9,7 @@ var requireModules = [
     'form',
     'form-util',
     'request',
-    'merchant-api',
+    'ad-api',
     'uploadImage-api',
     'toast',
     'upload'
@@ -24,7 +24,7 @@ layui.use(requireModules, function (
     form,
     formUtil,
     ajax,
-    merchantApi,
+    adApi,
     uploadImageApi,
     toast,
     upload
@@ -34,9 +34,9 @@ layui.use(requireModules, function (
     var param = ajax.getAllUrlParam();
 
     if(!$.isEmptyObject(param)) {
-        formUtil.renderData($('#merchant-update-form'), param);
-        $('#imageAvatarId').attr('src', param.logo);
-        $('#logo').val(param.logo);
+        formUtil.renderData($('#ad-update-form'), param);
+        $('#imageAvatarId').attr('src', param.imageUrl);
+        $('#imageUrl').val(param.imageUrl);
     }
 
     //上传图片
@@ -58,7 +58,7 @@ layui.use(requireModules, function (
                 return layer.msg('上传失败');
             } else {
                 $('#imageAvatarId').attr('src', res.imageUrl);
-                $('#logo').val(res.imageUrl);
+                $('#imageUrl').val(res.imageUrl);
                 toast.msg("上传成功");
             }
         }
@@ -68,8 +68,8 @@ layui.use(requireModules, function (
         }
     });
 
-    f.on('submit(merchant-update-form)', function (data) {
-        ajax.request(merchantApi.getUrl('updateMerchant'), data.field, function () {
+    f.on('submit(ad-update-form)', function (data) {
+        ajax.request(adApi.getUrl('updateAd'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();

@@ -11,7 +11,7 @@ var requireModules = [
     'layer',
     'request',
     'form-util',
-    'user-api',
+    'position-category-api',
     'table-util',
     'btns',
     'authority',
@@ -32,7 +32,7 @@ layui.use(requireModules, function (
     layer,
     request,
     formUtil,
-    userApi,
+    positionCategoryApi,
     tableUtil,
     btns,
     authority,
@@ -45,28 +45,15 @@ layui.use(requireModules, function (
     var form = layui.form;
     var layer = layui.layer;
     var treeTable = layui.treeTable;
-    // 直接下载后url: './data/table-tree.json',这个配置可能看不到数据，改为data:[],获取自己的实际链接返回json数组
     var re = treeTable.render({
         elem: '#tree-table',
-        data: [{"id": 1, "pid": 0, "title": "1-1"}, {"id": 2, "pid": 0, "title": "1-2"}, {
-            "id": 3,
-            "pid": 0,
-            "title": "1-3"
-        }, {"id": 4, "pid": 1, "title": "1-1-1"}, {"id": 5, "pid": 1, "title": "1-1-2"}, {
-            "id": 6,
-            "pid": 2,
-            "title": "1-2-1"
-        }, {"id": 7, "pid": 2, "title": "1-2-3"}, {"id": 8, "pid": 3, "title": "1-3-1"}, {
-            "id": 9,
-            "pid": 3,
-            "title": "1-3-2"
-        }, {"id": 10, "pid": 4, "title": "1-1-1-1"}, {"id": 11, "pid": 4, "title": "1-1-1-2"}],
+        url: positionCategoryApi.getUrl('categoryList').url,
         icon_key: 'title',
         is_checkbox: true,
-        checked: {
-            key: 'id',
-            data: [0, 1, 4, 10, 11, 5, 2, 6, 7, 3, 8, 9],
-        },
+        // checked: {
+        //     key: 'id',
+        //     data: [0, 1, 4, 10, 11, 5, 2, 6, 7, 3, 8, 9]
+        // },
         end: function (e) {
             form.render();
         },
@@ -103,14 +90,14 @@ layui.use(requireModules, function (
                 width: '100px',
                 align: 'center',
                 template: function (item) {
-                    return '<input type="checkbox" name="status" value="'+item.id+'" lay-skin="switch" lay-filter="statusSwitch" lay-text="有效|无效">';
+                    return '<input type="checkbox" name="status" value="' + item.id + '" lay-skin="switch" lay-filter="statusSwitch" lay-text="有效|无效">';
                 }
             },
             {
                 title: '操作',
                 align: 'center',
                 template: function (item) {
-                    return '<a lay-filter="add">添加</a> | <a lay-filter="update">修改</a>';
+                    return '<a lay-filter="add">添加子节点</a> | <a lay-filter="update">修改</a> | <a lay-filter="delete">删除</a>';
                 }
             }
         ]
@@ -121,21 +108,66 @@ layui.use(requireModules, function (
         layer.msg("dsfsd");
     });
 
-    // 监听自定义
+    // 添加子分类
     treeTable.on('tree(add)', function (data) {
-        re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
-        layer.msg(JSON.stringify(data));
-        treeTable.render(re);
+        var url = request.composeUrl(webName + '/views/positionCategory/category-add.html', data.item);
+        var index = layer.open({
+            type: 2,
+            title: "添加子分类",
+            area: ['700px', '450px'],
+            offset: '5%',
+            scrollbar: false,
+            content: url,
+            success: function (ly, index) {
+                layer.iframeAuto(index);
+            }
+        });
     });
 
+    //修改分类
     treeTable.on('tree(update)', function (data) {
-        layer.msg(JSON.stringify(data));
+        var url = request.composeUrl(webName + '/views/positionCategory/category-update.html', data.item);
+        var index = layer.open({
+            type: 2,
+            title: "修改分类",
+            area: ['700px', '450px'],
+            offset: '5%',
+            scrollbar: false,
+            content: url,
+            success: function (ly, index) {
+                layer.iframeAuto(index);
+            }
+        });
     });
 
-    form.on('switch(statusSwitch)', function(obj){
+    //删除分类
+    treeTable.on('tree(delete)', function (data) {
+        layer.confirm('确认删除数据?', {
+            icon: 3,
+            title: '提示',
+            closeBtn: 0
+        }, function (index) {
+            layer.load(0, {
+                shade: 0.5
+            });
+            layer.close(index);
+
+            request.request(positionCategoryApi.getUrl('deleteCategory'), {
+                id: data.item.id
+            }, function () {
+                layer.closeAll('loading');
+                toast.success('成功删除！');
+            }, true, function () {
+                layer.closeAll('loading');
+            });
+        });
+    });
+
+    //监听分类状态切换
+    form.on('switch(statusSwitch)', function (obj) {
         var id = obj.value;
         var checked = obj.elem.checked;
-        layer.msg("id:"+id+", checked:"+checked);
+        layer.msg("id:" + id + ", checked:" + checked);
 
     });
 
@@ -144,10 +176,19 @@ layui.use(requireModules, function (
         layer.msg('选中参数' + treeTable.checked(re).join(','))
     });
 
-    // 刷新重载树表（一般在异步处理数据后刷新显示）
+    //添加一级分类
     o('.refresh').click(function () {
-        re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
-        treeTable.render(re);
+        var index = layer.open({
+            type: 2,
+            title: "添加一级分类",
+            area: '80%',
+            offset: '10%',
+            scrollbar: false,
+            content: webName + '/views/positionCategory/category-add.html',
+            success: function (ly, index) {
+                layer.iframeAuto(index);
+            }
+        });
     });
 
     // 全部展开

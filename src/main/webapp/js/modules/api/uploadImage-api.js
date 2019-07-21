@@ -1,6 +1,6 @@
 
 /**
- * 广告管理
+ * 上传图片
  */
 var requireModules =[
 	'base-url'
@@ -12,26 +12,15 @@ layui.define('base-url', function(exports) {
 	var baseApi = layui['base-url'];
 
 	var url = {
-		namespace: '../advertise/',
-		"adList": {
+		namespace: '../upload/',
+		"uploadImg": {
 			type: 'POST',
-			url: "adList.do"
-		},
-		"addAd": {
-			type: 'POST',
-			url: "addAd.do"
-		},
-        "updateAd": {
-            type: 'POST',
-            url: "updateAd.do"
-        },
-		"deleteAd": {
-			url: "deleteAd.do"
+			url: "uploadImg.do"
 		}
 	};
 
 	//下面这种避免不同api相同key取值相同的问题
 	var result = $.extend({}, baseApi, url);
 
-	exports('ad-api', result);
+	exports('uploadImage-api', result);
 });

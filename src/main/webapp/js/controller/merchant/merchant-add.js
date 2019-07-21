@@ -10,6 +10,7 @@ var requireModules = [
     'form-util',
     'request',
     'merchant-api',
+    'uploadImage-api',
     'toast',
     'upload'
 
@@ -24,6 +25,7 @@ layui.use(requireModules, function (
     formUtil,
     ajax,
     merchantApi,
+    uploadImageApi,
     toast,
     upload
 ) {
@@ -34,7 +36,7 @@ layui.use(requireModules, function (
     //上传图片
     upload.render({
         elem: '#imageBtn'
-        , url: merchantApi.getUrl('uploadImg').url
+        , url: uploadImageApi.getUrl('uploadImg').url
         , ext: 'jpg|png|gif|bmp'
         , type: 'image'
         , size: 1024 //最大允许上传的文件大小kb

@@ -55,6 +55,7 @@ function registeModule(window,modulesYouWanted,otherModules) {
 			'commodity-api':'api/commodity-api',
 			'login-api':'api/login-api',
 			'role&authority-api':'api/role&authority-api',
+			'uploadImage-api':'api/uploadImage-api',
 			'user-api':'api/user-api',
 			'category-api':'api/category-api',
             'merchant-api':'api/merchant-api',

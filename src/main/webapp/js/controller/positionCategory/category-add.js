@@ -9,7 +9,7 @@ var requireModules = [
     'form',
     'form-util',
     'request',
-    'merchant-api',
+    'position-category-api',
     'uploadImage-api',
     'toast',
     'upload'
@@ -24,20 +24,16 @@ layui.use(requireModules, function (
     form,
     formUtil,
     ajax,
-    merchantApi,
+    positionCategoryApi,
     uploadImageApi,
     toast,
     upload
 ) {
     var $ = layui.jquery;
     var f = layui.form;
-    var param = ajax.getAllUrlParam();
-
-    if(!$.isEmptyObject(param)) {
-        formUtil.renderData($('#merchant-update-form'), param);
-        $('#imageAvatarId').attr('src', param.logo);
-        $('#logo').val(param.logo);
-    }
+    var data = ajax.getAllUrlParam();
+    //给父节点赋值
+    $("#pid").val(data.id);
 
     //上传图片
     upload.render({
@@ -68,12 +64,12 @@ layui.use(requireModules, function (
         }
     });
 
-    f.on('submit(merchant-update-form)', function (data) {
-        ajax.request(merchantApi.getUrl('updateMerchant'), data.field, function () {
+    f.on('submit(category-add-form)', function (data) {
+        ajax.request(positionCategoryApi.getUrl('addCategory'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();
-            toast.success('修改成功');
+            toast.success('保存成功');
         });
         return false;
     });

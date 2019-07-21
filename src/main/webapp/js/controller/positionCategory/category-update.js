@@ -9,7 +9,7 @@ var requireModules = [
     'form',
     'form-util',
     'request',
-    'merchant-api',
+    'position-category-api',
     'uploadImage-api',
     'toast',
     'upload'
@@ -24,7 +24,7 @@ layui.use(requireModules, function (
     form,
     formUtil,
     ajax,
-    merchantApi,
+    positionCategoryApi,
     uploadImageApi,
     toast,
     upload
@@ -34,7 +34,7 @@ layui.use(requireModules, function (
     var param = ajax.getAllUrlParam();
 
     if(!$.isEmptyObject(param)) {
-        formUtil.renderData($('#merchant-update-form'), param);
+        formUtil.renderData($('#category-update-form'), param);
         $('#imageAvatarId').attr('src', param.logo);
         $('#logo').val(param.logo);
     }
@@ -68,12 +68,12 @@ layui.use(requireModules, function (
         }
     });
 
-    f.on('submit(merchant-update-form)', function (data) {
-        ajax.request(merchantApi.getUrl('updateMerchant'), data.field, function () {
+    f.on('submit(category-update-form)', function (data) {
+        ajax.request(positionCategoryApi.getUrl('updateCategory'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();
-            toast.success('修改成功');
+            toast.success('保存成功');
         });
         return false;
     });

@@ -2,15 +2,12 @@ package com.chenghe.advertise.controller;
 
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
-import com.chenghe.shiro.token.TokenManager;
+import com.chenghe.parttime.pojo.Ad;
+import com.chenghe.parttime.query.AdQuery;
+import com.chenghe.parttime.service.IAdService;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
-import com.chenghe.sys.pojo.SysUser;
-import com.chenghe.sys.pojo.SysUserRole;
-import com.chenghe.sys.service.SysUserRoleService;
-import com.chenghe.sys.service.SysUserService;
 import com.chenghe.sys.utils.Constants;
-import com.youguu.core.util.MD5;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,130 +25,109 @@ import java.util.Date;
 @RequestMapping("advertise")
 public class AdvertiseController {
 
-	@Resource
-	private SysUserService sysUserService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
+    @Resource
+    private IAdService adService;
 
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "添加用户")
-	@Repeat
-	public BaseResponse addUser(String userName, String password, String email, String phone, String realName, Integer
-			roleId, Integer userStatus, Integer expoId) {
-		SysUser sysUser = new SysUser();
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setPswd(new MD5().getMD5ofStr(password).toLowerCase());
-		sysUser.setUserStatus(userStatus);
-		sysUser.setCreateTime(new Date());
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.saveSysUser(sysUser);
+    @RequestMapping(value = "/addAd", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "添加广告")
+    @Repeat
+    public BaseResponse addAd(String categoryId, String imageUrl, String url, Integer num, Integer status) {
+        Ad ad = new Ad();
+        ad.setNum(num);
+        ad.setStatus(status);
+        ad.setUrl(url);
+        ad.setImageUrl(imageUrl);
+        ad.setCategoryId(categoryId);
+        ad.setcTime(new Date());
 
-		BaseResponse rs = new BaseResponse();
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(result);
-			userRole.setRid(roleId);
-			userRole.setCreateTime(new Date());
-			sysUserRoleService.saveSysUserRole(userRole);
+        int result = adService.addAd(ad);
 
-			rs.setStatus(true);
-			rs.setMsg("添加成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("添加失败");
-		}
+        BaseResponse rs = new BaseResponse();
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("添加成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("添加失败");
+        }
+        return rs;
+    }
 
-		return rs;
-	}
+    @RequestMapping(value = "/updateAd", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "修改广告")
+    @Repeat
+    public BaseResponse updateAd(Integer id, String categoryId, String imageUrl, String url, Integer num, Integer status) {
+        BaseResponse rs = new BaseResponse();
 
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "修改用户")
-	@Repeat
-	public BaseResponse updateUser(Integer id, String userName, String password, String email, String phone,
-								   String realName, Integer roleId, Integer userStatus, Integer expoId) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限修改，请联系超级管理员");
-			return rs;
-		}
-		SysUser sysUser = sysUserService.getSysUser(id);
-		if(null==sysUser){
-			rs.setStatus(false);
-			rs.setMsg("用户不存在或系统异常");
-		}
+        Ad ad = adService.getAd(id);
+        if (null == ad) {
+            rs.setStatus(false);
+            rs.setMsg("广告不存在");
+            return rs;
+        }
 
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setUserStatus(userStatus);
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.updateSysUser(sysUser);
+        ad.setNum(num);
+        ad.setStatus(status);
+        ad.setUrl(url);
+        ad.setImageUrl(imageUrl);
+        ad.setCategoryId(categoryId);
+        ad.setmTime(new Date());
+        int result = adService.updateAd(ad);
 
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(id);
-			userRole.setRid(roleId);
-			sysUserRoleService.updateSysUserRole(userRole);
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("修改成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("修改失败");
+        }
+        return rs;
+    }
 
-			rs.setStatus(true);
-			rs.setMsg("修改成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("修改失败");
-		}
+    @RequestMapping(value = "/deleteAd")
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "删除广告")
+    @Repeat
+    public BaseResponse deleteAd(int id) {
+        BaseResponse rs = new BaseResponse();
 
-		return rs;
-	}
+        int result = adService.delete(id);
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("删除成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("删除失败");
+        }
 
-	@RequestMapping(value = "/deleteUser")
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "删除用户")
-	@Repeat
-	public BaseResponse deleteUser(int id) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限删除，请联系超级管理员");
-			return rs;
-		}
+        return rs;
+    }
 
-		int result = sysUserService.deleteSysUser(id);
-		if(result>0){
-			sysUserRoleService.deleteSysUserRoleByUid(id);
-			rs.setStatus(true);
-			rs.setMsg("删除成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("删除失败");
-		}
+    @RequestMapping(value = "/adList", method = RequestMethod.POST)
+    @ResponseBody
+    public GridBaseResponse adList(@RequestParam(value = "status", defaultValue = "0") Integer status,
+                                   @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
+                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
-		return rs;
-	}
+        GridBaseResponse rs = new GridBaseResponse();
+        rs.setCode(0);
+        rs.setMsg("ok");
 
-	@RequestMapping(value = "/userlist", method = RequestMethod.POST)
-	@ResponseBody
-	public GridBaseResponse userList(@RequestParam(value="userId", defaultValue="0") int userId,
-									 String realName,
-									 @RequestParam(value = "page", defaultValue = "1") int page,
-									 @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        AdQuery query = new AdQuery();
+        query.setCategoryId(categoryId);
+        query.setStatus(status);
+        query.setPageIndex(page);
+        query.setPageSize(limit);
 
-		GridBaseResponse rs = new GridBaseResponse();
-		rs.setCode(0);
-		rs.setMsg("ok");
+        PageHolder<Ad> pageHolder = adService.queryAd(query);
+        if (null != pageHolder.getList()) {
+            rs.setData(pageHolder.getList());
+            rs.setCount(pageHolder.getTotalCount());
+        }
 
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
-		if(null != pageHolder.getList()){
-			rs.setData(pageHolder.getList());
-			rs.setCount(pageHolder.getTotalCount());
-		}
-
-		return rs;
-	}
+        return rs;
+    }
 }
