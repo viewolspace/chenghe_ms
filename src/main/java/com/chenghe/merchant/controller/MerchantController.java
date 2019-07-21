@@ -2,157 +2,195 @@ package com.chenghe.merchant.controller;
 
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
-import com.chenghe.shiro.token.TokenManager;
+import com.chenghe.common.UploadResponse;
+import com.chenghe.parttime.pojo.Company;
+import com.chenghe.parttime.query.CompanyQuery;
+import com.chenghe.parttime.service.ICompanyService;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
-import com.chenghe.sys.pojo.SysUser;
-import com.chenghe.sys.pojo.SysUserRole;
-import com.chenghe.sys.response.OnlineUserResponse;
-import com.chenghe.sys.service.SysUserRoleService;
-import com.chenghe.sys.service.SysUserService;
 import com.chenghe.sys.utils.Constants;
-import com.youguu.core.util.MD5;
 import com.youguu.core.util.PageHolder;
+import com.youguu.core.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import java.util.Random;
 
 /**
- * Created by leo on 2017/11/29.
+ * @version V1.0
+ * @Title:
+ * @ClassName: com.chenghe.merchant.controller.MerchantController.java
+ * @Description: 商户管理
+ * @date: 10:20
  */
 @Controller
 @RequestMapping("merchant")
 public class MerchantController {
 
-	@Resource
-	private SysUserService sysUserService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
+    @Resource
+    private ICompanyService companyService;
 
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "添加用户")
-	@Repeat
-	public BaseResponse addUser(String userName, String password, String email, String phone, String realName, Integer
-			roleId, Integer userStatus, Integer expoId) {
-		SysUser sysUser = new SysUser();
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setPswd(new MD5().getMD5ofStr(password).toLowerCase());
-		sysUser.setUserStatus(userStatus);
-		sysUser.setCreateTime(new Date());
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.saveSysUser(sysUser);
+    @RequestMapping(value = "/addMerchant", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "添加用户")
+    @Repeat
+    public BaseResponse addMerchant(String name, String logo, String des, String phone,
+                                    String qq, String wx, Integer star) {
+        Company company = new Company();
+        company.setName(name);
+        company.setLogo(logo);
+        company.setDes(des);
+        company.setPhone(phone);
+        company.setQq(qq);
+        company.setWx(wx);
+        company.setStar(star);
 
-		BaseResponse rs = new BaseResponse();
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(result);
-			userRole.setRid(roleId);
-			userRole.setCreateTime(new Date());
-			sysUserRoleService.saveSysUserRole(userRole);
+        int result = companyService.addCompany(company);
 
-			rs.setStatus(true);
-			rs.setMsg("添加成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("添加失败");
-		}
+        BaseResponse rs = new BaseResponse();
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("添加成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("添加失败");
+        }
+        return rs;
+    }
 
-		return rs;
-	}
+    @RequestMapping(value = "/updateMerchant", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "修改商户")
+    @Repeat
+    public BaseResponse updateMerchant(Integer id, String name, String logo, String des, String phone,
+                                       String qq, String wx, Integer star) {
+        BaseResponse rs = new BaseResponse();
 
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "修改用户")
-	@Repeat
-	public BaseResponse updateUser(Integer id, String userName, String password, String email, String phone,
-								   String realName, Integer roleId, Integer userStatus, Integer expoId) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限修改，请联系超级管理员");
-			return rs;
-		}
-		SysUser sysUser = sysUserService.getSysUser(id);
-		if(null==sysUser){
-			rs.setStatus(false);
-			rs.setMsg("用户不存在或系统异常");
-		}
+        Company company = companyService.getCompany(id);
+        if (null == company) {
+            rs.setStatus(false);
+            rs.setMsg("商户不存在");
+        }
 
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setUserStatus(userStatus);
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.updateSysUser(sysUser);
+        company.setName(name);
+        company.setLogo(logo);
+        company.setDes(des);
+        company.setPhone(phone);
+        company.setQq(qq);
+        company.setWx(wx);
+        company.setStar(star);
 
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(id);
-			userRole.setRid(roleId);
-			sysUserRoleService.updateSysUserRole(userRole);
+        int result = companyService.updateCompany(company);
 
-			rs.setStatus(true);
-			rs.setMsg("修改成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("修改失败");
-		}
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("修改成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("修改失败");
+        }
 
-		return rs;
-	}
+        return rs;
+    }
 
-	@RequestMapping(value = "/deleteUser")
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "删除用户")
-	@Repeat
-	public BaseResponse deleteUser(int id) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限删除，请联系超级管理员");
-			return rs;
-		}
+    @RequestMapping(value = "/deleteMerchant")
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "删除商户")
+    @Repeat
+    public BaseResponse deleteMerchant(int id) {
+        BaseResponse rs = new BaseResponse();
 
-		int result = sysUserService.deleteSysUser(id);
-		if(result>0){
-			sysUserRoleService.deleteSysUserRoleByUid(id);
-			rs.setStatus(true);
-			rs.setMsg("删除成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("删除失败");
-		}
+        int result = companyService.delete(id);
 
-		return rs;
-	}
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("删除成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("删除失败");
+        }
 
-	@RequestMapping(value = "/userlist", method = RequestMethod.POST)
-	@ResponseBody
-	public GridBaseResponse userList(@RequestParam(value="userId", defaultValue="0") int userId,
-									 String realName,
-									 @RequestParam(value = "page", defaultValue = "1") int page,
-									 @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return rs;
+    }
 
-		GridBaseResponse rs = new GridBaseResponse();
-		rs.setCode(0);
-		rs.setMsg("ok");
+    @RequestMapping(value = "/merchantList", method = RequestMethod.POST)
+    @ResponseBody
+    public GridBaseResponse merchantList(@RequestParam(value = "name", defaultValue = "") String name,
+                                         @RequestParam(value = "page", defaultValue = "1") int page,
+                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
-		if(null != pageHolder.getList()){
-			rs.setData(pageHolder.getList());
-			rs.setCount(pageHolder.getTotalCount());
-		}
+        GridBaseResponse rs = new GridBaseResponse();
+        rs.setCode(0);
+        rs.setMsg("ok");
 
-		return rs;
-	}
+        CompanyQuery query = new CompanyQuery();
+        query.setName(name);
+        query.setPageIndex(page);
+        query.setPageSize(limit);
+
+        PageHolder<Company> pageHolder = companyService.queryCompany(query);
+        if (null != pageHolder.getList()) {
+            rs.setData(pageHolder.getList());
+            rs.setCount(pageHolder.getTotalCount());
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+    @ResponseBody
+    @Repeat
+    public UploadResponse uploadImg(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+
+        UploadResponse rs = new UploadResponse();
+
+        if (null != file) {
+            String myFileName = file.getOriginalFilename();// 文件原名称
+            SimpleDateFormat dft = new SimpleDateFormat("yyyyMMddHHmmss");
+            String fileName = dft.format(new Date()) + Integer.toHexString(new Random().nextInt()) + "." + myFileName.substring(myFileName.lastIndexOf(".") + 1);
+
+            Properties properties = PropertiesUtil.getProperties("properties/config.properties");
+            String path = properties.getProperty("img.path");
+            String imageUrl = properties.getProperty("imageUrl");
+
+            SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
+            String midPath = yyyyMMdd.format(new Date());
+            File fileDir = new File(path + midPath);
+            if (!fileDir.exists()) { //如果不存在 则创建
+                fileDir.mkdirs();
+            }
+            path = path + midPath + File.separator + fileName;
+            File localFile = new File(path);
+            try {
+                file.transferTo(localFile);
+
+                rs.setStatus(true);
+                rs.setMsg("上传成功");
+                String httpUrl = imageUrl + File.separator + midPath + File.separator + fileName;
+                rs.setImageUrl(httpUrl);
+
+            } catch (IllegalStateException e) {
+                rs.setStatus(false);
+                rs.setMsg("服务器异常");
+            } catch (Exception e) {
+                rs.setStatus(false);
+                rs.setMsg("服务器异常");
+            }
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("文件为空");
+        }
+
+        return rs;
+    }
 }

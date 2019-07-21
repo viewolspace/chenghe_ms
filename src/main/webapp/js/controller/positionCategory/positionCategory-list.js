@@ -1,235 +1,163 @@
 var webName = getWebName();
 
 layui.config({
-	base: webName + '/js/modules/',
+    base: webName + '/js/modules/',
     version: 2018011001
 });
 
 var requireModules = [
-	'element',
-	'form',
-	'layer',
-	'request',
-	'form-util',
-	'user-api',
-	'table-util',
-	'btns',
-	'authority',
-	'toast',
+    'element',
+    'form',
+    'layer',
+    'request',
+    'form-util',
+    'user-api',
+    'table-util',
+    'btns',
+    'authority',
+    'toast',
     'table',
-	'valid-login'
+    'treeTable'
 
 ];
 
 registeModule(window, requireModules, {
-	'good-api': 'api/good-api'
+    'good-api': 'api/good-api'
 });
 
 //参数有顺序
-layui.use(requireModules, function(
-	element,
-	form,
-	layer,
-	request,
-	formUtil,
-	userApi,
-	tableUtil,
-	btns,
-	authority,
-	toast,
-    table
+layui.use(requireModules, function (
+    element,
+    form,
+    layer,
+    request,
+    formUtil,
+    userApi,
+    tableUtil,
+    btns,
+    authority,
+    toast,
+    table,
+    treeTable
 ) {
 
-	var $ = layui.jquery;
-    var $table = table;
-    var mainTable;
-	var MyController = {
-		init: function() {
-			var navId = request.getFixUrlParams("navId");
-
-			var totalBtns = authority.getNavBtns(navId);
-			var btnObjs = btns.getBtns(totalBtns);
-			MyController.pageBtns = btns.getPageBtns(btnObjs);
-			MyController.switchPageBtns = btns.getSwitchPageBtns(btnObjs);
-
-			MyController.rowBtns = btns.getRowBtns(btnObjs);
-			MyController.rowSwitchBtns = btns.getSwitchBtns(MyController.rowBtns);
-			MyController.rowIconBtns = btns.getIconBtns(MyController.rowBtns);
-
-			$('#page-btns').html(btns.renderBtns(MyController.pageBtns)+btns.renderSwitchBtns(MyController.switchPageBtns));
-            btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));
-
-            mainTable = MyController.renderTable();
-			MyController.bindEvent();
-		},
-		getQueryCondition: function() {
-			var condition = formUtil.composeData($("#condition"));
-			return condition;
-		},
-		renderTable: function() {
-            return $table.render({
-                elem: '#user-list'
-                ,height: 'full-100'
-                ,url: userApi.getUrl('getAll').url
-				,method: 'post'
-                ,page: true //开启分页
-                ,limits:[10,50,100,200]
-                ,cols: [[ //表头
-                    {type:'numbers'},
-                    {field: 'id', title: '用户ID', width:100},
-                    {field: 'userName', title: '账号', width:120},
-                    {field: 'realName', title: '真实姓名', width:220},
-                    {field: 'phone', title: '手机号', width:150},
-                    {field: 'userStatus', title: '状态', width:100, templet: function (d) {
-                        if(d.userStatus == 1){
-                        	return '<span>正常</span>';
-                        } else {
-                        	return '<span>冻结</span>';
-                        }
-                    }},
-                    {field: 'roleName', title: '角色', width:120},
-                    {field: 'lastLoginTime', title: '登录时间', width:160, templet: function (d) {
-                    	if(d.lastLoginTime){
-                            return moment(d.lastLoginTime).format("YYYY-MM-DD HH:mm:ss");
-						} else {
-                    		return "";
-						}
-
-                    }},
-                    {fixed: 'right',width:220, align:'center', toolbar: '#barDemo'}
-                ]]
-            });
-		},
-
-		add: function() {
-			var index = layer.open({
-				type: 2,
-				title: "添加用户",
-				area: '80%',
-				offset: '10%',
-				scrollbar: false,
-				content: webName + '/views/user/user-add.html',
-				success: function(ly, index) {
-					layer.iframeAuto(index);
-				}
-			});
-		},
-
-		modify: function(rowdata) {
-			var url = request.composeUrl(webName + '/views/user/user-update.html', rowdata);
-			var index = layer.open({
-				type: 2,
-				title: "修改用户",
-				area: '80%',
-				offset: '10%',
-				scrollbar: false,
-				content: url,
-				success: function(ly, index) {
-					layer.iframeAuto(index);
-				}
-			});
-		},
-
-        view: function(rowdata) {
-            var url = request.composeUrl(webName + '/views/user/user-view.html', rowdata);
-            var index = layer.open({
-                type: 2,
-                title: "查看用户",
-                area: '60%',
-                offset: '10%',
-                scrollbar: false,
-                content: url,
-                success: function(ly, index) {
-                    layer.iframeAuto(index);
-                }
-            });
+    var o = layui.$;
+    var form = layui.form;
+    var layer = layui.layer;
+    var treeTable = layui.treeTable;
+    // 直接下载后url: './data/table-tree.json',这个配置可能看不到数据，改为data:[],获取自己的实际链接返回json数组
+    var re = treeTable.render({
+        elem: '#tree-table',
+        data: [{"id": 1, "pid": 0, "title": "1-1"}, {"id": 2, "pid": 0, "title": "1-2"}, {
+            "id": 3,
+            "pid": 0,
+            "title": "1-3"
+        }, {"id": 4, "pid": 1, "title": "1-1-1"}, {"id": 5, "pid": 1, "title": "1-1-2"}, {
+            "id": 6,
+            "pid": 2,
+            "title": "1-2-1"
+        }, {"id": 7, "pid": 2, "title": "1-2-3"}, {"id": 8, "pid": 3, "title": "1-3-1"}, {
+            "id": 9,
+            "pid": 3,
+            "title": "1-3-2"
+        }, {"id": 10, "pid": 4, "title": "1-1-1-1"}, {"id": 11, "pid": 4, "title": "1-1-1-2"}],
+        icon_key: 'title',
+        is_checkbox: true,
+        checked: {
+            key: 'id',
+            data: [0, 1, 4, 10, 11, 5, 2, 6, 7, 3, 8, 9],
         },
-
-		delete: function(rowdata) {
-			layer.confirm('确认删除数据?', {
-				icon: 3,
-				title: '提示',
-				closeBtn: 0
-			}, function(index) {
-				layer.load(0, {
-					shade: 0.5
-				});
-				layer.close(index);
-
-				request.request(userApi.getUrl('deleteUser'), {
-					id: rowdata.id
-				}, function() {
-					layer.closeAll('loading');
-					toast.success('成功删除！');
-					MyController.refresh();
-				},true,function(){
-					layer.closeAll('loading');
-				});
-			});
-		},
-
-        resetPwd: function(rowdata) {
-            layer.confirm('确认重置用户密码吗?', {
-                icon: 3,
-                title: '提示',
-                closeBtn: 0
-            }, function(index) {
-                layer.load(0, {
-                    shade: 0.5
-                });
-                layer.close(index);
-
-                request.request(userApi.getUrl('resetPwd'), {
-                    id: rowdata.id
-                }, function() {
-                    layer.closeAll('loading');
-                    toast.success('重置成功！');
-                    MyController.refresh();
-                },true,function(){
-                    layer.closeAll('loading');
-                });
-            });
+        end: function (e) {
+            form.render();
         },
-
-		refresh: function() {
-            mainTable.reload();
-		},
-
-		bindEvent: function() {
-            $table.on('tool(test)', function(obj){
-                var data = obj.data;
-                if(obj.event === 'row-view'){
-                    MyController.view(data);
-                } else if(obj.event === 'row-edit'){//编辑
-                    MyController.modify(data);
-                } else if(obj.event === 'row-delete'){//删除
-                    MyController.delete(data);
-                } else if(obj.event === 'row-reset-pwd'){//重置密码
-                    MyController.resetPwd(data);
+        cols: [
+            {
+                key: 'title',
+                title: '名称',
+                width: '100px',
+                template: function (item) {
+                    if (item.level == 0) {
+                        return '<span style="color:red;">' + item.title + '</span>';
+                    } else if (item.level == 1) {
+                        return '<span style="color:green;">' + item.title + '</span>';
+                    } else if (item.level == 2) {
+                        return '<span style="color:#aaa;">' + item.title + '</span>';
+                    }
                 }
+            },
+            {
+                key: 'id',
+                title: 'ID',
+                width: '100px',
+                align: 'center'
+            },
+            {
+                key: 'pid',
+                title: '父ID',
+                width: '100px',
+                align: 'center'
+            },
+            {
+                key: 'status',
+                title: '是否有效',
+                width: '100px',
+                align: 'center',
+                template: function (item) {
+                    return '<input type="checkbox" name="status" value="'+item.id+'" lay-skin="switch" lay-filter="statusSwitch" lay-text="有效|无效">';
+                }
+            },
+            {
+                title: '操作',
+                align: 'center',
+                template: function (item) {
+                    return '<a lay-filter="add">添加</a> | <a lay-filter="update">修改</a>';
+                }
+            }
+        ]
+    });
 
+    // 监听展开关闭
+    treeTable.on('tree(flex)', function (data) {
+        layer.msg("dsfsd");
+    });
 
-            });
+    // 监听自定义
+    treeTable.on('tree(add)', function (data) {
+        re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
+        layer.msg(JSON.stringify(data));
+        treeTable.render(re);
+    });
 
-			//点击查询按钮
-			$('#search-btn').on('click', function() {
-                mainTable.reload({
-                    where: MyController.getQueryCondition()
-                });
-			});
+    treeTable.on('tree(update)', function (data) {
+        layer.msg(JSON.stringify(data));
+    });
 
-            //点击刷新
-            $('body').on('click', '.refresh', MyController.refresh);
-			//点击添加
-			$('body').on('click', '.add', MyController.add);
+    form.on('switch(statusSwitch)', function(obj){
+        var id = obj.value;
+        var checked = obj.elem.checked;
+        layer.msg("id:"+id+", checked:"+checked);
 
-		}
-	};
+    });
 
-	window.list = {
-		refresh: MyController.refresh
-	}
+    // 获取选中值，返回值是一个数组（定义的primary_key参数集合）
+    o('.get-checked').click(function () {
+        layer.msg('选中参数' + treeTable.checked(re).join(','))
+    });
 
-	MyController.init();
+    // 刷新重载树表（一般在异步处理数据后刷新显示）
+    o('.refresh').click(function () {
+        re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
+        treeTable.render(re);
+    });
+
+    // 全部展开
+    o('.open-all').click(function () {
+        treeTable.openAll(re);
+    });
+
+    // 全部关闭
+    o('.close-all').click(function () {
+        treeTable.closeAll(re);
+    });
 
 });
