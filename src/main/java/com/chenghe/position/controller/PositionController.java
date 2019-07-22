@@ -2,15 +2,16 @@ package com.chenghe.position.controller;
 
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
-import com.chenghe.shiro.token.TokenManager;
+import com.chenghe.parttime.pojo.Category;
+import com.chenghe.parttime.pojo.PartTime;
+import com.chenghe.parttime.query.PartTimeQuery;
+import com.chenghe.parttime.service.ICategoryService;
+import com.chenghe.parttime.service.IPartTimeService;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
-import com.chenghe.sys.pojo.SysUser;
-import com.chenghe.sys.pojo.SysUserRole;
-import com.chenghe.sys.service.SysUserRoleService;
-import com.chenghe.sys.service.SysUserService;
 import com.chenghe.sys.utils.Constants;
-import com.youguu.core.util.MD5;
+import com.youguu.core.logging.Log;
+import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -28,130 +30,173 @@ import java.util.Date;
 @RequestMapping("position")
 public class PositionController {
 
-	@Resource
-	private SysUserService sysUserService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
+    private static Log log = LogFactory.getLog(PositionController.class);
 
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "添加用户")
-	@Repeat
-	public BaseResponse addUser(String userName, String password, String email, String phone, String realName, Integer
-			roleId, Integer userStatus, Integer expoId) {
-		SysUser sysUser = new SysUser();
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setPswd(new MD5().getMD5ofStr(password).toLowerCase());
-		sysUser.setUserStatus(userStatus);
-		sysUser.setCreateTime(new Date());
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.saveSysUser(sysUser);
+    @Resource
+    private IPartTimeService partTimeService;
+    @Resource
+    private ICategoryService categoryService;
 
-		BaseResponse rs = new BaseResponse();
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(result);
-			userRole.setRid(roleId);
-			userRole.setCreateTime(new Date());
-			sysUserRoleService.saveSysUserRole(userRole);
+    @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "添加职位")
+    @Repeat
+    public BaseResponse addPosition(Integer companyId, Integer recommend, String categoryId,
+                                    Integer topNum, String title, Integer salary,
+                                    Integer cycle, String lable, Integer contactType, String contact,
+                                    String content, Integer num, String workTime, String workAddress,
+                                    Integer status, String sTime, String eTime) {
 
-			rs.setStatus(true);
-			rs.setMsg("添加成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("添加失败");
-		}
+        int result = 0;
 
-		return rs;
-	}
+        try {
+            PartTime partTime = new PartTime();
+            partTime.setCompanyId(companyId);
+            partTime.setRecommend(recommend);
+            partTime.setCategoryId(categoryId);
 
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "修改用户")
-	@Repeat
-	public BaseResponse updateUser(Integer id, String userName, String password, String email, String phone,
-								   String realName, Integer roleId, Integer userStatus, Integer expoId) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限修改，请联系超级管理员");
-			return rs;
-		}
-		SysUser sysUser = sysUserService.getSysUser(id);
-		if(null==sysUser){
-			rs.setStatus(false);
-			rs.setMsg("用户不存在或系统异常");
-		}
+            Category category = categoryService.getCategory(categoryId);
+            if (null != category) {
+                partTime.setCategoryName(category.getName());
 
-		sysUser.setUserName(userName);
-		sysUser.setRealName(realName);
-		sysUser.setEmail(email);
-		sysUser.setPhone(phone);
-		sysUser.setUserStatus(userStatus);
-		sysUser.setExpoId(expoId);
-		int result = sysUserService.updateSysUser(sysUser);
+            }
+            partTime.setTopNum(topNum);
+            partTime.setTitle(title);
+            partTime.setSalary(salary);
+            partTime.setCycle(cycle);
+            partTime.setLable(lable);
+            partTime.setContactType(contactType);
+            partTime.setContact(contact);
+            partTime.setContent(content);
+            partTime.setNum(num);
+            partTime.setWorkTime(workTime);
+            partTime.setWorkAddress(workAddress);
+            partTime.setStatus(status);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            partTime.setsTime(dft.parse(sTime));
+            partTime.seteTime(dft.parse(eTime));
+            partTime.setcTime(new Date());
+            partTime.setBrowseNum(0);
+            partTime.setCopyNum(0);
+            partTime.setJoinNum(0);
+            result = partTimeService.addPartTime(partTime);
+        } catch (Exception e) {
+            log.error(e);
+        }
 
-		if(result>0){
-			SysUserRole userRole = new SysUserRole();
-			userRole.setUid(id);
-			userRole.setRid(roleId);
-			sysUserRoleService.updateSysUserRole(userRole);
+        BaseResponse rs = new BaseResponse();
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("添加成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("添加失败");
+        }
 
-			rs.setStatus(true);
-			rs.setMsg("修改成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("修改失败");
-		}
+        return rs;
+    }
 
-		return rs;
-	}
+    @RequestMapping(value = "/updatePosition", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "修改职位")
+    @Repeat
+    public BaseResponse updatePosition(Integer id, Integer companyId, Integer recommend, String categoryId,
+                                       String categoryName, Integer topNum, String title, Integer salary,
+                                       Integer cycle, String lable, Integer contactType, String contact,
+                                       String content, Integer num, String workTime, String workAddress,
+                                       Integer status, String sTime, String eTime, Integer browseNum,
+                                       Integer copyNum, Integer joinNum) {
+        BaseResponse rs = new BaseResponse();
 
-	@RequestMapping(value = "/deleteUser")
-	@ResponseBody
-	@MethodLog(module = Constants.SYS_USER, desc = "删除用户")
-	@Repeat
-	public BaseResponse deleteUser(int id) {
-		BaseResponse rs = new BaseResponse();
-		if(TokenManager.getUserId() == id){
-			rs.setStatus(false);
-			rs.setMsg("无权限删除，请联系超级管理员");
-			return rs;
-		}
+        int result = 0;
 
-		int result = sysUserService.deleteSysUser(id);
-		if(result>0){
-			sysUserRoleService.deleteSysUserRoleByUid(id);
-			rs.setStatus(true);
-			rs.setMsg("删除成功");
-		} else {
-			rs.setStatus(false);
-			rs.setMsg("删除失败");
-		}
+        try {
+            PartTime partTime = partTimeService.getPartTime(id);
+            if (null == partTime) {
+                rs.setStatus(false);
+                rs.setMsg("职位不存在");
+            }
 
-		return rs;
-	}
+            partTime.setCompanyId(companyId);
+            partTime.setRecommend(recommend);
+            partTime.setCategoryId(categoryId);
 
-	@RequestMapping(value = "/userlist", method = RequestMethod.POST)
-	@ResponseBody
-	public GridBaseResponse userList(@RequestParam(value="userId", defaultValue="0") int userId,
-									 String realName,
-									 @RequestParam(value = "page", defaultValue = "1") int page,
-									 @RequestParam(value = "limit", defaultValue = "10") int limit) {
+            Category category = categoryService.getCategory(categoryId);
+            if (null != category) {
+                partTime.setCategoryName(category.getName());
 
-		GridBaseResponse rs = new GridBaseResponse();
-		rs.setCode(0);
-		rs.setMsg("ok");
+            }
+            partTime.setTopNum(topNum);
+            partTime.setTitle(title);
+            partTime.setSalary(salary);
+            partTime.setCycle(cycle);
+            partTime.setLable(lable);
+            partTime.setContactType(contactType);
+            partTime.setContact(contact);
+            partTime.setContent(content);
+            partTime.setNum(num);
+            partTime.setWorkTime(workTime);
+            partTime.setWorkAddress(workAddress);
+            partTime.setStatus(status);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            partTime.setsTime(dft.parse(sTime));
+            partTime.seteTime(dft.parse(eTime));
+            partTime.setmTime(new Date());
 
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
-		if(null != pageHolder.getList()){
-			rs.setData(pageHolder.getList());
-			rs.setCount(pageHolder.getTotalCount());
-		}
+            result = partTimeService.updatePartTime(partTime);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("修改成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("修改失败");
+        }
 
-		return rs;
-	}
+        return rs;
+    }
+
+    @RequestMapping(value = "/deletePosition")
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "删除职位")
+    @Repeat
+    public BaseResponse deletePosition(int id) {
+        BaseResponse rs = new BaseResponse();
+
+        int result = partTimeService.delete(id);
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("删除成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("删除失败");
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "/positionList", method = RequestMethod.POST)
+    @ResponseBody
+    public GridBaseResponse positionList(@RequestParam(value = "title", defaultValue = "") String title,
+                                         @RequestParam(value = "page", defaultValue = "1") int page,
+                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
+
+        GridBaseResponse rs = new GridBaseResponse();
+        rs.setCode(0);
+        rs.setMsg("ok");
+
+        PartTimeQuery query = new PartTimeQuery();
+        query.setTitle(title);
+        query.setPageIndex(page);
+        query.setPageSize(limit);
+        PageHolder<PartTime> pageHolder = partTimeService.queryPartTime(query);
+        if (null != pageHolder.getList()) {
+            rs.setData(pageHolder.getList());
+            rs.setCount(pageHolder.getTotalCount());
+        }
+
+        return rs;
+    }
 }

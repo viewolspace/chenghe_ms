@@ -1,17 +1,19 @@
 package com.chenghe.statistics.controller;
 
 import com.chenghe.common.GridBaseResponse;
-import com.chenghe.shiro.token.TokenManager;
-import com.chenghe.sys.pojo.SysUser;
-import com.chenghe.sys.service.SysUserService;
+import com.chenghe.parttime.pojo.UserStat;
+import com.chenghe.parttime.query.UserStatQuery;
+import com.chenghe.parttime.service.IUserStatService;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by leo on 2017/11/29.
@@ -21,23 +23,34 @@ import javax.annotation.Resource;
 public class StatisticsController {
 
     @Resource
-    private SysUserService sysUserService;
+    private IUserStatService userStatService;
 
-    @RequestMapping(value = "/userlist", method = RequestMethod.POST)
+    @RequestMapping(value = "/userStatList", method = RequestMethod.POST)
     @ResponseBody
-    public GridBaseResponse userList(@RequestParam(value = "userId", defaultValue = "0") int userId,
-                                     String realName,
-                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                     @RequestParam(value = "limit", defaultValue = "10") int limit) {
+    public GridBaseResponse userStatList(@RequestParam(value = "statDate", defaultValue = "") String statDate,
+                                         @RequestParam(value = "page", defaultValue = "1") int page,
+                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
         GridBaseResponse rs = new GridBaseResponse();
         rs.setCode(0);
         rs.setMsg("ok");
 
-        PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
-        if (null != pageHolder.getList()) {
-            rs.setData(pageHolder.getList());
-            rs.setCount(pageHolder.getTotalCount());
+        try {
+            UserStatQuery query = new UserStatQuery();
+            if(!StringUtils.isEmpty(statDate)){
+                SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+                query.setStatDate(dft.parse(statDate));
+            }
+            query.setPageIndex(page);
+            query.setPageSize(limit);
+
+            PageHolder<UserStat> pageHolder = userStatService.queryUserStat(query);
+            if (null != pageHolder.getList()) {
+                rs.setData(pageHolder.getList());
+                rs.setCount(pageHolder.getTotalCount());
+            }
+        } catch (Exception e) {
+
         }
 
         return rs;

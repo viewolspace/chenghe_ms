@@ -1,6 +1,9 @@
 package com.chenghe.seekers.controller;
 
 import com.chenghe.common.GridBaseResponse;
+import com.chenghe.parttime.pojo.User;
+import com.chenghe.parttime.query.UserQuery;
+import com.chenghe.parttime.service.IUserService;
 import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.pojo.SysUser;
 import com.chenghe.sys.service.SysUserService;
@@ -21,20 +24,29 @@ import javax.annotation.Resource;
 public class JobSeekersController {
 
     @Resource
-    private SysUserService sysUserService;
+    private IUserService userService;
 
-    @RequestMapping(value = "/userlist", method = RequestMethod.POST)
+    @RequestMapping(value = "/userList", method = RequestMethod.POST)
     @ResponseBody
     public GridBaseResponse userList(@RequestParam(value = "userId", defaultValue = "0") int userId,
-                                     String realName,
+                                     @RequestParam(value = "phone", defaultValue = "") String phone,
+                                     @RequestParam(value = "idfa", defaultValue = "") String idfa,
+                                     @RequestParam(value = "nickName", defaultValue = "") String nickName,
                                      @RequestParam(value = "page", defaultValue = "1") int page,
                                      @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
         GridBaseResponse rs = new GridBaseResponse();
         rs.setCode(0);
         rs.setMsg("ok");
+        UserQuery query = new UserQuery();
+        query.setIdfa(idfa);
+        query.setNickName(nickName);
+        query.setPhone(phone);
+        query.setUserId(userId);
+        query.setPageIndex(page);
+        query.setPageSize(limit);
 
-        PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
+        PageHolder<User> pageHolder = userService.queryUser(query);
         if (null != pageHolder.getList()) {
             rs.setData(pageHolder.getList());
             rs.setCount(pageHolder.getTotalCount());
