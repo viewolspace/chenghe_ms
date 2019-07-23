@@ -37,7 +37,7 @@ layui.use(requireModules, function (
 
     ajax.request(
         positionCategoryApi.getUrl('listDataDic'),{
-            parentId: '00000005'
+            parentId: '00000001'
         }, function(result) {
             formUtil.renderSelects('#categoryId', result.data, false);
             f.render('select');

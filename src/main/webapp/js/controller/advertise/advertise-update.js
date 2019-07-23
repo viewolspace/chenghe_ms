@@ -10,6 +10,7 @@ var requireModules = [
     'form-util',
     'request',
     'ad-api',
+    'position-category-api',
     'uploadImage-api',
     'toast',
     'upload'
@@ -25,6 +26,7 @@ layui.use(requireModules, function (
     formUtil,
     ajax,
     adApi,
+    positionCategoryApi,
     uploadImageApi,
     toast,
     upload
@@ -32,6 +34,16 @@ layui.use(requireModules, function (
     var $ = layui.jquery;
     var f = layui.form;
     var param = ajax.getAllUrlParam();
+
+    ajax.request(
+        positionCategoryApi.getUrl('listDataDic'),{
+            parentId: '00000002'
+        }, function(result) {
+            formUtil.renderSelects('#categoryId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
 
     if(!$.isEmptyObject(param)) {
         formUtil.renderData($('#ad-update-form'), param);

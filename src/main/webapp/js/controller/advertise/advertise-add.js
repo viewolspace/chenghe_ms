@@ -37,7 +37,7 @@ layui.use(requireModules, function (
 
     ajax.request(
         positionCategoryApi.getUrl('listDataDic'),{
-            parentId: '00000006'
+            parentId: '00000002'
         }, function(result) {
             formUtil.renderSelects('#categoryId', result.data, false);
             f.render('select');
@@ -64,7 +64,7 @@ layui.use(requireModules, function (
                 return layer.msg('上传失败');
             } else {
                 $('#imageAvatarId').attr('src', res.imageUrl);
-                $('#logo').val(res.imageUrl);
+                $('#imageUrl').val(res.imageUrl);
                 toast.msg("上传成功");
             }
         }

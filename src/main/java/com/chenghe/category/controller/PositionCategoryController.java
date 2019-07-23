@@ -36,7 +36,6 @@ public class PositionCategoryController {
     @Repeat
     public BaseResponse addCategory(@RequestParam(value = "pid", defaultValue = "") String pid,
                                     @RequestParam(value = "title", defaultValue = "") String title,
-                                    @RequestParam(value = "logo", defaultValue = "") String logo,
                                     @RequestParam(value = "num", defaultValue = "0") int num,
                                     @RequestParam(value = "type", defaultValue = "0") int type) {
 
@@ -46,7 +45,6 @@ public class PositionCategoryController {
         category.setParentId(pid);
         category.setNum(num);
         category.setType(type);
-        category.setLogo(logo);
         category.setcTime(new Date());
 
         String result = categoryService.addCategory(category);
@@ -87,7 +85,6 @@ public class PositionCategoryController {
     public BaseResponse updateCategory(@RequestParam(value = "id", defaultValue = "") String id,
                                        @RequestParam(value = "pid", defaultValue = "") String pid,
                                        @RequestParam(value = "title", defaultValue = "") String title,
-                                       @RequestParam(value = "logo", defaultValue = "") String logo,
                                        @RequestParam(value = "num", defaultValue = "0") int num,
                                        @RequestParam(value = "type", defaultValue = "0") int type) {
 
@@ -97,7 +94,6 @@ public class PositionCategoryController {
         category.setParentId(pid);
         category.setNum(num);
         category.setType(type);
-        category.setLogo(logo);
         int result = categoryService.updateCategory(category);
 
         if (result > 0) {
