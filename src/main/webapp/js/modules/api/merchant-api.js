@@ -31,6 +31,9 @@ layui.define('base-url', function(exports) {
 		"uploadImg": {
 			type: 'POST',
 			url: "uploadImg.do"
+		},
+		"listDataDic": {
+			url: "listDataDic.do"
 		}
 	};
 

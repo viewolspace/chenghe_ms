@@ -2,7 +2,8 @@ package com.chenghe.merchant.controller;
 
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
-import com.chenghe.common.UploadResponse;
+import com.chenghe.common.Option;
+import com.chenghe.common.SelectListResponse;
 import com.chenghe.parttime.pojo.Company;
 import com.chenghe.parttime.query.CompanyQuery;
 import com.chenghe.parttime.service.ICompanyService;
@@ -10,21 +11,15 @@ import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
 import com.youguu.core.util.PageHolder;
-import com.youguu.core.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @version V1.0
@@ -144,6 +139,27 @@ public class MerchantController {
             rs.setCount(pageHolder.getTotalCount());
         }
 
+        return rs;
+    }
+
+    @RequestMapping(value = "/listDataDic")
+    @ResponseBody
+    public SelectListResponse listDataDic() {
+        SelectListResponse rs = new SelectListResponse();
+        rs.setStatus(true);
+        rs.setMsg("ok");
+
+        List<Company> list = companyService.queryAll();
+        if(list!=null && list.size()>0){
+            List<Option> optionList = new ArrayList<>();
+            for(Company company : list){
+                Option option = new Option();
+                option.setKey(company.getId());
+                option.setValue(company.getName());
+                optionList.add(option);
+            }
+            rs.setData(optionList);
+        }
         return rs;
     }
 }

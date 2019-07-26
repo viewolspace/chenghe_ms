@@ -27,8 +27,9 @@
             <label class="layui-form-label">商户id</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="companyId" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
-                       class="layui-input">
+                <select name="companyId" id="companyId">
+
+                </select>
             </div>
         </div>
 
@@ -178,7 +179,7 @@
             <label class="layui-form-label">开始时间</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="sTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" id="sTime" name="sTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
                        class="layui-input">
             </div>
         </div>
@@ -187,9 +188,27 @@
             <label class="layui-form-label">结束时间</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="eTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" id="eTime" name="eTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
                        class="layui-input">
             </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">上传图片<br>162x100px</label>
+        <div class="layui-input-block">
+            <div class="layui-upload-drag">
+                <a href=" javascript:void(0); ">
+                    <img id="imageAvatarId" src="../../image/default_upload.png" alt="上传图片" width="162" height="100">
+                </a>
+                <input type="hidden" id="imageUrl" name="imageUrl" value="">
+            </div>
+
+            <button type="button" class="layui-btn" id="imageBtn">
+                <i class="layui-icon"></i>
+                上传图片
+            </button>
+            <input class="layui-upload-file" type="file" name="file">
         </div>
     </div>
 
@@ -197,7 +216,7 @@
         <label class="layui-form-label">详细内容</label>
 
         <div class="layui-input-block">
-            <textarea type="text" name="content" lay-verify="required" class="layui-textarea" rows="20" style="width: 520px;"></textarea>
+            <textarea class="layui-textarea" name="content" id="content" style="display: none"></textarea>
         </div>
     </div>
 

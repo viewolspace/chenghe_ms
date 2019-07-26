@@ -27,6 +27,10 @@ layui.define('base-url', function(exports) {
 		},
 		"deletePosition": {
 			url: "deletePosition.do"
+		},
+		"uploadContentImage": {
+			type: 'POST',
+			url: "uploadContentImage.do"
 		}
 	};
 

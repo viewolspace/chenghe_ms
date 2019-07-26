@@ -2,6 +2,7 @@ package com.chenghe.position.controller;
 
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
+import com.chenghe.common.LayeditResponse;
 import com.chenghe.parttime.pojo.Category;
 import com.chenghe.parttime.pojo.PartTime;
 import com.chenghe.parttime.query.PartTimeQuery;
@@ -13,15 +14,23 @@ import com.chenghe.sys.utils.Constants;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PageHolder;
+import com.youguu.core.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 
 /**
  * Created by leo on 2017/11/29.
@@ -45,7 +54,7 @@ public class PositionController {
                                     Integer topNum, String title, Integer salary,
                                     Integer cycle, String lable, Integer contactType, String contact,
                                     String content, Integer num, String workTime, String workAddress,
-                                    Integer status, String sTime, String eTime) {
+                                    Integer status, String sTime, String eTime, String imageUrl) {
 
         int result = 0;
 
@@ -79,6 +88,7 @@ public class PositionController {
             partTime.setBrowseNum(0);
             partTime.setCopyNum(0);
             partTime.setJoinNum(0);
+            partTime.setPic(imageUrl);
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -105,7 +115,7 @@ public class PositionController {
                                        Integer cycle, String lable, Integer contactType, String contact,
                                        String content, Integer num, String workTime, String workAddress,
                                        Integer status, String sTime, String eTime, Integer browseNum,
-                                       Integer copyNum, Integer joinNum) {
+                                       Integer copyNum, Integer joinNum, String imageUrl) {
         BaseResponse rs = new BaseResponse();
 
         int result = 0;
@@ -142,7 +152,7 @@ public class PositionController {
             partTime.setsTime(dft.parse(sTime));
             partTime.seteTime(dft.parse(eTime));
             partTime.setmTime(new Date());
-
+            partTime.setPic(imageUrl);
             result = partTimeService.updatePartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -199,4 +209,52 @@ public class PositionController {
 
         return rs;
     }
+
+    @RequestMapping(value = "/uploadContentImage", method = RequestMethod.POST)
+    @ResponseBody
+    public LayeditResponse uploadContentImage(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+
+        LayeditResponse rs = new LayeditResponse();
+
+        if (null != file) {
+            String myFileName = file.getOriginalFilename();// 文件原名称
+            SimpleDateFormat dft = new SimpleDateFormat("yyyyMMddHHmmss");
+            String fileName = dft.format(new Date()) + Integer.toHexString(new Random().nextInt()) + "." + myFileName.substring(myFileName.lastIndexOf(".") + 1);
+
+            Properties properties = PropertiesUtil.getProperties("properties/config.properties");
+            String path = properties.getProperty("img.path");
+            String imageUrl = properties.getProperty("imageUrl");
+
+            SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
+            String midPath = yyyyMMdd.format(new Date());
+            File fileDir = new File(path + midPath);
+            if (!fileDir.exists()) { //如果不存在 则创建
+                fileDir.mkdirs();
+            }
+            path = path + midPath + File.separator + fileName;
+            File localFile = new File(path);
+            try {
+                file.transferTo(localFile);
+
+                rs.setCode(0);
+                rs.setMsg("上传成功");
+                String httpUrl = imageUrl + File.separator + midPath + File.separator + fileName;
+                Map<String, String> map = new HashMap<>();
+                map.put("src", httpUrl);
+                rs.setData(map);
+            } catch (IllegalStateException e) {
+                rs.setCode(1);
+                rs.setMsg("服务器异常");
+            } catch (IOException e) {
+                rs.setCode(1);
+                rs.setMsg("服务器异常");
+            }
+        } else {
+            rs.setCode(1);
+            rs.setMsg("文件为空");
+        }
+
+        return rs;
+    }
+
 }

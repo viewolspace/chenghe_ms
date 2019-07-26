@@ -32,10 +32,11 @@ public class AdvertiseController {
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "添加广告")
     @Repeat
-    public BaseResponse addAd(String categoryId, String imageUrl, String url, Integer num, Integer status) {
+    public BaseResponse addAd(String categoryId, String title, String imageUrl, String url, Integer num, Integer status) {
         Ad ad = new Ad();
         ad.setNum(num);
         ad.setStatus(status);
+        ad.setTitle(title);
         ad.setUrl(url);
         ad.setImageUrl(imageUrl);
         ad.setCategoryId(categoryId);
@@ -58,7 +59,7 @@ public class AdvertiseController {
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "修改广告")
     @Repeat
-    public BaseResponse updateAd(Integer id, String categoryId, String imageUrl, String url, Integer num, Integer status) {
+    public BaseResponse updateAd(Integer id, String title,String categoryId, String imageUrl, String url, Integer num, Integer status) {
         BaseResponse rs = new BaseResponse();
 
         Ad ad = adService.getAd(id);
@@ -69,6 +70,7 @@ public class AdvertiseController {
         }
 
         ad.setNum(num);
+        ad.setTitle(title);
         ad.setStatus(status);
         ad.setUrl(url);
         ad.setImageUrl(imageUrl);

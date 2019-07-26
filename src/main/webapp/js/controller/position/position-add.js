@@ -12,9 +12,11 @@ var requireModules = [
     'position-api',
     'position-category-api',
     'uploadImage-api',
+    'merchant-api',
     'toast',
-    'upload'
-
+    'upload',
+    'laydate',
+    'layedit'
 ];
 
 registeModule(window, requireModules, {
@@ -28,25 +30,89 @@ layui.use(requireModules, function (
     positionApi,
     positionCategoryApi,
     uploadImageApi,
+    merchantApi,
     toast,
-    upload
+    upload,
+    laydate,
+    layedit
 ) {
     var $ = layui.jquery;
     var f = layui.form;
     var data = ajax.getAllUrlParam();
 
     ajax.request(
-        positionCategoryApi.getUrl('listDataDic'),{
+        positionCategoryApi.getUrl('listDataDic'), {
             parentId: '00000001'
-        }, function(result) {
+        }, function (result) {
             formUtil.renderSelects('#categoryId', result.data, false);
             f.render('select');
         },
         false
     );
 
+    ajax.request(
+        merchantApi.getUrl('listDataDic'), null, function (result) {
+            formUtil.renderSelects('#companyId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
+    layedit.set({
+        uploadImage: {
+            url: positionApi.getUrl('uploadContentImage').url,
+            type: 'POST'
+        }
+    });
+    var index = layedit.build('content');
+
+    laydate.render({
+        elem: '#sTime',
+        type: 'datetime',
+        format: 'yyyy-MM-dd HH:mm:ss',
+        value: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+    });
+
+    laydate.render({
+        elem: '#eTime',
+        type: 'datetime',
+        format: 'yyyy-MM-dd HH:mm:ss',
+        value: moment(new Date()).add(7, 'days').format("YYYY-MM-DD HH:mm:ss")
+    });
+
+    //上传图片
+    upload.render({
+        elem: '#imageBtn'
+        , url: uploadImageApi.getUrl('uploadImg').url
+        , ext: 'jpg|png|gif|bmp'
+        , type: 'image'
+        , size: 1024 //最大允许上传的文件大小kb
+        , before: function (obj) {
+            //预读本地文件
+            layer.load(0, {
+                shade: 0.5
+            });
+        }
+        , done: function (res) {
+            layer.closeAll('loading');
+            if (res.status == false) {
+                return layer.msg('上传失败');
+            } else {
+                $('#imageAvatarId').attr('src', res.imageUrl);
+                $('#imageUrl').val(res.imageUrl);
+                toast.msg("上传成功");
+            }
+        }
+        , error: function () {
+            layer.closeAll('loading');
+            return layer.msg('数据请求异常');
+        }
+    });
+
     f.on('submit(position-add-form)', function (data) {
-        ajax.request(positionApi.getUrl('addPosition'), data.field, function () {
+        var datas = $.extend(true, data.field, {"content": layedit.getContent(index)});
+
+        ajax.request(positionApi.getUrl('addPosition'), datas, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();

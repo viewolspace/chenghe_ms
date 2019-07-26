@@ -74,6 +74,7 @@ layui.use(requireModules, function (
                 , cols: [[
                     {type: 'numbers'},
                     {field: 'id', title: '广告ID', width: 100},
+                    {field: 'title', title: '标题', width: 220},
                     {field: 'categoryId', title: '广告分类ID', width: 120},
                     {
                         field: 'imageUrl', title: '图片地址', width: 100, templet: function (d) {
@@ -124,8 +125,8 @@ layui.use(requireModules, function (
             var index = layer.open({
                 type: 2,
                 title: "添加广告",
-                area: '80%',
-                offset: '10%',
+                area: ['700px', '420px'],
+                offset: '5%',
                 scrollbar: false,
                 content: webName + '/views/advertise/advertise-add.html',
                 success: function (ly, index) {
@@ -139,8 +140,8 @@ layui.use(requireModules, function (
             var index = layer.open({
                 type: 2,
                 title: "修改广告",
-                area: '80%',
-                offset: '10%',
+                area: ['700px', '420px'],
+                offset: '5%',
                 scrollbar: false,
                 content: url,
                 success: function (ly, index) {
