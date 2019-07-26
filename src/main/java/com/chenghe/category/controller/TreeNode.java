@@ -12,6 +12,8 @@ public class TreeNode {
     private String pid;
     private String title;
     private int status;
+    private Integer type;
+    private Integer num;
 
     public String getId() {
         return id;
@@ -43,5 +45,21 @@ public class TreeNode {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

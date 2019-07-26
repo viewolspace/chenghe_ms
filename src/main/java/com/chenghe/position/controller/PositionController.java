@@ -16,6 +16,7 @@ import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PageHolder;
 import com.youguu.core.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -190,6 +191,7 @@ public class PositionController {
     @RequestMapping(value = "/positionList", method = RequestMethod.POST)
     @ResponseBody
     public GridBaseResponse positionList(@RequestParam(value = "title", defaultValue = "") String title,
+                                         @RequestParam(value = "recommend", defaultValue = "-1") int recommend,
                                          @RequestParam(value = "page", defaultValue = "1") int page,
                                          @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
@@ -198,7 +200,13 @@ public class PositionController {
         rs.setMsg("ok");
 
         PartTimeQuery query = new PartTimeQuery();
-        query.setTitle(title);
+        if(!StringUtils.isEmpty(title)){
+            query.setTitle(title);
+        }
+
+        if (recommend != -1) {
+            query.setRecommend(recommend);
+        }
         query.setPageIndex(page);
         query.setPageSize(limit);
         PageHolder<PartTime> pageHolder = partTimeService.queryPartTime(query);

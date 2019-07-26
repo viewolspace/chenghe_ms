@@ -78,6 +78,7 @@ layui.use(requireModules, function (
                     {type: 'numbers'},
 
                     {field: 'id', title: '职位ID', width: 100},
+                    {field: 'title', title: '标题', width: 200},
                     {field: 'companyId', title: '商户id', width: 120},
                     {
                         field: 'recommend', title: '推荐', width: 100, templet: function (d) {
@@ -93,7 +94,6 @@ layui.use(requireModules, function (
                     // {field: 'categoryId', title: '职位分类id', width: 120},
                     {field: 'categoryName', title: '职位分类名称', width: 120},
                     {field: 'topNum', title: '置顶顺序', width: 120},
-                    {field: 'title', title: '标题', width: 120},
                     {field: 'salary', title: '薪水', width: 120},
                     // {field: 'cycle', title: '周期0小时1天2周3月4季度', width: 120},
                     // {field: 'lable', title: '多个标签空格分隔例如：日结长期男女不限', width: 120},

@@ -85,14 +85,33 @@ layui.use(requireModules, function (
                 align: 'center'
             },
             {
-                key: 'status',
-                title: '是否有效',
+                key: 'type',
+                title: '类型',
                 width: '100px',
                 align: 'center',
                 template: function (item) {
-                    return '<input type="checkbox" name="status" value="' + item.id + '" lay-skin="switch" lay-filter="statusSwitch" lay-text="有效|无效">';
+                    if (item.type == 1) {
+                        return '<span>职位分类</span>';
+                    } else {
+                        return '<span>广告位分类</span>';
+                    }
                 }
             },
+            {
+                key: 'num',
+                title: '顺序',
+                width: '100px',
+                align: 'center'
+            },
+            // {
+            //     key: 'status',
+            //     title: '是否有效',
+            //     width: '100px',
+            //     align: 'center',
+            //     template: function (item) {
+            //         return '<input type="checkbox" name="status" value="' + item.id + '" lay-skin="switch" lay-filter="statusSwitch" lay-text="有效|无效">';
+            //     }
+            // },
             {
                 title: '操作',
                 align: 'center',
@@ -105,7 +124,7 @@ layui.use(requireModules, function (
 
     // 监听展开关闭
     treeTable.on('tree(flex)', function (data) {
-        layer.msg("dsfsd");
+        // layer.msg("dsfsd");
     });
 
     // 添加子分类
@@ -201,4 +220,11 @@ layui.use(requireModules, function (
         treeTable.closeAll(re);
     });
 
+    function refresh() {
+        window.location.reload();
+    }
+
+    window.list = {
+        refresh: refresh
+    };
 });

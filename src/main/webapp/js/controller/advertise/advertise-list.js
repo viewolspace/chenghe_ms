@@ -12,6 +12,7 @@ var requireModules = [
     'request',
     'form-util',
     'ad-api',
+    'position-category-api',
     'btns',
     'authority',
     'toast',
@@ -31,6 +32,7 @@ layui.use(requireModules, function (
     request,
     formUtil,
     adApi,
+    positionCategoryApi,
     btns,
     authority,
     toast,
@@ -56,6 +58,16 @@ layui.use(requireModules, function (
             $('#page-btns').html(btns.renderBtns(MyController.pageBtns) + btns.renderSwitchBtns(MyController.switchPageBtns));
             btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));
 
+            request.request(
+                positionCategoryApi.getUrl('listDataDic'),{
+                    parentId: '00000002'
+                }, function(result) {
+                    formUtil.renderSelects('#categoryId', result.data, true);
+                    form.render('select');
+                },
+                false
+            );
+
             mainTable = MyController.renderTable();
             MyController.bindEvent();
         },
@@ -75,7 +87,7 @@ layui.use(requireModules, function (
                     {type: 'numbers'},
                     {field: 'id', title: '广告ID', width: 100},
                     {field: 'title', title: '标题', width: 220},
-                    {field: 'categoryId', title: '广告分类ID', width: 120},
+                    {field: 'categoryName', title: '所属分类', width: 120},
                     {
                         field: 'imageUrl', title: '图片地址', width: 100, templet: function (d) {
                             if (d.imageUrl) {

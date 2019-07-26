@@ -119,6 +119,8 @@ public class PositionCategoryController {
             treeNode.setPid(category.getParentId());
             treeNode.setTitle(category.getName());
 //            treeNode.setStatus(category.getS);
+            treeNode.setType(category.getType());
+            treeNode.setNum(category.getNum());
             nodeList.add(treeNode);
         }
 

@@ -30,7 +30,7 @@ public class JobSeekersController {
     @ResponseBody
     public GridBaseResponse userList(@RequestParam(value = "userId", defaultValue = "0") int userId,
                                      @RequestParam(value = "phone", defaultValue = "") String phone,
-                                     @RequestParam(value = "idfa", defaultValue = "") String idfa,
+                                     @RequestParam(value = "realName", defaultValue = "") String realName,
                                      @RequestParam(value = "nickName", defaultValue = "") String nickName,
                                      @RequestParam(value = "page", defaultValue = "1") int page,
                                      @RequestParam(value = "limit", defaultValue = "10") int limit) {
@@ -39,7 +39,7 @@ public class JobSeekersController {
         rs.setCode(0);
         rs.setMsg("ok");
         UserQuery query = new UserQuery();
-        query.setIdfa(idfa);
+        query.setRealName(realName);
         query.setNickName(nickName);
         query.setPhone(phone);
         query.setUserId(userId);

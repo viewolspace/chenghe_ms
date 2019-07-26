@@ -38,23 +38,25 @@
         <label class="layui-form-label">父节点ID</label>
 
         <div class="layui-input-block">
-            <input type="text" id="pid" name="pid" lay-verify="required" placeholder="请输入商户名称" class="layui-input">
+            <input type="text" id="pid" name="pid" lay-verify="required" placeholder="请输入父节点ID" class="layui-input">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">分类ID</label>
-
-        <div class="layui-input-block">
-            <input type="text" name="id" lay-verify="required" placeholder="请输入商户名称" class="layui-input">
-        </div>
-    </div>
+    <input type="hidden" name="id" lay-verify="required" placeholder="请输入分类ID" class="layui-input">
 
     <div class="layui-form-item">
         <label class="layui-form-label">分类名称</label>
 
         <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="required" placeholder="请输入商户名称" class="layui-input">
+            <input type="text" name="title" lay-verify="required" placeholder="请输入分类名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">顺序</label>
+
+        <div class="layui-input-block">
+            <input type="text" name="num" lay-verify="required" placeholder="请输入顺序" class="layui-input">
         </div>
     </div>
 

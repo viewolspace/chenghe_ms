@@ -64,9 +64,20 @@ layui.use(requireModules, function (
                 , cols: [[ //表头
                     {type: 'numbers'},
                     {field: 'userId', title: '用户ID', width: 100},
+                    {field: 'realName', title: '真实姓名', width: 120},
                     {field: 'nickName', title: '用户昵称', width: 120},
+                    {
+                        field: 'sex', title: '性别', width: 100, templet: function (d) {
+                            if (d.sex == 1) {
+                                return '<span>男</span>';
+                            } else {
+                                return '<span>女</span>';
+                            }
+
+                        }
+                    },
                     {field: 'phone', title: '手机号', width: 150},
-                    {field: 'idfa', title: 'idfa', width: 180},
+                    // {field: 'idfa', title: 'idfa', width: 180},
                     {field: 'headPic', title: 'headPic', width: 120},
                     {
                         field: 'cTime', title: '创建时间', width: 160, templet: function (d) {
@@ -88,7 +99,6 @@ layui.use(requireModules, function (
 
                         }
                     }
-
                 ]]
             });
         },

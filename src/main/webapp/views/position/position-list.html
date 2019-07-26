@@ -21,23 +21,24 @@
         <div class="layui-form-item">
 
             <div class="layui-inline">
-                <label class="layui-form-label">用户ID</label>
+                <label class="layui-form-label">职位标题</label>
 
                 <div class="layui-input-inline">
-                    <input type="text" name="userId" lay-verify="required" placeholder="请输入" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
                 </div>
 
             </div>
 
             <div class="layui-inline">
-                <label class="layui-form-label">真实姓名</label>
+                <label class="layui-form-label">是否推荐</label>
 
                 <div class="layui-input-inline">
-                    <input type="text" name="realName" lay-verify="required" placeholder="请输入" autocomplete="off"
-                           class="layui-input" style="width: 200px">
+                    <select name="recommend" id="recommend">
+                        <option value="-1">全部</option>
+                        <option value="0">正常</option>
+                        <option value="1">推荐</option>
+                    </select>
                 </div>
-
             </div>
 
             <div class="layui-inline fr">

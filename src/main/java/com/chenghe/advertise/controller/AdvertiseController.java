@@ -10,6 +10,7 @@ import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,7 +110,8 @@ public class AdvertiseController {
 
     @RequestMapping(value = "/adList", method = RequestMethod.POST)
     @ResponseBody
-    public GridBaseResponse adList(@RequestParam(value = "status", defaultValue = "0") Integer status,
+    public GridBaseResponse adList(@RequestParam(value = "title", defaultValue = "") String title,
+                                   @RequestParam(value = "status", defaultValue = "") Integer status,
                                    @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    @RequestParam(value = "limit", defaultValue = "10") int limit) {
@@ -119,8 +121,15 @@ public class AdvertiseController {
         rs.setMsg("ok");
 
         AdQuery query = new AdQuery();
-        query.setCategoryId(categoryId);
-        query.setStatus(status);
+        query.setTitle(title);
+
+        if(!StringUtils.isEmpty(categoryId) && !"-1".equals(categoryId)){
+            query.setCategoryId(categoryId);
+        }
+
+        if(status != 99){
+            query.setStatus(status);
+        }
         query.setPageIndex(page);
         query.setPageSize(limit);
 
