@@ -2,11 +2,11 @@ package com.chenghe.seekers.controller;
 
 import com.chenghe.common.GridBaseResponse;
 import com.chenghe.parttime.pojo.User;
+import com.chenghe.parttime.pojo.UserJoin;
+import com.chenghe.parttime.query.UserJoinQuery;
 import com.chenghe.parttime.query.UserQuery;
+import com.chenghe.parttime.service.IUserJoinService;
 import com.chenghe.parttime.service.IUserService;
-import com.chenghe.shiro.token.TokenManager;
-import com.chenghe.sys.pojo.SysUser;
-import com.chenghe.sys.service.SysUserService;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,9 @@ public class JobSeekersController {
 
     @Resource
     private IUserService userService;
+
+    @Resource
+    private IUserJoinService userJoinService;
 
     @RequestMapping(value = "/userList", method = RequestMethod.POST)
     @ResponseBody
@@ -47,6 +50,31 @@ public class JobSeekersController {
         query.setPageSize(limit);
 
         PageHolder<User> pageHolder = userService.queryUser(query);
+        if (null != pageHolder.getList()) {
+            rs.setData(pageHolder.getList());
+            rs.setCount(pageHolder.getTotalCount());
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "/userJoinList", method = RequestMethod.POST)
+    @ResponseBody
+    public GridBaseResponse userJoinList(@RequestParam(value = "userId", defaultValue = "0") int userId,
+                                         @RequestParam(value = "partTimeId", defaultValue = "0") int partTimeId,
+                                         @RequestParam(value = "page", defaultValue = "1") int page,
+                                         @RequestParam(value = "limit", defaultValue = "10") int limit) {
+
+        GridBaseResponse rs = new GridBaseResponse();
+        rs.setCode(0);
+        rs.setMsg("ok");
+        UserJoinQuery query = new UserJoinQuery();
+        query.setUserId(userId);
+        query.setPartTimeId(partTimeId);
+        query.setPageIndex(page);
+        query.setPageSize(limit);
+
+        PageHolder<UserJoin> pageHolder = userJoinService.queryUserJoin(query);
         if (null != pageHolder.getList()) {
             rs.setData(pageHolder.getList());
             rs.setCount(pageHolder.getTotalCount());

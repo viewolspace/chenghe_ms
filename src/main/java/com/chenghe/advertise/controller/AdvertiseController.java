@@ -111,7 +111,7 @@ public class AdvertiseController {
     @RequestMapping(value = "/adList", method = RequestMethod.POST)
     @ResponseBody
     public GridBaseResponse adList(@RequestParam(value = "title", defaultValue = "") String title,
-                                   @RequestParam(value = "status", defaultValue = "") Integer status,
+                                   @RequestParam(value = "status", defaultValue = "99") Integer status,
                                    @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    @RequestParam(value = "limit", defaultValue = "10") int limit) {

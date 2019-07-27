@@ -16,6 +16,10 @@ layui.define('base-url', function(exports) {
 		"userList": {
 			type: 'POST',
 			url: "userList.do"
+		},
+		"userJoinList": {
+			type: 'POST',
+			url: "userJoinList.do"
 		}
 	};
 
