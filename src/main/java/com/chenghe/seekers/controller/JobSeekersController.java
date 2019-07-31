@@ -62,6 +62,7 @@ public class JobSeekersController {
     @ResponseBody
     public GridBaseResponse userJoinList(@RequestParam(value = "userId", defaultValue = "0") int userId,
                                          @RequestParam(value = "partTimeId", defaultValue = "0") int partTimeId,
+                                         @RequestParam(value = "type", defaultValue = "99") int type,
                                          @RequestParam(value = "page", defaultValue = "1") int page,
                                          @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
@@ -71,6 +72,10 @@ public class JobSeekersController {
         UserJoinQuery query = new UserJoinQuery();
         query.setUserId(userId);
         query.setPartTimeId(partTimeId);
+
+        if(!"99".equals(type)){
+            query.setType(type);
+        }
         query.setPageIndex(page);
         query.setPageSize(limit);
 

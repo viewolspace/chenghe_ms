@@ -15,8 +15,7 @@ var requireModules = [
     'merchant-api',
     'toast',
     'upload',
-    'laydate',
-    'layedit'
+    'laydate'
 ];
 
 registeModule(window, requireModules, {
@@ -33,12 +32,15 @@ layui.use(requireModules, function (
     merchantApi,
     toast,
     upload,
-    laydate,
-    layedit
+    laydate
 ) {
     var $ = layui.jquery;
     var f = layui.form;
     var data = ajax.getAllUrlParam();
+
+    var um = UM.getEditor('container', {
+        initialFrameHeight: 200
+    });
 
     ajax.request(
         positionCategoryApi.getUrl('listDataDic'), {
@@ -57,14 +59,6 @@ layui.use(requireModules, function (
         },
         false
     );
-
-    layedit.set({
-        uploadImage: {
-            url: positionApi.getUrl('uploadContentImage').url,
-            type: 'POST'
-        }
-    });
-    var index = layedit.build('content');
 
     laydate.render({
         elem: '#sTime',
@@ -110,9 +104,8 @@ layui.use(requireModules, function (
     });
 
     f.on('submit(position-add-form)', function (data) {
-        var datas = $.extend(true, data.field, {"content": layedit.getContent(index)});
 
-        ajax.request(positionApi.getUrl('addPosition'), datas, function () {
+        ajax.request(positionApi.getUrl('addPosition'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();

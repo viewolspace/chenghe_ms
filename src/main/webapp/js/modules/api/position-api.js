@@ -31,7 +31,11 @@ layui.define('base-url', function(exports) {
 		"uploadContentImage": {
 			type: 'POST',
 			url: "uploadContentImage.do"
+		},
+		"getPosition": {
+			url: "getPosition.do"
 		}
+
 	};
 
 	//下面这种避免不同api相同key取值相同的问题

@@ -120,7 +120,6 @@ public class PositionController {
         BaseResponse rs = new BaseResponse();
 
         int result = 0;
-
         try {
             PartTime partTime = partTimeService.getPartTime(id);
             if (null == partTime) {
@@ -200,7 +199,7 @@ public class PositionController {
         rs.setMsg("ok");
 
         PartTimeQuery query = new PartTimeQuery();
-        if(!StringUtils.isEmpty(title)){
+        if (!StringUtils.isEmpty(title)) {
             query.setTitle(title);
         }
 
@@ -210,9 +209,31 @@ public class PositionController {
         query.setPageIndex(page);
         query.setPageSize(limit);
         PageHolder<PartTime> pageHolder = partTimeService.queryPartTime(query);
+
         if (null != pageHolder.getList()) {
+            for (PartTime partTime : pageHolder.getList()) {
+                partTime.setContent("");
+            }
             rs.setData(pageHolder.getList());
             rs.setCount(pageHolder.getTotalCount());
+        }
+
+        return rs;
+    }
+
+    @RequestMapping(value = "/getPosition")
+    @ResponseBody
+    public PartTimeResponse getPosition(int id) {
+        PartTimeResponse rs = new PartTimeResponse();
+
+        PartTime partTime = partTimeService.getPartTime(id);
+        if (null != partTime) {
+            rs.setStatus(true);
+            rs.setMsg("成功");
+            rs.setData(partTime);
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("职位不存在");
         }
 
         return rs;

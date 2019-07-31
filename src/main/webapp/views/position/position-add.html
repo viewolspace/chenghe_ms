@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>添加职位</title>
     <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link href="../../frame/ueditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
     <style type="text/css">
         .operate {
@@ -37,10 +38,10 @@
             <label class="layui-form-label">推荐</label>
 
             <div class="layui-input-inline">
-
                 <select name="recommend" id="recommend">
                     <option value="0">正常</option>
-                    <option value="1">推荐</option>
+                    <option value="1">热门</option>
+                    <option value="2">精选</option>
                 </select>
             </div>
         </div>
@@ -58,10 +59,10 @@
         </div>
 
         <div class="layui-inline">
-            <label class="layui-form-label">置顶顺序</label>
+            <label class="layui-form-label">推荐顺序</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="topNum" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="topNum" lay-verify="required" autocomplete="off" placeholder="数字越大越靠前"
                        class="layui-input">
             </div>
         </div>
@@ -72,7 +73,7 @@
             <label class="layui-form-label">标题</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题"
                        class="layui-input">
             </div>
         </div>
@@ -81,7 +82,7 @@
             <label class="layui-form-label">薪水</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="salary" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="salary" lay-verify="required" autocomplete="off" placeholder="请输入薪水"
                        class="layui-input">
             </div>
         </div>
@@ -105,7 +106,7 @@
             <label class="layui-form-label">标签</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="lable" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="lable" lay-verify="required" autocomplete="off" placeholder="多个标签逗号分隔"
                        class="layui-input">
             </div>
         </div>
@@ -127,7 +128,7 @@
             <label class="layui-form-label">联系方式</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="contact" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="contact" lay-verify="required" autocomplete="off" placeholder="请输入联系方式"
                        class="layui-input">
             </div>
         </div>
@@ -138,7 +139,7 @@
             <label class="layui-form-label">招聘人数</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="num" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="num" lay-verify="required" autocomplete="off" placeholder="请输入招聘人数"
                        class="layui-input">
             </div>
         </div>
@@ -159,7 +160,7 @@
             <label class="layui-form-label">工作时间</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="workTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="workTime" lay-verify="required" autocomplete="off" placeholder="请输入工作时间"
                        class="layui-input">
             </div>
         </div>
@@ -168,7 +169,7 @@
             <label class="layui-form-label">工作地点</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="workAddress" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" name="workAddress" lay-verify="required" autocomplete="off" placeholder="请输入工作地点"
                        class="layui-input">
             </div>
         </div>
@@ -179,7 +180,7 @@
             <label class="layui-form-label">开始时间</label>
 
             <div class="layui-input-inline">
-                <input type="text" id="sTime" name="sTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" id="sTime" name="sTime" lay-verify="required" autocomplete="off" placeholder=""
                        class="layui-input">
             </div>
         </div>
@@ -188,7 +189,7 @@
             <label class="layui-form-label">结束时间</label>
 
             <div class="layui-input-inline">
-                <input type="text" id="eTime" name="eTime" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                <input type="text" id="eTime" name="eTime" lay-verify="required" autocomplete="off" placeholder=""
                        class="layui-input">
             </div>
         </div>
@@ -212,11 +213,10 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">详细内容</label>
-
-        <div class="layui-input-block">
-            <textarea class="layui-textarea" name="content" id="content" style="display: none"></textarea>
+        <div class="layui-input-block" style="max-width: 1200px;">
+            <textarea name="content" placeholder="" class="layui-textarea" id="container" style="border:0;padding:0"></textarea>
         </div>
     </div>
 
@@ -232,10 +232,16 @@
     </div>
 
 </form>
-
+<script id="container" name="content" type="text/plain"></script>
 <script type="text/javascript" src="../../js/common/module-manage.js"></script>
 <script type="text/javascript" charset="utf8" src="../../frame/layui/layui.js"></script>
 <script type="text/javascript" charset="utf8" src="../../frame/moment.js"></script>
+
+<script type="text/javascript" src="../../frame/ueditor/third-party/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../frame/ueditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../frame/ueditor/umeditor.min.js"></script>
+<script type="text/javascript" src="../../frame/ueditor/lang/zh-cn/zh-cn.js"></script>
+
 <script src="../../js/controller/position/position-add.js"></script>
 </body>
 

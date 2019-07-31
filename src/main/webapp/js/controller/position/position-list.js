@@ -83,9 +83,9 @@ layui.use(requireModules, function (
                     {
                         field: 'recommend', title: '推荐', width: 100, templet: function (d) {
                             if (d.recommend == 1) {
-                                return '<span>推荐</span>';
-                            } else if (d.recommend == 0) {
-                                return '<span>正常</span>';
+                                return '<span>热门</span>';
+                            } else if (d.recommend == 2) {
+                                return '<span>精选</span>';
                             } else {
                                 return '<span>其它</span>';
                             }
@@ -177,11 +177,12 @@ layui.use(requireModules, function (
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['700px', '50%'],
-                offset: '1%',
+                area: ['900px', '450px'],
+                offset: '5%',
+                scrollbar: false,
                 content: webName + '/views/position/position-add.html',
                 success: function (ly, index) {
-                    layer.iframeAuto(index);
+                    // layer.iframeAuto(index);
                 }
             });
         },
@@ -194,11 +195,12 @@ layui.use(requireModules, function (
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['700px', '50%'],
-                offset: '1%',
+                area: ['900px', '450px'],
+                offset: '5%',
+                scrollbar: false,
                 content: url,
                 success: function (ly, index) {
-                    layer.iframeAuto(index);
+                    // layer.iframeAuto(index);
                 }
             });
         },
@@ -213,7 +215,7 @@ layui.use(requireModules, function (
                 scrollbar: false,
                 content: url,
                 success: function (ly, index) {
-                    layer.iframeAuto(index);
+                    // layer.iframeAuto(index);
                 }
             });
         },

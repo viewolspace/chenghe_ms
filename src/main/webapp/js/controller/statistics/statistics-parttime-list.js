@@ -66,7 +66,7 @@ layui.use(requireModules, function (
             return $table.render({
                 elem: '#statistics-list'
                 , height: 'full-100'
-                , url: statisticsApi.getUrl('userStatList').url
+                , url: statisticsApi.getUrl('partTimeStatList').url
                 , method: 'post'
                 , page: true //开启分页
                 , limits: [10, 50, 100, 200]
@@ -82,7 +82,7 @@ layui.use(requireModules, function (
 
                         }
                     },
-                    {field: 'userRegister', title: '今日注册用户数', width: 220},
+                    {field: 'partTimeId', title: '职位ID', width: 100},
                     {field: 'browseNum', title: '总浏览次数', width: 120},
                     {field: 'browseUserNum', title: '总浏览人数', width: 150},
                     {field: 'copyNum', title: '总复制人数', width: 150},

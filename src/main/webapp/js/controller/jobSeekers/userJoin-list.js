@@ -65,6 +65,7 @@ layui.use(requireModules, function (
                     {type: 'numbers'},
                     {field: 'userId', title: '用户ID', width: 100},
                     {field: 'realName', title: '真实姓名', width: 120},
+                    {field: 'phone', title: '手机号', width: 120},
                     {field: 'nickName', title: '用户昵称', width: 120},
                     {field: 'partTimeId', title: '职位ID', width: 100},
                     {field: 'title', title: '职位名称', width: 200},

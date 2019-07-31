@@ -15,8 +15,7 @@ var requireModules = [
     'merchant-api',
     'toast',
     'upload',
-    'laydate',
-    'layedit'
+    'laydate'
 
 ];
 
@@ -34,22 +33,34 @@ layui.use(requireModules, function (
     merchantApi,
     toast,
     upload,
-    laydate,
-    layedit
+    laydate
 ) {
     var $ = layui.jquery;
     var f = layui.form;
     var param = ajax.getAllUrlParam();
 
-    if(!$.isEmptyObject(param)) {
-        param.sTime=moment(new Date(parseInt(param.sTime))).format("YYYY-MM-DD HH:mm:ss");
-        param.eTime=moment(new Date(parseInt(param.eTime))).format("YYYY-MM-DD HH:mm:ss");
+    var um = UM.getEditor('container', {
+        initialFrameHeight: 200
+    });
+    ajax.request(
+        positionApi.getUrl('getPosition'),{
+            id: param.id
+        }, function(result) {
+            param = result.data;
+            if(!$.isEmptyObject(param)) {
+                param.sTime=moment(new Date(parseInt(param.sTime))).format("YYYY-MM-DD HH:mm:ss");
+                param.eTime=moment(new Date(parseInt(param.eTime))).format("YYYY-MM-DD HH:mm:ss");
 
-        formUtil.renderData($('#position-update-form'), param);
+                formUtil.renderData($('#position-update-form'), param);
 
-        $('#imageAvatarId').attr('src', param.pic);
-        $('#imageUrl').val(param.pic);
-    }
+                $('#imageAvatarId').attr('src', param.pic);
+                $('#imageUrl').val(param.pic);
+
+                UM.getEditor('container').setContent(param.content);
+            }
+        },
+        false
+    );
 
     ajax.request(
         positionCategoryApi.getUrl('listDataDic'),{
@@ -68,14 +79,6 @@ layui.use(requireModules, function (
         },
         false
     );
-
-    layedit.set({
-        uploadImage: {
-            url: positionApi.getUrl('uploadContentImage').url,
-            type: 'POST'
-        }
-    });
-    var index = layedit.build('content');
 
     laydate.render({
         elem: '#sTime',
@@ -119,9 +122,7 @@ layui.use(requireModules, function (
     });
 
     f.on('submit(position-update-form)', function (data) {
-        var datas = $.extend(true, data.field, {"content": layedit.getContent(index)});
-
-        ajax.request(positionApi.getUrl('updatePosition'), datas, function () {
+        ajax.request(positionApi.getUrl('updatePosition'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
             parent.list.refresh();

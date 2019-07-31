@@ -16,6 +16,10 @@ layui.define('base-url', function(exports) {
 		"userStatList": {
 			type: 'POST',
 			url: "userStatList.do"
+		},
+		"partTimeStatList": {
+			type: 'POST',
+			url: "partTimeStatList.do"
 		}
 	};
 
