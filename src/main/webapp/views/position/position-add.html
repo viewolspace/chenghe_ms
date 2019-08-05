@@ -25,7 +25,7 @@
 <form id="position-add-form" class="layui-form" action="">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">商户id</label>
+            <label class="layui-form-label">商户名称</label>
 
             <div class="layui-input-inline">
                 <select name="companyId" id="companyId">
@@ -114,6 +114,18 @@
 
     <div class="layui-form-item">
         <div class="layui-inline">
+            <label class="layui-form-label">是否推荐</label>
+            <div class="layui-input-inline">
+                <select name="verify" id="verify">
+                    <option value="0">未认证</option>
+                    <option value="1">已认证</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
             <label class="layui-form-label">联系方式类型</label>
             <div class="layui-input-inline">
                 <select name="contactType" id="contactType">
@@ -128,7 +140,7 @@
             <label class="layui-form-label">联系方式</label>
 
             <div class="layui-input-inline">
-                <input type="text" name="contact" lay-verify="required" autocomplete="off" placeholder="请输入联系方式"
+                <input type="text" name="contact" autocomplete="off" placeholder="请输入联系方式"
                        class="layui-input">
             </div>
         </div>

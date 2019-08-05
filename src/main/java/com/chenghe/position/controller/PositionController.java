@@ -55,7 +55,7 @@ public class PositionController {
                                     Integer topNum, String title, Integer salary,
                                     Integer cycle, String lable, Integer contactType, String contact,
                                     String content, Integer num, String workTime, String workAddress,
-                                    Integer status, String sTime, String eTime, String imageUrl) {
+                                    Integer status, String sTime, String eTime, String imageUrl, Integer verify) {
 
         int result = 0;
 
@@ -90,6 +90,7 @@ public class PositionController {
             partTime.setCopyNum(0);
             partTime.setJoinNum(0);
             partTime.setPic(imageUrl);
+            partTime.setVerify(verify);
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -116,7 +117,7 @@ public class PositionController {
                                        Integer cycle, String lable, Integer contactType, String contact,
                                        String content, Integer num, String workTime, String workAddress,
                                        Integer status, String sTime, String eTime, Integer browseNum,
-                                       Integer copyNum, Integer joinNum, String imageUrl) {
+                                       Integer copyNum, Integer joinNum, String imageUrl, Integer verify) {
         BaseResponse rs = new BaseResponse();
 
         int result = 0;
@@ -153,6 +154,7 @@ public class PositionController {
             partTime.seteTime(dft.parse(eTime));
             partTime.setmTime(new Date());
             partTime.setPic(imageUrl);
+            partTime.setVerify(verify);
             result = partTimeService.updatePartTime(partTime);
         } catch (Exception e) {
             log.error(e);
