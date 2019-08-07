@@ -82,8 +82,10 @@ layui.use(requireModules, function (
                     {field: 'companyId', title: '商户id', width: 120},
                     {
                         field: 'recommend', title: '推荐', width: 100, templet: function (d) {
-                            if (d.recommend == 1) {
-                                return '<span>热门</span>';
+                            if (d.recommend == 0) {
+                                return '<span>正常</span>';
+                            } else if (d.recommend == 1) {
+                                return '<span>首页推荐列表</span>';
                             } else if (d.recommend == 2) {
                                 return '<span>精选</span>';
                             } else {

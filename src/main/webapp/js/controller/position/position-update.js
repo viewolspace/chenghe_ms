@@ -39,6 +39,24 @@ layui.use(requireModules, function (
     var f = layui.form;
     var param = ajax.getAllUrlParam();
 
+    ajax.request(
+        positionCategoryApi.getUrl('listDataDic'),{
+            parentId: '00000001'
+        }, function(result) {
+            formUtil.renderSelects('#categoryId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
+    ajax.request(
+        merchantApi.getUrl('listDataDic'), null, function (result) {
+            formUtil.renderSelects('#companyId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
     var um = UM.getEditor('container', {
         initialFrameHeight: 200
     });
@@ -58,24 +76,6 @@ layui.use(requireModules, function (
 
                 UM.getEditor('container').setContent(param.content);
             }
-        },
-        false
-    );
-
-    ajax.request(
-        positionCategoryApi.getUrl('listDataDic'),{
-            parentId: '00000001'
-        }, function(result) {
-            formUtil.renderSelects('#categoryId', result.data, false);
-            f.render('select');
-        },
-        false
-    );
-
-    ajax.request(
-        merchantApi.getUrl('listDataDic'), null, function (result) {
-            formUtil.renderSelects('#companyId', result.data, false);
-            f.render('select');
         },
         false
     );
