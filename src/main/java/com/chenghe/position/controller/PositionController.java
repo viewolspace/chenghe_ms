@@ -1,13 +1,17 @@
 package com.chenghe.position.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
 import com.chenghe.common.LayeditResponse;
 import com.chenghe.parttime.pojo.Category;
+import com.chenghe.parttime.pojo.Contact;
 import com.chenghe.parttime.pojo.PartTime;
 import com.chenghe.parttime.query.PartTimeQuery;
 import com.chenghe.parttime.service.ICategoryService;
 import com.chenghe.parttime.service.IPartTimeService;
+import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
@@ -29,6 +33,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -210,6 +215,9 @@ public class PositionController {
         }
         query.setPageIndex(page);
         query.setPageSize(limit);
+        if (null != TokenManager.getCompanyId() && TokenManager.getCompanyId() > 0) {
+            query.setCompanyId(TokenManager.getCompanyId());
+        }
         PageHolder<PartTime> pageHolder = partTimeService.queryPartTime(query);
 
         if (null != pageHolder.getList()) {
@@ -288,4 +296,32 @@ public class PositionController {
         return rs;
     }
 
+    @RequestMapping(value = "/updateContact", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse updateContact(@RequestParam(value = "contactArray", defaultValue = "") String contactArray,
+                                      @RequestParam(value = "id", defaultValue = "") Integer id) {
+
+        BaseResponse rs = new BaseResponse();
+
+        try {
+            List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
+            PartTime partTime = partTimeService.getPartTime(id);
+            partTime.setExt(JSONObject.toJSONString(list));
+
+            int result = partTimeService.updatePartTime(partTime);
+            if (result > 0) {
+                rs.setStatus(true);
+                rs.setMsg("修改成功");
+            } else {
+                rs.setStatus(false);
+                rs.setMsg("修改失败");
+            }
+        } catch (Exception e) {
+            log.error(e);
+            rs.setStatus(false);
+            rs.setMsg("修改失败");
+        }
+
+        return rs;
+    }
 }

@@ -7,6 +7,7 @@ import com.chenghe.parttime.query.PartTimeStatQuery;
 import com.chenghe.parttime.query.UserStatQuery;
 import com.chenghe.parttime.service.IPartTimeStatService;
 import com.chenghe.parttime.service.IUserStatService;
+import com.chenghe.shiro.token.TokenManager;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -93,7 +94,9 @@ public class StatisticsController {
             }
             query.setPageIndex(page);
             query.setPageSize(limit);
-
+            if (null != TokenManager.getCompanyId() && TokenManager.getCompanyId() > 0) {
+                query.setCompanyId(TokenManager.getCompanyId());
+            }
             PageHolder<PartTimeStat> pageHolder = partTimeStatService.queryPartTimeStat(query);
             if (null != pageHolder.getList()) {
                 rs.setData(pageHolder.getList());

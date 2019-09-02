@@ -11,6 +11,7 @@ var requireModules = [
 	'request',
 	'user-api',
 	'role&authority-api',
+	'merchant-api',
 	'toast',
 	'key-bind',
 	'valid-login'
@@ -27,6 +28,7 @@ layui.use(requireModules, function(
 	ajax,
 	userApi,
 	roleApi,
+	merchantApi,
 	toast,
 	keyBind
 	) {
@@ -43,7 +45,14 @@ layui.use(requireModules, function(
         }
 		f.render();
 	});
-	
+
+	ajax.request(
+		merchantApi.getUrl('listDataDic'), null, function (result) {
+			formUtil.renderSelects('#companyId', result.data, false);
+			f.render('select');
+		},
+		false
+	);
 
 	f.on('submit(sys-user-form)', function(data) {
         ajax.request(userApi.getUrl('updateSysUser'), data.field, function() {

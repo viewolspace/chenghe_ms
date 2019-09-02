@@ -7,6 +7,7 @@ import com.chenghe.parttime.query.UserJoinQuery;
 import com.chenghe.parttime.query.UserQuery;
 import com.chenghe.parttime.service.IUserJoinService;
 import com.chenghe.parttime.service.IUserService;
+import com.chenghe.shiro.token.TokenManager;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,14 +71,21 @@ public class JobSeekersController {
         rs.setCode(0);
         rs.setMsg("ok");
         UserJoinQuery query = new UserJoinQuery();
-        query.setUserId(userId);
-        query.setPartTimeId(partTimeId);
+        if (userId > 0) {
+            query.setUserId(userId);
+        }
+        if (partTimeId > 0) {
+            query.setPartTimeId(partTimeId);
+        }
 
-        if(!"99".equals(type)){
+        if (!"99".equals(type)) {
             query.setType(type);
         }
         query.setPageIndex(page);
         query.setPageSize(limit);
+        if (null != TokenManager.getCompanyId() && TokenManager.getCompanyId() > 0) {
+            query.setCompanyId(TokenManager.getCompanyId());
+        }
 
         PageHolder<UserJoin> pageHolder = userJoinService.queryUserJoin(query);
         if (null != pageHolder.getList()) {

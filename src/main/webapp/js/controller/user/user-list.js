@@ -105,12 +105,12 @@ layui.use(requireModules, function(
 			var index = layer.open({
 				type: 2,
 				title: "添加用户",
-				area: '80%',
-				offset: '10%',
+				area: ['675px', '400px'],
+				offset: '5%',
 				scrollbar: false,
 				content: webName + '/views/user/user-add.html',
 				success: function(ly, index) {
-					layer.iframeAuto(index);
+					// layer.iframeAuto(index);
 				}
 			});
 		},
@@ -120,12 +120,12 @@ layui.use(requireModules, function(
 			var index = layer.open({
 				type: 2,
 				title: "修改用户",
-				area: '80%',
-				offset: '10%',
+				area: ['675px', '400px'],
+				offset: '5%',
 				scrollbar: false,
 				content: url,
 				success: function(ly, index) {
-					layer.iframeAuto(index);
+					// layer.iframeAuto(index);
 				}
 			});
 		},

@@ -119,6 +119,12 @@ layui.define(function(exports) {
             name: '查看',
             event: 'row-view'
         },
+        'row-contact-layui': {
+            className: baseBtnClass + 'layui-btn-xs',
+            icon: '&#xe642;',
+            name: '修改联系方式',
+            event: 'row-contact'
+        },
         'row-reco-layui': {
             className: baseBtnClass + 'layui-btn-xs',
             icon: '&#xe642;',

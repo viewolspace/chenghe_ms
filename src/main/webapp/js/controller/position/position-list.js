@@ -207,6 +207,21 @@ layui.use(requireModules, function (
             });
         },
 
+        upodateContact: function (rowdata) {
+            var url = request.composeUrl(webName + '/views/position/contact-update.html', rowdata);
+            var index = layer.open({
+                type: 2,
+                title: '修改联系方式',
+                area: ['800px', '450px'],
+                offset: '5%',
+                scrollbar: false,
+                content: url,
+                success: function (ly, index) {
+                    // layer.iframeAuto(index);
+                }
+            });
+        },
+
         view: function (rowdata) {
             var url = request.composeUrl(webName + '/views/user/user-view.html', rowdata);
             var index = layer.open({
@@ -258,6 +273,8 @@ layui.use(requireModules, function (
                     MyController.modify(data);
                 } else if (obj.event === 'row-delete') {//删除
                     MyController.delete(data);
+                } else if (obj.event === 'row-contact') {//修改联系方式
+                    MyController.upodateContact(data);
                 }
 
 

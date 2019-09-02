@@ -22,13 +22,8 @@ public class TokenManager {
     }
 
 
-    /**
-     * 获取展会ID
-     *
-     * @return
-     */
-    public static Integer getExpoId() {
-        return null == getToken() ? null : getToken().getExpoId();
+    public static Integer getCompanyId() {
+        return null == getToken() ? null : getToken().getCompanyId();
     }
 
     public static Integer getUserId() {
