@@ -10,6 +10,7 @@ import com.chenghe.parttime.service.IUserService;
 import com.chenghe.shiro.token.TokenManager;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +90,14 @@ public class JobSeekersController {
 
         PageHolder<UserJoin> pageHolder = userJoinService.queryUserJoin(query);
         if (null != pageHolder.getList()) {
+            if (!"admin".equals(TokenManager.getUserName())) {
+                for (UserJoin userJoin : pageHolder) {
+                    if (!StringUtils.isEmpty(userJoin.getPhone()) && userJoin.getPhone().length() == 11) {
+                        userJoin.setPhone(Override.getMaskCharWay(userJoin.getPhone(), 4, 7));
+                    }
+                }
+            }
+
             rs.setData(pageHolder.getList());
             rs.setCount(pageHolder.getTotalCount());
         }
