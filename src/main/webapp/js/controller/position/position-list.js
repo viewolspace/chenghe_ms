@@ -99,18 +99,18 @@ layui.use(requireModules, function (
                     {field: 'salary', title: '薪水', width: 120},
                     // {field: 'cycle', title: '周期0小时1天2周3月4季度', width: 120},
                     // {field: 'lable', title: '多个标签空格分隔例如：日结长期男女不限', width: 120},
-                    {
-                        field: 'contactType', title: '联系方式类型', width: 120, templet: function (d) {
-                            if (d.contactType == 1) {
-                                return '<span>QQ</span>';
-                            } else if (d.contactType == 2) {
-                                return '<span>微信</span>';
-                            } else {
-                                return '<span>手机</span>';
-                            }
-                        }
-                    },
-                    {field: 'contact', title: '联系方式', width: 120},
+                    // {
+                    //     field: 'contactType', title: '联系方式类型', width: 120, templet: function (d) {
+                    //         if (d.contactType == 1) {
+                    //             return '<span>QQ</span>';
+                    //         } else if (d.contactType == 2) {
+                    //             return '<span>微信</span>';
+                    //         } else {
+                    //             return '<span>手机</span>';
+                    //         }
+                    //     }
+                    // },
+                    // {field: 'contact', title: '联系方式', width: 120},
                     // {field: 'content', title: '详细内容', width: 120},
                     {field: 'num', title: '招聘人数', width: 120},
                     {field: 'workTime', title: '工作时间', width: 120},

@@ -58,9 +58,10 @@ public class PositionController {
     @Repeat
     public BaseResponse addPosition(Integer companyId, Integer recommend, String categoryId,
                                     Integer topNum, String title, Integer salary,
-                                    Integer cycle, String lable, Integer contactType, String contact,
+                                    Integer cycle, String lable,
                                     String content, Integer num, String workTime, String workAddress,
-                                    Integer status, String sTime, String eTime, String imageUrl, Integer verify) {
+                                    Integer status, String sTime, String eTime, String imageUrl, Integer verify,
+                                    @RequestParam(value = "contactArray", defaultValue = "") String contactArray) {
 
         int result = 0;
 
@@ -80,8 +81,8 @@ public class PositionController {
             partTime.setSalary(salary);
             partTime.setCycle(cycle);
             partTime.setLable(lable);
-            partTime.setContactType(contactType);
-            partTime.setContact(contact);
+            partTime.setContactType(1);
+            partTime.setContact("");
             partTime.setContent(content);
             partTime.setNum(num);
             partTime.setWorkTime(workTime);
@@ -96,6 +97,10 @@ public class PositionController {
             partTime.setJoinNum(0);
             partTime.setPic(imageUrl);
             partTime.setVerify(verify);
+
+            List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
+            partTime.setExt(JSONObject.toJSONString(list));
+
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -119,10 +124,11 @@ public class PositionController {
     @Repeat
     public BaseResponse updatePosition(Integer id, Integer companyId, Integer recommend, String categoryId,
                                        String categoryName, Integer topNum, String title, Integer salary,
-                                       Integer cycle, String lable, Integer contactType, String contact,
+                                       Integer cycle, String lable,
                                        String content, Integer num, String workTime, String workAddress,
                                        Integer status, String sTime, String eTime, Integer browseNum,
-                                       Integer copyNum, Integer joinNum, String imageUrl, Integer verify) {
+                                       Integer copyNum, Integer joinNum, String imageUrl, Integer verify,
+                                       @RequestParam(value = "contactArray", defaultValue = "") String contactArray) {
         BaseResponse rs = new BaseResponse();
 
         int result = 0;
@@ -147,8 +153,8 @@ public class PositionController {
             partTime.setSalary(salary);
             partTime.setCycle(cycle);
             partTime.setLable(lable);
-            partTime.setContactType(contactType);
-            partTime.setContact(contact);
+            partTime.setContactType(1);
+            partTime.setContact("");
             partTime.setContent(content);
             partTime.setNum(num);
             partTime.setWorkTime(workTime);
@@ -160,6 +166,8 @@ public class PositionController {
             partTime.setmTime(new Date());
             partTime.setPic(imageUrl);
             partTime.setVerify(verify);
+            List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
+            partTime.setExt(JSONObject.toJSONString(list));
             result = partTimeService.updatePartTime(partTime);
         } catch (Exception e) {
             log.error(e);
