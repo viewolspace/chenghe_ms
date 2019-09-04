@@ -20,6 +20,7 @@ import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PageHolder;
 import com.youguu.core.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -99,7 +100,10 @@ public class PositionController {
             partTime.setVerify(verify);
 
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
-            partTime.setExt(JSONObject.toJSONString(list));
+
+            if (!CollectionUtils.isEmpty(list)) {
+                partTime.setExt(JSONObject.toJSONString(list));
+            }
 
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
@@ -167,7 +171,9 @@ public class PositionController {
             partTime.setPic(imageUrl);
             partTime.setVerify(verify);
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
-            partTime.setExt(JSONObject.toJSONString(list));
+            if (!CollectionUtils.isEmpty(list)) {
+                partTime.setExt(JSONObject.toJSONString(list));
+            }
             result = partTimeService.updatePartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -314,8 +320,9 @@ public class PositionController {
         try {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             PartTime partTime = partTimeService.getPartTime(id);
-            partTime.setExt(JSONObject.toJSONString(list));
-
+            if(!CollectionUtils.isEmpty(list)){
+                partTime.setExt(JSONObject.toJSONString(list));
+            }
             int result = partTimeService.updatePartTime(partTime);
             if (result > 0) {
                 rs.setStatus(true);
