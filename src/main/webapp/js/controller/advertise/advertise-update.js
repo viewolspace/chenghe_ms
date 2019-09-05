@@ -12,6 +12,7 @@ var requireModules = [
     'ad-api',
     'position-category-api',
     'uploadImage-api',
+    'merchant-api',
     'toast',
     'upload'
 
@@ -28,6 +29,7 @@ layui.use(requireModules, function (
     adApi,
     positionCategoryApi,
     uploadImageApi,
+    merchantApi,
     toast,
     upload
 ) {
@@ -40,6 +42,14 @@ layui.use(requireModules, function (
             parentId: '00000002'
         }, function(result) {
             formUtil.renderSelects('#categoryId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
+    ajax.request(
+        merchantApi.getUrl('listDataDic'), null, function (result) {
+            formUtil.renderSelects('#companyId', result.data, false);
             f.render('select');
         },
         false

@@ -3,8 +3,11 @@ package com.chenghe.advertise.controller;
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.GridBaseResponse;
 import com.chenghe.parttime.pojo.Ad;
+import com.chenghe.parttime.pojo.AdStat;
 import com.chenghe.parttime.query.AdQuery;
+import com.chenghe.parttime.query.AdStatQuery;
 import com.chenghe.parttime.service.IAdService;
+import com.chenghe.parttime.service.IAdStatService;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -28,12 +32,14 @@ public class AdvertiseController {
 
     @Resource
     private IAdService adService;
+    @Resource
+    private IAdStatService adStatService;
 
     @RequestMapping(value = "/addAd", method = RequestMethod.POST)
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "添加广告")
     @Repeat
-    public BaseResponse addAd(String categoryId, String title, String imageUrl, String url, Integer num, Integer status) {
+    public BaseResponse addAd(String categoryId, String title, String imageUrl, String url, Integer num, Integer status, Integer companyId) {
         Ad ad = new Ad();
         ad.setNum(num);
         ad.setStatus(status);
@@ -42,6 +48,7 @@ public class AdvertiseController {
         ad.setImageUrl(imageUrl);
         ad.setCategoryId(categoryId);
         ad.setcTime(new Date());
+        ad.setCompanyId(companyId);
 
         int result = adService.addAd(ad);
 
@@ -60,7 +67,7 @@ public class AdvertiseController {
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "修改广告")
     @Repeat
-    public BaseResponse updateAd(Integer id, String title,String categoryId, String imageUrl, String url, Integer num, Integer status) {
+    public BaseResponse updateAd(Integer id, String title, String categoryId, String imageUrl, String url, Integer num, Integer status, Integer companyId) {
         BaseResponse rs = new BaseResponse();
 
         Ad ad = adService.getAd(id);
@@ -77,6 +84,8 @@ public class AdvertiseController {
         ad.setImageUrl(imageUrl);
         ad.setCategoryId(categoryId);
         ad.setmTime(new Date());
+        ad.setCompanyId(companyId);
+
         int result = adService.updateAd(ad);
 
         if (result > 0) {
@@ -123,11 +132,11 @@ public class AdvertiseController {
         AdQuery query = new AdQuery();
         query.setTitle(title);
 
-        if(!StringUtils.isEmpty(categoryId) && !"-1".equals(categoryId)){
+        if (!StringUtils.isEmpty(categoryId) && !"-1".equals(categoryId)) {
             query.setCategoryId(categoryId);
         }
 
-        if(status != 99){
+        if (status != 99) {
             query.setStatus(status);
         }
         query.setPageIndex(page);
@@ -139,6 +148,44 @@ public class AdvertiseController {
             rs.setCount(pageHolder.getTotalCount());
         }
 
+        return rs;
+    }
+
+    @RequestMapping(value = "/adStatList", method = RequestMethod.POST)
+    @ResponseBody
+    public GridBaseResponse adStatList(@RequestParam(value = "adId", defaultValue = "") Integer adId,
+                                       @RequestParam(value = "statDate", defaultValue = "") String statDate,
+                                       @RequestParam(value = "companyId", defaultValue = "") Integer companyId,
+                                       @RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "limit", defaultValue = "10") int limit) {
+
+        GridBaseResponse rs = new GridBaseResponse();
+        rs.setCode(0);
+        rs.setMsg("ok");
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            AdStatQuery query = new AdStatQuery();
+            query.setAdId(adId);
+            query.setCompanyId(companyId);
+            if(!StringUtils.isEmpty(statDate)){
+                query.setStatDate(dateFormat.parse(statDate));
+            }
+            query.setPageIndex(page);
+            query.setPageSize(limit);
+
+            PageHolder<AdStat> pageHolder = adStatService.queryAdStatStat(query);
+            if (null != pageHolder.getList()) {
+                rs.setData(pageHolder.getList());
+                rs.setCount(pageHolder.getTotalCount());
+            }
+
+            return rs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        rs.setCode(-1);
+        rs.setMsg("系统异常");
         return rs;
     }
 }

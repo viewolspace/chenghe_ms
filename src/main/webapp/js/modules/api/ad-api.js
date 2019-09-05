@@ -27,6 +27,10 @@ layui.define('base-url', function(exports) {
         },
 		"deleteAd": {
 			url: "deleteAd.do"
+		},
+		"adStatList": {
+			type: 'POST',
+			url: "adStatList.do"
 		}
 	};
 
