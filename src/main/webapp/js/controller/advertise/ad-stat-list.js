@@ -87,8 +87,8 @@ layui.use(requireModules, function (
                     {field: 'companyId', title: '商户ID', width: 100},
                     {field: 'browseUserNum', title: '浏览人数', width: 100},
                     {field: 'browseNum', title: '浏览次数', width: 100},
-                    {field: 'copyNum', title: '复制人数', width: 100},
-                    {field: 'joinNum', title: '参与人数', width: 100},
+                    // {field: 'copyNum', title: '复制人数', width: 100},
+                    // {field: 'joinNum', title: '参与人数', width: 100},
                     {
                         field: 'cTime', title: '创建时间', width: 160, templet: function (d) {
                             if (d.cTime) {

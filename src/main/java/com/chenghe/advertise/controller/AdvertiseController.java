@@ -8,9 +8,12 @@ import com.chenghe.parttime.query.AdQuery;
 import com.chenghe.parttime.query.AdStatQuery;
 import com.chenghe.parttime.service.IAdService;
 import com.chenghe.parttime.service.IAdStatService;
+import com.chenghe.position.controller.PositionController;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
+import com.youguu.core.logging.Log;
+import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PageHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -29,6 +32,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("advertise")
 public class AdvertiseController {
+    private static Log log = LogFactory.getLog(AdvertiseController.class);
 
     @Resource
     private IAdService adService;
@@ -182,7 +186,7 @@ public class AdvertiseController {
 
             return rs;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("adStatList", e);
         }
         rs.setCode(-1);
         rs.setMsg("系统异常");
