@@ -46,13 +46,13 @@ layui.use(requireModules, function(
 		f.render();
 	});
 
-	ajax.request(
-		merchantApi.getUrl('listDataDic'), null, function (result) {
-			formUtil.renderSelects('#companyId', result.data, false);
-			f.render('select');
-		},
-		false
-	);
+	// ajax.request(
+	// 	merchantApi.getUrl('listDataDic'), null, function (result) {
+	// 		formUtil.renderSelects('#companyId', result.data, false);
+	// 		f.render('select');
+	// 	},
+	// 	false
+	// );
 
 	f.on('submit(sys-user-form)', function(data) {
         ajax.request(userApi.getUrl('updateSysUser'), data.field, function() {

@@ -94,7 +94,7 @@ public class StatisticsController {
             }
             query.setPageIndex(page);
             query.setPageSize(limit);
-            if (null != TokenManager.getCompanyId() && TokenManager.getCompanyId() > 0) {
+            if (!StringUtils.isEmpty(TokenManager.getCompanyId())) {
                 query.setCompanyId(TokenManager.getCompanyId());
             }
             PageHolder<PartTimeStat> pageHolder = partTimeStatService.queryPartTimeStat(query);

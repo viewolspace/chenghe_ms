@@ -159,7 +159,7 @@ public class AdvertiseController {
     @ResponseBody
     public GridBaseResponse adStatList(@RequestParam(value = "adId", defaultValue = "") Integer adId,
                                        @RequestParam(value = "statDate", defaultValue = "") String statDate,
-                                       @RequestParam(value = "companyId", defaultValue = "") Integer companyId,
+                                       @RequestParam(value = "companyId", defaultValue = "") String companyId,
                                        @RequestParam(value = "page", defaultValue = "1") int page,
                                        @RequestParam(value = "limit", defaultValue = "10") int limit) {
 

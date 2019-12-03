@@ -39,7 +39,7 @@ public class UserController {
 	@MethodLog(module = Constants.SYS_USER, desc = "添加用户")
 	@Repeat
 	public BaseResponse addUser(String userName, String password, String email, String phone, String realName, Integer
-			roleId, Integer userStatus, Integer companyId) {
+			roleId, Integer userStatus, String companyId) {
 		SysUser sysUser = new SysUser();
 		sysUser.setUserName(userName);
 		sysUser.setRealName(realName);
@@ -74,7 +74,7 @@ public class UserController {
 	@MethodLog(module = Constants.SYS_USER, desc = "修改用户")
 	@Repeat
 	public BaseResponse updateUser(Integer id, String userName, String password, String email, String phone,
-								   String realName, Integer roleId, Integer userStatus, Integer companyId) {
+								   String realName, Integer roleId, Integer userStatus, String companyId) {
 		BaseResponse rs = new BaseResponse();
 		if(TokenManager.getUserId() == id){
 			rs.setStatus(false);

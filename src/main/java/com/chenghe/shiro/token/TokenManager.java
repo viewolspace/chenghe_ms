@@ -22,7 +22,7 @@ public class TokenManager {
     }
 
 
-    public static Integer getCompanyId() {
+    public static String getCompanyId() {
         return null == getToken() ? null : getToken().getCompanyId();
     }
 

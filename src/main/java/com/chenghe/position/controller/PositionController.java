@@ -229,7 +229,7 @@ public class PositionController {
         }
         query.setPageIndex(page);
         query.setPageSize(limit);
-        if (null != TokenManager.getCompanyId() && TokenManager.getCompanyId() > 0) {
+        if (!StringUtils.isEmpty(TokenManager.getCompanyId())) {
             query.setCompanyId(TokenManager.getCompanyId());
         }
         PageHolder<PartTime> pageHolder = partTimeService.queryPartTime(query);
