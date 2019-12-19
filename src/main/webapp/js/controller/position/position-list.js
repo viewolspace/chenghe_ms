@@ -88,6 +88,8 @@ layui.use(requireModules, function (
                                 return '<span>首页推荐列表</span>';
                             } else if (d.recommend == 2) {
                                 return '<span>精选</span>';
+                            } else if (d.recommend == 3) {
+                                return '<span>热门</span>';
                             } else {
                                 return '<span>其它</span>';
                             }
