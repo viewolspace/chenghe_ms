@@ -119,9 +119,9 @@ layui.use(requireModules, function(layer,element,util,authority,login,laytpl,aja
     });
 
 
-    $('#clearCache').on('click', function() {
-        toast.smile("如有系统升级，可通过快捷键Ctrl+Shift+Delete清除浏览器缓存，只需清理缓存的图片和文件。");
-    });
+    // $('#clearCache').on('click', function() {
+    //     toast.smile("如有系统升级，可通过快捷键Ctrl+Shift+Delete清除浏览器缓存，只需清理缓存的图片和文件。");
+    // });
 
     if (window.sessionStorage.getItem("locksys") == "true") {
         lockPage();
@@ -279,6 +279,7 @@ layui.use(requireModules, function(layer,element,util,authority,login,laytpl,aja
         layout.removeClass('skin-0');
         layout.removeClass('skin-1');
         layout.removeClass('skin-2');
+        skin = 3;//蓝白
         layout.addClass('skin-' + skin);
     }
 
