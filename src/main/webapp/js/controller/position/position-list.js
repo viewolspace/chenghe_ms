@@ -85,7 +85,7 @@ layui.use(requireModules, function (
                             if (d.recommend == 0) {
                                 return '<span>正常</span>';
                             } else if (d.recommend == 1) {
-                                return '<span>首页推荐列表</span>';
+                                return '<span>首页推荐</span>';
                             } else if (d.recommend == 2) {
                                 return '<span>精选</span>';
                             } else if (d.recommend == 3) {
