@@ -85,11 +85,23 @@ layui.use(requireModules, function (
                             if (d.recommend == 0) {
                                 return '<span>正常</span>';
                             } else if (d.recommend == 1) {
-                                return '<span>首页推荐</span>';
+                                return '<span>兼职圈_推荐</span>';
                             } else if (d.recommend == 2) {
-                                return '<span>精选</span>';
+                                return '<span>兼职圈_精选</span>';
                             } else if (d.recommend == 3) {
-                                return '<span>热门</span>';
+                                return '<span>兼职圈_热门</span>';
+                            }else if (d.recommend == 4) {
+                                return '<span>土豆_推荐</span>';
+                            } else if (d.recommend == 5) {
+                                return '<span>土豆_精选</span>';
+                            } else if (d.recommend == 6) {
+                                return '<span>新APP_热门</span>';
+                            }else if (d.recommend == 7) {
+                                return '<span>新APP_推荐</span>';
+                            } else if (d.recommend == 8) {
+                                return '<span>新APP_精选</span>';
+                            } else if (d.recommend == 9) {
+                                return '<span>新APP_热门</span>';
                             } else {
                                 return '<span>其它</span>';
                             }
