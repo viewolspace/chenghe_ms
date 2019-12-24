@@ -85,11 +85,11 @@ layui.use(requireModules, function (
                             if (d.recommend == 0) {
                                 return '<span>正常</span>';
                             } else if (d.recommend == 1) {
-                                return '<span style="background-color:blue;">兼职圈_首页推荐</span>';
+                                return '<span style="background-color:#3399ff;">兼职圈_首页推荐</span>';
                             } else if (d.recommend == 2) {
-                                return '<span style="background-color:blue;">兼职圈_精选</span>';
+                                return '<span style="background-color:#3399ff;">兼职圈_精选</span>';
                             } else if (d.recommend == 3) {
-                                return '<span style="background-color:blue;">兼职圈_热门</span>';
+                                return '<span style="background-color:#3399ff;">兼职圈_热门</span>';
                             }else if (d.recommend == 4) {
                                 return '<span style="background-color:yellow;">土豆_首页推荐</span>';
                             } else if (d.recommend == 5) {
