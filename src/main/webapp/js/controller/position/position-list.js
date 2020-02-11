@@ -85,23 +85,23 @@ layui.use(requireModules, function (
                             if (d.recommend == 0) {
                                 return '<span>正常</span>';
                             } else if (d.recommend == 1) {
-                                return '<span>兼职圈_推荐</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_首页推荐</span>';
                             } else if (d.recommend == 2) {
-                                return '<span>兼职圈_精选</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_精选</span>';
                             } else if (d.recommend == 3) {
-                                return '<span>兼职圈_热门</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_热门</span>';
                             }else if (d.recommend == 4) {
-                                return '<span>土豆_推荐</span>';
+                                return '<span style="background-color:#fbe5a4;">土豆_首页推荐</span>';
                             } else if (d.recommend == 5) {
-                                return '<span>土豆_精选</span>';
+                                return '<span style="background-color:#fbe5a4;">土豆_精选</span>';
                             } else if (d.recommend == 6) {
-                                return '<span>新APP_热门</span>';
+                                return '<span style="background-color:#fbe5a4;">土豆_热门</span>';
                             }else if (d.recommend == 7) {
-                                return '<span>新APP_推荐</span>';
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_首页推荐</span>';
                             } else if (d.recommend == 8) {
-                                return '<span>新APP_精选</span>';
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_精选</span>';
                             } else if (d.recommend == 9) {
-                                return '<span>新APP_热门</span>';
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_热门</span>';
                             } else {
                                 return '<span>其它</span>';
                             }

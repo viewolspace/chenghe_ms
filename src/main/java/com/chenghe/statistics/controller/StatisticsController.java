@@ -79,6 +79,7 @@ public class StatisticsController {
     @RequestMapping(value = "/partTimeStatList", method = RequestMethod.POST)
     @ResponseBody
     public GridBaseResponse partTimeStatList(@RequestParam(value = "statDate", defaultValue = "") String statDate,
+                                             @RequestParam(value = "recommend", defaultValue = "0") int recommend,
                                          @RequestParam(value = "page", defaultValue = "1") int page,
                                          @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
@@ -94,6 +95,7 @@ public class StatisticsController {
             }
             query.setPageIndex(page);
             query.setPageSize(limit);
+            query.setApp(recommend);
             if (!StringUtils.isEmpty(TokenManager.getCompanyId())) {
                 query.setCompanyId(TokenManager.getCompanyId());
             }
