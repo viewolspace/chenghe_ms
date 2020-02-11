@@ -32,8 +32,11 @@ layui.define(requireModules, function(exports) {
         'register': {
             type: 'POST',
             url: 'register.do'//注册并登录
-        }
-	}
+        },
+		'selectApp': {
+			url: 'selectApp.do'//切换APP
+		}
+	};
 	
 	var result = $.extend({},baseApi, url);
 

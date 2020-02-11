@@ -1,18 +1,17 @@
-
 /**
  * 数据字典
  */
-var requireModules =[
-	'base-url'
+var requireModules = [
+    'base-url'
 ];
 
-window.top.registeModule(window,requireModules);
-layui.define('base-url', function(exports) {
-	var $ = layui.jquery;
-	var baseApi = layui['base-url'];
+window.top.registeModule(window, requireModules);
+layui.define('base-url', function (exports) {
+    var $ = layui.jquery;
+    var baseApi = layui['base-url'];
 
-	var url = {
-		namespace: '../sysDictionary/',
+    var url = {
+        namespace: '../sysDictionary/',
         "addSysDictionary": {
             type: 'POST',
             url: "addSysDictionary.do"
@@ -20,7 +19,7 @@ layui.define('base-url', function(exports) {
         "updateSysDictionary": {
             type: 'POST',
             url: "updateSysDictionary.do"
-        } ,
+        },
         "deleteSysDictionary": {
             url: "deleteSysDictionary.do"
         },
@@ -30,9 +29,12 @@ layui.define('base-url', function(exports) {
         },
         "listDataDic": {
             url: "listDataDic.do"
+        },
+        "listDataDicByApp": {
+            url: "listDataDicByApp.do"
         }
-	};
-	var result = $.extend({}, baseApi, url);
+    };
+    var result = $.extend({}, baseApi, url);
 
-	exports('dictionary-api', result);
+    exports('dictionary-api', result);
 });

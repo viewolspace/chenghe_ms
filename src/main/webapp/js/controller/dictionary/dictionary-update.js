@@ -33,6 +33,16 @@ layui.use(requireModules, function (
     var f = layui.form;
     var param = ajax.getAllUrlParam();
 
+    ajax.request(
+        dictionaryApi.getUrl('listDataDic'), {
+            parentId: '00000001'
+        }, function (result) {
+            formUtil.renderSelects('#appId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
     if(!$.isEmptyObject(param)) {
         formUtil.renderData($('#category-update-form'), param);
     }

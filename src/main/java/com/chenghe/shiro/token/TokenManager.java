@@ -41,6 +41,20 @@ public class TokenManager {
         return getToken().getAppId();
     }
 
+    /**
+     * 用于管理员(admin)登录成功后选择APP时，把appId设置到token里，方便后续使用
+     *
+     * @param appId
+     * @return
+     */
+    public static int setAppId(int appId) {
+        if (getToken() == null) {
+            return -1;
+        }
+        getToken().setAppId(appId);
+        return 1;
+    }
+
     public static Integer getRoleId() {
         return getToken() == null ? null : getToken().getRoleId();
     }

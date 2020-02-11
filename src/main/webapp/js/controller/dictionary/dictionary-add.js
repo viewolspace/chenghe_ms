@@ -35,6 +35,16 @@ layui.use(requireModules, function (
     //给父节点赋值
     $("#pid").val(data.id);
 
+    ajax.request(
+        dictionaryApi.getUrl('listDataDic'), {
+            parentId: '00000001'
+        }, function (result) {
+            formUtil.renderSelects('#appId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
+
     f.on('submit(category-add-form)', function (data) {
         ajax.request(dictionaryApi.getUrl('addSysDictionary'), data.field, function () {
             var index = parent.layer.getFrameIndex(window.name);

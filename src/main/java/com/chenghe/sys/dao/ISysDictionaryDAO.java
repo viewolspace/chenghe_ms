@@ -34,6 +34,8 @@ public interface ISysDictionaryDAO {
      */
     List<SysDictionary> listByParent(String parentId);
 
+    List<SysDictionary> listByParentAndApp(String parentId, int appId);
+
     /**
      * 查询所有节点
      *
@@ -41,4 +43,7 @@ public interface ISysDictionaryDAO {
      * @return
      */
     List<SysDictionary> listAll(String parentId);
+
+    SysDictionary findSysDictionary(String parentId, int appId);
+
 }

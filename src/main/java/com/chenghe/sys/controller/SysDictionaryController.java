@@ -3,6 +3,7 @@ package com.chenghe.sys.controller;
 import com.chenghe.common.BaseResponse;
 import com.chenghe.common.Option;
 import com.chenghe.common.SelectListResponse;
+import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.pojo.SysDictionary;
@@ -37,7 +38,9 @@ public class SysDictionaryController {
     public BaseResponse addSysDictionary(@RequestParam(value = "pid", defaultValue = "") String pid,
                                          @RequestParam(value = "title", defaultValue = "") String title,
                                          @RequestParam(value = "num", defaultValue = "0") int num,
-                                         @RequestParam(value = "value", defaultValue = "") String value) {
+                                         @RequestParam(value = "appId", defaultValue = "0") int appId,
+                                         @RequestParam(value = "value", defaultValue = "") String value,
+                                         @RequestParam(value = "remark", defaultValue = "") String remark) {
 
         BaseResponse rs = new BaseResponse();
         SysDictionary sysDictionary = new SysDictionary();
@@ -45,6 +48,8 @@ public class SysDictionaryController {
         sysDictionary.setParentId(pid);
         sysDictionary.setNum(num);
         sysDictionary.setValue(value);
+        sysDictionary.setAppId(appId);
+        sysDictionary.setRemark(remark);
         sysDictionary.setcTime(new Date());
 
         String result = sysDictionaryService.addSysDictionary(sysDictionary);
@@ -86,7 +91,9 @@ public class SysDictionaryController {
                                             @RequestParam(value = "pid", defaultValue = "") String pid,
                                             @RequestParam(value = "title", defaultValue = "") String title,
                                             @RequestParam(value = "num", defaultValue = "0") int num,
-                                            @RequestParam(value = "value", defaultValue = "") String value) {
+                                            @RequestParam(value = "appId", defaultValue = "0") int appId,
+                                            @RequestParam(value = "value", defaultValue = "") String value,
+                                            @RequestParam(value = "remark", defaultValue = "") String remark) {
 
         BaseResponse rs = new BaseResponse();
         SysDictionary sysDictionary = sysDictionaryService.getSysDictionary(id);
@@ -94,6 +101,8 @@ public class SysDictionaryController {
         sysDictionary.setParentId(pid);
         sysDictionary.setNum(num);
         sysDictionary.setValue(value);
+        sysDictionary.setAppId(appId);
+        sysDictionary.setRemark(remark);
         int result = sysDictionaryService.updateSysDictionary(sysDictionary);
 
         if (result > 0) {
@@ -120,6 +129,18 @@ public class SysDictionaryController {
             treeNode.setTitle(sysDictionary.getName());
             treeNode.setValue(sysDictionary.getValue());
             treeNode.setNum(sysDictionary.getNum());
+            treeNode.setAppId(sysDictionary.getAppId());
+
+            if ("00000002".equals(sysDictionary.getParentId())) {
+                SysDictionary appDictionary = sysDictionaryService.findSysDictionary("00000001", sysDictionary.getAppId());
+                if (null != appDictionary) {
+                    treeNode.setAppName(appDictionary.getName());
+                }
+            } else {
+                treeNode.setAppName("");
+            }
+
+            treeNode.setRemark(sysDictionary.getRemark());
             nodeList.add(treeNode);
         }
 
@@ -144,7 +165,35 @@ public class SysDictionaryController {
             List<Option> optionList = new ArrayList<>();
             for (SysDictionary sysDictionary : list) {
                 Option option = new Option();
-                option.setKey(sysDictionary.getId());
+                option.setKey(sysDictionary.getValue());//数据字典实际有意义的值为字典值，而非自动生成的字段编码
+                option.setValue(sysDictionary.getName());
+                optionList.add(option);
+            }
+            rs.setData(optionList);
+        }
+        return rs;
+    }
+
+
+    /**
+     * 加载分类下拉框数据
+     *
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/listDataDicByApp")
+    @ResponseBody
+    public SelectListResponse listDataDicByApp(@RequestParam(value = "parentId", defaultValue = "0") String parentId) {
+        SelectListResponse rs = new SelectListResponse();
+        rs.setStatus(true);
+        rs.setMsg("ok");
+
+        List<SysDictionary> list = sysDictionaryService.listByParentAndApp(parentId, TokenManager.getAppId());
+        if (list != null && list.size() > 0) {
+            List<Option> optionList = new ArrayList<>();
+            for (SysDictionary sysDictionary : list) {
+                Option option = new Option();
+                option.setKey(sysDictionary.getValue());//数据字典实际有意义的值为字典值，而非自动生成的字段编码
                 option.setValue(sysDictionary.getName());
                 optionList.add(option);
             }
