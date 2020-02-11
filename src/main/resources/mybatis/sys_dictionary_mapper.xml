@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysDictionary">
+    <sql id="selectCommon">
+		SELECT a.id,
+			a.parent_id,
+			a.value,
+			a.num,
+			a.logo,
+			a.NAME,
+			a.c_time
+	</sql>
+
+
+    <insert id="insert" parameterType="SysDictionary">
+
+
+			INSERT INTO sys_dictionary
+				(id,
+				parent_id,
+				value,
+				num,
+				logo,
+				NAME,
+				c_time
+				)
+				VALUES
+				(#{id},
+				#{parentId},
+				#{value},
+				#{num},
+				#{logo},
+				#{name},
+				#{cTime}
+				)
+
+	</insert>
+
+    <select id="select" parameterType="string" resultType="SysDictionary">
+
+        <include refid="selectCommon"/>
+
+        FROM
+        sys_dictionary a where id = #{id}
+
+    </select>
+
+    <update id="update" parameterType="string">
+
+
+			UPDATE sys_dictionary
+				SET
+				parent_id = #{parentId} ,
+				value = #{value} ,
+				num = #{num} ,
+				logo = #{logo} ,
+				NAME = #{name}
+
+				WHERE
+				id = #{id} ;
+
+
+	</update>
+
+    <delete id="delete" parameterType="string">
+		delete from sys_dictionary WHERE id = #{id} ;
+	</delete>
+
+
+    <select id="queryByParent" parameterType="map" resultType="SysDictionary">
+        <include refid="selectCommon"/>
+        from sys_dictionary a where parent_id=#{parentId} order by num , id
+    </select>
+
+    <select id="queryAll" parameterType="map" resultType="SysDictionary">
+
+        <include refid="selectCommon"/>
+
+        from sys_dictionary a where parent_id LIKE concat(concat(#{parentId}),'%') order by id,num
+
+    </select>
+
+    <select id="listSysDictionarys" parameterType="map" resultType="SysDictionary">
+        <include refid="selectCommon"/>
+
+        from sys_dictionary a where id in
+
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

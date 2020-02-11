@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysDictionarySeq">
+    <insert id="insert" parameterType="SysDictionarySeq">
+
+		INSERT INTO sys_dictionary_seq
+			(parent_id,
+			seq,
+			c_time,
+			m_time
+			)
+			VALUES
+			(#{parentId},
+			#{seq},
+			#{cTime},
+			#{mTime}
+			)
+	</insert>
+
+    <select id="select" parameterType="string" resultType="SysDictionarySeq">
+		select parent_id,
+			seq,
+			c_time,
+			m_time from sys_dictionary_seq where parent_id=#{parentId}
+	</select>
+
+    <update id="updateSeq" parameterType="string">
+		update sys_dictionary_seq set seq=seq+1,m_time=#{mTime} where parent_id=#{parentId}
+	</update>
+
+</mapper>
