@@ -70,9 +70,6 @@
             <if test=" roleId != null and roleId > 0 ">
                 AND c.id=#{roleId}
             </if>
-            <if test=" appId != null and appId > 0 ">
-                AND c.app_id=#{appId}
-            </if>
         </trim>
     </select>
 </mapper>

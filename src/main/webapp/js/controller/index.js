@@ -341,6 +341,8 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     init();
 
     function appInit() {
+        $('.component').empty();
+
         var appSelect = '<select lay-search lay-filter="component">';
         ajax.request(
             dictionaryApi.getUrl('listDataDic'), {
@@ -348,7 +350,11 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
             }, function (result) {
                 $.each(result.data, function (index, item) {
                     // alert(item.key + ", " + item.value);
-                    appSelect += '<option value="' + item.key + '">' + item.value + '</option>'
+                    if(item.select){
+                        appSelect += '<option selected value="' + item.key + '">' + item.value + '</option>'
+                    } else {
+                        appSelect += '<option value="' + item.key + '">' + item.value + '</option>'
+                    }
                 });
             },
             false
@@ -366,6 +372,7 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
                     appId: appId
                 }, function (result) {
                     toast.msg(result.msg);
+                    location.reload();
                 },
                 false
             );

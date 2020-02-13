@@ -20,7 +20,7 @@ public interface SysRoleService {
 
 	List<SysRole> listALLSysRole(int appId);
 
-	public PageHolder<SysRole> querySysRoleByPage(int appId, String name, int pageIndex, int pageSize);
+	public PageHolder<SysRole> querySysRoleByPage(String name, int pageIndex, int pageSize);
 
 	int relateApp(int id, int appId);
 

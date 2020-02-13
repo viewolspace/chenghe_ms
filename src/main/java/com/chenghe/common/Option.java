@@ -7,6 +7,7 @@ package com.chenghe.common;
 public class Option {
 	private Object key;
 	private String value;
+	private boolean select = false;
 
 	public Object getKey() {
 		return key;
@@ -22,5 +23,13 @@ public class Option {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public boolean isSelect() {
+		return select;
+	}
+
+	public void setSelect(boolean select) {
+		this.select = select;
 	}
 }

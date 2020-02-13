@@ -37,7 +37,7 @@ layui.use(requireModules, function (
         dictionaryApi.getUrl('listDataDic'), {
             parentId: '00000001'
         }, function (result) {
-            formUtil.renderSelects('#appId', result.data, false);
+            formUtil.renderSelects('#appId', result.data, true);
             f.render('select');
         },
         false

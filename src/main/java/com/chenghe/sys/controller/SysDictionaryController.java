@@ -38,7 +38,7 @@ public class SysDictionaryController {
     public BaseResponse addSysDictionary(@RequestParam(value = "pid", defaultValue = "") String pid,
                                          @RequestParam(value = "title", defaultValue = "") String title,
                                          @RequestParam(value = "num", defaultValue = "0") int num,
-                                         @RequestParam(value = "appId", defaultValue = "0") int appId,
+                                         @RequestParam(value = "appId", defaultValue = "-1") int appId,
                                          @RequestParam(value = "value", defaultValue = "") String value,
                                          @RequestParam(value = "remark", defaultValue = "") String remark) {
 
@@ -91,7 +91,7 @@ public class SysDictionaryController {
                                             @RequestParam(value = "pid", defaultValue = "") String pid,
                                             @RequestParam(value = "title", defaultValue = "") String title,
                                             @RequestParam(value = "num", defaultValue = "0") int num,
-                                            @RequestParam(value = "appId", defaultValue = "0") int appId,
+                                            @RequestParam(value = "appId", defaultValue = "-1") int appId,
                                             @RequestParam(value = "value", defaultValue = "") String value,
                                             @RequestParam(value = "remark", defaultValue = "") String remark) {
 
@@ -131,7 +131,7 @@ public class SysDictionaryController {
             treeNode.setNum(sysDictionary.getNum());
             treeNode.setAppId(sysDictionary.getAppId());
 
-            if ("00000002".equals(sysDictionary.getParentId())) {
+            if ("00000002".equals(sysDictionary.getParentId()) && sysDictionary.getAppId()>0) {
                 SysDictionary appDictionary = sysDictionaryService.findSysDictionary("00000001", sysDictionary.getAppId());
                 if (null != appDictionary) {
                     treeNode.setAppName(appDictionary.getName());
@@ -167,6 +167,10 @@ public class SysDictionaryController {
                 Option option = new Option();
                 option.setKey(sysDictionary.getValue());//数据字典实际有意义的值为字典值，而非自动生成的字段编码
                 option.setValue(sysDictionary.getName());
+
+                if ("00000001".equals(sysDictionary.getParentId()) && TokenManager.getAppId() == Integer.parseInt(sysDictionary.getValue())) {
+                    option.setSelect(true);
+                }
                 optionList.add(option);
             }
             rs.setData(optionList);

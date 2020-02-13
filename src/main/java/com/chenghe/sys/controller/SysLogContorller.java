@@ -61,7 +61,7 @@ public class SysLogContorller {
 		}
 
 		PageHolder<SysLog> pageHolder = sysLogService.listSysLogByPage(moduleName, methodName, userName, ip, startDate,
-				endDate, TokenManager.getAppId(), page, limit);
+				endDate, page, limit);
 
 		if(null != pageHolder && pageHolder.size()>0){
 			rs.setData(pageHolder.getList());

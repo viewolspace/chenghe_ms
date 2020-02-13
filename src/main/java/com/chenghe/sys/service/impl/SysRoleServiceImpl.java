@@ -48,8 +48,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
-	public PageHolder<SysRole> querySysRoleByPage(int appId, String name, int pageIndex, int pageSize) {
-		return sysRoleDAO.querySysRoleByPage(appId, name, pageIndex, pageSize);
+	public PageHolder<SysRole> querySysRoleByPage(String name, int pageIndex, int pageSize) {
+		return sysRoleDAO.querySysRoleByPage(name, pageIndex, pageSize);
 	}
 
 	@Override

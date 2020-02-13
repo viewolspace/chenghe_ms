@@ -81,7 +81,16 @@
 
 	<select id="listByParentAndApp" parameterType="map" resultType="SysDictionary">
 		<include refid="selectCommon"/>
-		from sys_dictionary a where parent_id=#{parentId} and app_id=#{appId} order by num , id
+		from sys_dictionary a
+		<trim prefix="where" prefixOverrides="AND|OR">
+			<if test=" parentId != null and parentId != '' ">
+				AND parent_id=#{parentId}
+			</if>
+			<if test=" appId != null and appId != '' ">
+				and app_id=#{appId}
+			</if>
+		</trim>
+		order by num , id
 	</select>
 
     <select id="queryAll" parameterType="map" resultType="SysDictionary">

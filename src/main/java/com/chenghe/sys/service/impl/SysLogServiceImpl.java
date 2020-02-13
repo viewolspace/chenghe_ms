@@ -19,7 +19,7 @@ public class SysLogServiceImpl implements SysLogService {
 
 	@Override
 	public PageHolder<SysLog> listSysLogByPage(String moduleName, String methodName, String userName, String ip,
-											   String startDate, String endDate,  int appId, int pageIndex, int pageSize) {
-		return sysLogDAO.listSysLogByPage(moduleName, methodName, userName, ip, startDate, endDate, appId, pageIndex, pageSize);
+											   String startDate, String endDate, int pageIndex, int pageSize) {
+		return sysLogDAO.listSysLogByPage(moduleName, methodName, userName, ip, startDate, endDate, pageIndex, pageSize);
 	}
 }

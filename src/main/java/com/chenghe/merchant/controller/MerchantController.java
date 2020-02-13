@@ -7,6 +7,7 @@ import com.chenghe.common.SelectListResponse;
 import com.chenghe.parttime.pojo.Company;
 import com.chenghe.parttime.query.CompanyQuery;
 import com.chenghe.parttime.service.ICompanyService;
+import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
 import com.chenghe.sys.utils.Constants;
@@ -40,7 +41,7 @@ public class MerchantController {
     @MethodLog(module = Constants.SYS_USER, desc = "添加用户")
     @Repeat
     public BaseResponse addMerchant(String name, String logo, String des, String phone,
-                                    String qq, String wx, Integer star) {
+                                    String qq, String wx, Integer star, Integer appId) {
         Company company = new Company();
         company.setName(name);
         company.setLogo(logo);
@@ -49,6 +50,7 @@ public class MerchantController {
         company.setQq(qq);
         company.setWx(wx);
         company.setStar(star);
+        company.setAppId(appId);
 
         int result = companyService.addCompany(company);
 
@@ -68,7 +70,7 @@ public class MerchantController {
     @MethodLog(module = Constants.SYS_USER, desc = "修改商户")
     @Repeat
     public BaseResponse updateMerchant(Integer id, String name, String logo, String des, String phone,
-                                       String qq, String wx, Integer star) {
+                                       String qq, String wx, Integer star, Integer appId) {
         BaseResponse rs = new BaseResponse();
 
         Company company = companyService.getCompany(id);
@@ -84,6 +86,7 @@ public class MerchantController {
         company.setQq(qq);
         company.setWx(wx);
         company.setStar(star);
+        company.setAppId(appId);
 
         int result = companyService.updateCompany(company);
 
@@ -132,6 +135,9 @@ public class MerchantController {
         query.setName(name);
         query.setPageIndex(page);
         query.setPageSize(limit);
+        if (null != TokenManager.getAppId() && TokenManager.getAppId() > 0) {
+            query.setAppId(TokenManager.getAppId());
+        }
 
         PageHolder<Company> pageHolder = companyService.queryCompany(query);
         if (null != pageHolder.getList()) {
@@ -149,10 +155,10 @@ public class MerchantController {
         rs.setStatus(true);
         rs.setMsg("ok");
 
-        List<Company> list = companyService.queryAll();
-        if(list!=null && list.size()>0){
+        List<Company> list = companyService.queryCompanyByApp(TokenManager.getAppId());
+        if (list != null && list.size() > 0) {
             List<Option> optionList = new ArrayList<>();
-            for(Company company : list){
+            for (Company company : list) {
                 Option option = new Option();
                 option.setKey(company.getId());
                 option.setValue(company.getName());

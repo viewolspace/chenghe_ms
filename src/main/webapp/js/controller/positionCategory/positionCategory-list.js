@@ -61,7 +61,7 @@ layui.use(requireModules, function (
             {
                 key: 'title',
                 title: '名称',
-                width: '100px',
+                width: '250px',
                 template: function (item) {
                     if (item.level == 0) {
                         return '<span style="color:red;">' + item.title + '</span>';
@@ -96,6 +96,12 @@ layui.use(requireModules, function (
                         return '<span>广告位分类</span>';
                     }
                 }
+            },
+            {
+                key: 'appName',
+                title: '归属APP',
+                width: '120px',
+                align: 'center'
             },
             {
                 key: 'num',

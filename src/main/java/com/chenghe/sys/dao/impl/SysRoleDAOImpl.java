@@ -42,10 +42,9 @@ public class SysRoleDAOImpl extends ChengheMsDAO<SysRole> implements SysRoleDAO 
     }
 
     @Override
-    public PageHolder<SysRole> querySysRoleByPage(int appId, String name, int pageIndex, int pageSize) {
+    public PageHolder<SysRole> querySysRoleByPage(String name, int pageIndex, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
-        map.put("appId", appId);
         return this.pagedQuery("querySysRoleByPage", map, pageIndex, pageSize);
     }
 

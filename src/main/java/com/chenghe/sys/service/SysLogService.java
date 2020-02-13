@@ -8,5 +8,5 @@ import com.chenghe.sys.pojo.SysLog;
  */
 public interface SysLogService {
 	PageHolder<SysLog> listSysLogByPage(String moduleName, String methodName, String userName, String ip, String startDate,
-										String endDate,  int appId, int pageIndex, int pageSize);
+										String endDate, int pageIndex, int pageSize);
 }

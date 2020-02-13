@@ -57,9 +57,6 @@
             <if test=" name != null and name != '' ">
                 AND name = #{name}
             </if>
-            <if test=" appId !=null and appId>0 ">
-                AND app_id = #{appId}
-            </if>
         </trim>
     </sql>
 

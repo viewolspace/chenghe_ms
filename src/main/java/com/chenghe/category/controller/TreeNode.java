@@ -14,6 +14,8 @@ public class TreeNode {
     private int status;
     private Integer type;
     private Integer num;
+    private Integer appId;
+    private String appName;
 
     public String getId() {
         return id;
@@ -61,5 +63,21 @@ public class TreeNode {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }
