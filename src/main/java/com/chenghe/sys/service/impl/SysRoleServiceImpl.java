@@ -43,8 +43,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
-	public List<SysRole> listALLSysRole(int appId) {
-		return sysRoleDAO.listALLSysRole(appId);
+	public List<SysRole> listALLSysRole() {
+		return sysRoleDAO.listALLSysRole();
 	}
 
 	@Override

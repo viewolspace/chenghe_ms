@@ -32,12 +32,9 @@ public class TokenManager {
 
     public static Integer getAppId() {
         if (getToken() == null) {
-            return -1;
+            return 0;
         }
 
-        if (0 == getToken().getAppId()) {
-            return -1;
-        }
         return getToken().getAppId();
     }
 

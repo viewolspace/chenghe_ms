@@ -185,7 +185,7 @@ public class RoleController {
 
         RoleComboResponse rs = new RoleComboResponse();
 
-        List<SysRole> roleList = sysRoleService.listALLSysRole(TokenManager.getAppId());
+        List<SysRole> roleList = sysRoleService.listALLSysRole();
         if (null == roleList) {
             rs.setStatus(false);
             rs.setMsg("加载角色下拉框异常");

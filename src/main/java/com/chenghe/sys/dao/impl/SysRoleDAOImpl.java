@@ -37,8 +37,8 @@ public class SysRoleDAOImpl extends ChengheMsDAO<SysRole> implements SysRoleDAO 
     }
 
     @Override
-    public List<SysRole> listALLSysRole(int appId) {
-        return this.findBy("find_all", appId);
+    public List<SysRole> listALLSysRole() {
+        return this.getAll();
     }
 
     @Override

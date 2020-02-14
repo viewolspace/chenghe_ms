@@ -18,7 +18,7 @@ public interface SysRoleService {
 
 	SysRole getSysRole(int id);
 
-	List<SysRole> listALLSysRole(int appId);
+	List<SysRole> listALLSysRole();
 
 	public PageHolder<SysRole> querySysRoleByPage(String name, int pageIndex, int pageSize);
 
