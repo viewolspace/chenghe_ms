@@ -12,6 +12,7 @@ var requireModules = [
     'request',
     'form-util',
     'position-api',
+    'dictionary-api',
     'table-util',
     'btns',
     'authority',
@@ -33,6 +34,7 @@ layui.use(requireModules, function (
     request,
     formUtil,
     positionApi,
+    dictionaryApi,
     tableUtil,
     btns,
     authority,
@@ -55,6 +57,16 @@ layui.use(requireModules, function (
             MyController.rowBtns = btns.getRowBtns(btnObjs);
             MyController.rowSwitchBtns = btns.getSwitchBtns(MyController.rowBtns);
             MyController.rowIconBtns = btns.getIconBtns(MyController.rowBtns);
+
+            request.request(
+                dictionaryApi.getUrl('listDataDicByApp'),{
+                    parentId: '00000002'
+                }, function(result) {
+                    formUtil.renderSelects('#recommend', result.data, true);
+                    form.render('select');
+                },
+                false
+            );
 
             $('#page-btns').html(btns.renderBtns(MyController.pageBtns) + btns.renderSwitchBtns(MyController.switchPageBtns));
             btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));

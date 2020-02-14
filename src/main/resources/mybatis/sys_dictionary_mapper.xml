@@ -8,7 +8,9 @@
 			a.num,
 			a.logo,
 			a.NAME,
-			a.c_time
+			a.c_time,
+			a.app_id,
+			a.remark
 	</sql>
 
 
@@ -22,7 +24,9 @@
 				num,
 				logo,
 				NAME,
-				c_time
+				c_time,
+				app_id,
+				remark
 				)
 				VALUES
 				(#{id},
@@ -31,7 +35,9 @@
 				#{num},
 				#{logo},
 				#{name},
-				#{cTime}
+				#{cTime},
+				#{appId},
+				#{remark}
 				)
 
 	</insert>
@@ -54,8 +60,9 @@
 				value = #{value} ,
 				num = #{num} ,
 				logo = #{logo} ,
-				NAME = #{name}
-
+				NAME = #{name},
+				app_id = #{appId},
+				remark = #{remark}
 				WHERE
 				id = #{id} ;
 
@@ -71,6 +78,20 @@
         <include refid="selectCommon"/>
         from sys_dictionary a where parent_id=#{parentId} order by num , id
     </select>
+
+	<select id="listByParentAndApp" parameterType="map" resultType="SysDictionary">
+		<include refid="selectCommon"/>
+		from sys_dictionary a
+		<trim prefix="where" prefixOverrides="AND|OR">
+			<if test=" parentId != null and parentId != '' ">
+				AND parent_id=#{parentId}
+			</if>
+			<if test=" appId != null and appId != '' ">
+				and app_id=#{appId}
+			</if>
+		</trim>
+		order by num , id
+	</select>
 
     <select id="queryAll" parameterType="map" resultType="SysDictionary">
 
@@ -90,4 +111,9 @@
         </foreach>
     </select>
 
+	<!-- 根据父节点ID和 value查询唯一记录 -->
+	<select id="findSysDictionary" parameterType="map" resultType="SysDictionary">
+		<include refid="selectCommon"/>
+		from sys_dictionary a where parent_id=#{parentId} and value = #{appId}
+	</select>
 </mapper>

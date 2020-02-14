@@ -32,13 +32,24 @@ public class TokenManager {
 
     public static Integer getAppId() {
         if (getToken() == null) {
-            return -1;
+            return 0;
         }
 
-        if (0 == getToken().getAppId()) {
+        return getToken().getAppId();
+    }
+
+    /**
+     * 用于管理员(admin)登录成功后选择APP时，把appId设置到token里，方便后续使用
+     *
+     * @param appId
+     * @return
+     */
+    public static int setAppId(int appId) {
+        if (getToken() == null) {
             return -1;
         }
-        return getToken().getAppId();
+        getToken().setAppId(appId);
+        return 1;
     }
 
     public static Integer getRoleId() {

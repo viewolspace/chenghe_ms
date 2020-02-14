@@ -13,7 +13,7 @@ public class SysRoleServiceImplTest extends BaseTest {
 
 	@Test
 	public void testQuerySysRoleByPage() throws Exception {
-		PageHolder<SysRole> pageHolder = sysRoleService.querySysRoleByPage(1,"", 1, 50);
+		PageHolder<SysRole> pageHolder = sysRoleService.querySysRoleByPage("",1, 50);
 
 		System.out.println(pageHolder.size());
 	}

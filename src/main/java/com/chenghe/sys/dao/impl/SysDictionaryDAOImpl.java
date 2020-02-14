@@ -44,10 +44,28 @@ public class SysDictionaryDAOImpl extends ChengheMsDAO<SysDictionary> implements
     }
 
     @Override
+    public List<SysDictionary> listByParentAndApp(String parentId, int appId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("parentId", parentId);
+        map.put("appId", appId);
+
+        return super.findBy("listByParentAndApp", map);
+    }
+
+    @Override
     public List<SysDictionary> listAll(String parentId) {
         Map<String, Object> map = new HashMap<>();
         map.put("parentId", parentId);
         return super.findBy("queryAll", map);
+    }
+
+    @Override
+    public SysDictionary findSysDictionary(String parentId, int appId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("parentId", parentId);
+        map.put("appId", appId);
+
+        return super.findUniqueBy("findSysDictionary", map);
     }
 
     @Override

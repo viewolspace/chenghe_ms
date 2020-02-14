@@ -83,6 +83,7 @@ layui.use(requireModules, function (
                         }
                     },
                     {field: 'partTimeId', title: '职位ID', width: 100},
+                    {field: 'recommendName', title: '推荐位置', width: 150},
                     {field: 'browseNum', title: '总浏览次数', width: 120},
                     {field: 'browseUserNum', title: '总浏览人数', width: 150},
                     {field: 'copyNum', title: '总复制人数', width: 150},

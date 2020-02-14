@@ -66,8 +66,8 @@ public class SysPermissionServiceImpl implements SysPermissionService {
 	}
 
 	@Override
-	public List<SysPermission> findSysPermissionByAppid(int roleId, int appId) {
-		return sysPermissionDAO.findSysPermissionByAppid(roleId, appId);
+	public List<SysPermission> findSysPermissionByAppid(int roleId) {
+		return sysPermissionDAO.findSysPermissionByAppid(roleId);
 	}
 
 }

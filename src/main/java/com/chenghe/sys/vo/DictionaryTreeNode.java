@@ -14,6 +14,9 @@ public class DictionaryTreeNode {
     private int status;
     private String value;
     private Integer num;
+    private int appId;
+    private String appName;
+    private String remark;
 
     public String getId() {
         return id;
@@ -61,5 +64,29 @@ public class DictionaryTreeNode {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

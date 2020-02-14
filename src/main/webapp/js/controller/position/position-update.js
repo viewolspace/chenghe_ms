@@ -13,6 +13,7 @@ var requireModules = [
     'position-category-api',
     'uploadImage-api',
     'merchant-api',
+    'dictionary-api',
     'toast',
     'upload',
     'laydate'
@@ -31,6 +32,7 @@ layui.use(requireModules, function (
     positionCategoryApi,
     uploadImageApi,
     merchantApi,
+    dictionaryApi,
     toast,
     upload,
     laydate
@@ -38,6 +40,16 @@ layui.use(requireModules, function (
     var $ = layui.jquery;
     var f = layui.form;
     var param = ajax.getAllUrlParam();
+
+    ajax.request(
+        dictionaryApi.getUrl('listDataDicByApp'),{
+            parentId: '00000002'
+        }, function(result) {
+            formUtil.renderSelects('#recommend', result.data, false);
+            f.render('select');
+        },
+        false
+    );
 
     ajax.request(
         positionCategoryApi.getUrl('listDataDic'),{

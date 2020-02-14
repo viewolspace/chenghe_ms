@@ -14,6 +14,8 @@ public class SysDictionary {
     private String logo;
     private String name;
     private Date cTime;
+    private int appId;
+    private String remark;
 
     public String getId() {
         return id;
@@ -69,6 +71,22 @@ public class SysDictionary {
 
     public void setcTime(Date cTime) {
         this.cTime = cTime;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

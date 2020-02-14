@@ -81,7 +81,17 @@ public class SysDictionaryServiceImpl implements ISysDictionaryService {
     }
 
     @Override
+    public List<SysDictionary> listByParentAndApp(String parentId, int appId) {
+        return sysDictionaryDAO.listByParentAndApp(parentId, appId);
+    }
+
+    @Override
     public List<SysDictionary> listAll(String parentId) {
         return sysDictionaryDAO.listAll(parentId);
+    }
+
+    @Override
+    public SysDictionary findSysDictionary(String parentId, int appId) {
+        return sysDictionaryDAO.findSysDictionary(parentId, appId);
     }
 }

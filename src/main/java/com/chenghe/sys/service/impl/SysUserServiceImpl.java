@@ -43,8 +43,8 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public PageHolder<SysUser> querySysUserByPage(int appId, int userId, String realName, int pageIndex, int pageSize) {
-		return sysUserDAO.querySysUserByPage(appId, userId, realName, pageIndex, pageSize);
+	public PageHolder<SysUser> querySysUserByPage(int userId, String realName, int pageIndex, int pageSize) {
+		return sysUserDAO.querySysUserByPage(userId, realName, pageIndex, pageSize);
 	}
 
 	@Override

@@ -14,6 +14,8 @@ import com.chenghe.parttime.service.IPartTimeService;
 import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
+import com.chenghe.sys.pojo.SysDictionary;
+import com.chenghe.sys.service.ISysDictionaryService;
 import com.chenghe.sys.utils.Constants;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
@@ -52,6 +54,8 @@ public class PositionController {
     private IPartTimeService partTimeService;
     @Resource
     private ICategoryService categoryService;
+    @Resource
+    private ISysDictionaryService sysDictionaryService;
 
     @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
     @ResponseBody
@@ -225,7 +229,16 @@ public class PositionController {
         }
 
         if (recommend != -1) {
-            query.setRecommend(recommend);
+            query.setRecommend(String.valueOf(recommend));
+        } else {
+            List<SysDictionary> dictionaryList = sysDictionaryService.listByParentAndApp("00000002", TokenManager.getAppId());
+            if (!CollectionUtils.isEmpty(dictionaryList)) {
+                StringBuffer sb = new StringBuffer();
+                for (SysDictionary sysDictionary : dictionaryList) {
+                    sb.append(sysDictionary.getValue()).append(",");
+                }
+                query.setRecommend(sb.toString().substring(0, sb.toString().length()-1));
+            }
         }
         query.setPageIndex(page);
         query.setPageSize(limit);
@@ -320,7 +333,7 @@ public class PositionController {
         try {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             PartTime partTime = partTimeService.getPartTime(id);
-            if(!CollectionUtils.isEmpty(list)){
+            if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
             }
             int result = partTimeService.updatePartTime(partTime);

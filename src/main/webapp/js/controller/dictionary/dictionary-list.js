@@ -61,7 +61,7 @@ layui.use(requireModules, function (
             {
                 key: 'title',
                 title: '字典名称',
-                width: '100px',
+                width: '150px',
                 template: function (item) {
                     if (item.level == 0) {
                         return '<span style="color:red;">' + item.title + '</span>';
@@ -91,9 +91,21 @@ layui.use(requireModules, function (
                 align: 'center'
             },
             {
+                key: 'appName',
+                title: '归属APP',
+                width: '120px',
+                align: 'center'
+            },
+            {
                 key: 'num',
                 title: '顺序',
                 width: '100px',
+                align: 'center'
+            },
+            {
+                key: 'remark',
+                title: '备注',
+                width: '200px',
                 align: 'center'
             },
             {
@@ -184,8 +196,8 @@ layui.use(requireModules, function (
         var index = layer.open({
             type: 2,
             title: "添加一级节点",
-            area: '80%',
-            offset: '10%',
+            area: ['700px', '450px'],
+            offset: '5%',
             scrollbar: false,
             content: webName + '/views/dictionary/dictionary-add.html',
             success: function (ly, index) {

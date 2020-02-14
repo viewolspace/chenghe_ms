@@ -11,6 +11,7 @@ var requireModules = [
     'request',
     'position-category-api',
     'uploadImage-api',
+    'dictionary-api',
     'toast',
     'upload'
 
@@ -26,6 +27,7 @@ layui.use(requireModules, function (
     ajax,
     positionCategoryApi,
     uploadImageApi,
+    dictionaryApi,
     toast,
     upload
 ) {
@@ -34,6 +36,16 @@ layui.use(requireModules, function (
     var data = ajax.getAllUrlParam();
     //给父节点赋值
     $("#pid").val(data.id);
+
+    ajax.request(
+        dictionaryApi.getUrl('listDataDic'), {
+            parentId: '00000001'
+        }, function (result) {
+            formUtil.renderSelects('#appId', result.data, true);
+            f.render('select');
+        },
+        false
+    );
 
     f.on('submit(category-add-form)', function (data) {
         ajax.request(positionCategoryApi.getUrl('addCategory'), data.field, function () {

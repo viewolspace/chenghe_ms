@@ -86,9 +86,6 @@
             <if test="realName != null and realName != '' ">
                 AND a.real_name = #{realName}
             </if>
-            <if test="appId > 0 ">
-                AND c.app_id = #{appId}
-            </if>
         </trim>
     </sql>
 

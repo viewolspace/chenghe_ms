@@ -146,7 +146,7 @@ public class RegionalController {
 		rs.setCode(0);
 		rs.setMsg("ok");
 
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(TokenManager.getAppId(), userId, realName, page, limit);
+		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(userId, realName, page, limit);
 		if(null != pageHolder.getList()){
 			rs.setData(pageHolder.getList());
 			rs.setCount(pageHolder.getTotalCount());

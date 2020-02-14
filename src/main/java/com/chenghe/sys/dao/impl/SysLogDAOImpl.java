@@ -21,7 +21,7 @@ public class SysLogDAOImpl extends ChengheMsDAO<SysLog> implements SysLogDAO {
 
     @Override
     public PageHolder<SysLog> listSysLogByPage(String moduleName, String methodName, String userName, String ip,
-                                               String startDate, String endDate, int appId, int pageIndex, int pageSize) {
+                                               String startDate, String endDate, int pageIndex, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("moduleName", moduleName);
         map.put("methodName", methodName);
@@ -29,7 +29,6 @@ public class SysLogDAOImpl extends ChengheMsDAO<SysLog> implements SysLogDAO {
         map.put("ip", ip);
         map.put("startDate", startDate);
         map.put("endDate", endDate);
-        map.put("appId", appId);
         return this.pagedQuery("querySysLogByPage", map, pageIndex, pageSize);
     }
 }

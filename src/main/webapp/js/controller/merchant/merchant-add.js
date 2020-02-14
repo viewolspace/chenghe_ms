@@ -11,6 +11,7 @@ var requireModules = [
     'request',
     'merchant-api',
     'uploadImage-api',
+    'dictionary-api',
     'toast',
     'upload'
 
@@ -26,12 +27,23 @@ layui.use(requireModules, function (
     ajax,
     merchantApi,
     uploadImageApi,
+    dictionaryApi,
     toast,
     upload
 ) {
     var $ = layui.jquery;
     var f = layui.form;
     var data = ajax.getAllUrlParam();
+
+    ajax.request(
+        dictionaryApi.getUrl('listDataDic'), {
+            parentId: '00000001'
+        }, function (result) {
+            formUtil.renderSelects('#appId', result.data, false);
+            f.render('select');
+        },
+        false
+    );
 
     //上传图片
     upload.render({
