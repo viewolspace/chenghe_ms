@@ -74,6 +74,7 @@ layui.use(requireModules, function (
                     {type: 'numbers'},
                     {field: 'adId', title: '广告ID', width: 80},
                     {field: 'title', title: '标题', width: 220},
+                    {field: 'categoryName', title: '广告分类', width: 220},
                     {
                         field: 'statDate', title: '统计日期', width: 120, templet: function (d) {
                             if (d.statDate) {

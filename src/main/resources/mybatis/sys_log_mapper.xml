@@ -46,9 +46,6 @@
             <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
                 AND create_time BETWEEN #{startDate} AND #{endDate}
             </if>
-            <if test="appId > 0 ">
-                AND app_id = #{appId}
-            </if>
         </trim>
     </sql>
 

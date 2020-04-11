@@ -53,9 +53,8 @@ public class SysPermissionDAOImpl extends ChengheMsDAO<SysPermission> implements
     }
 
     @Override
-    public List<SysPermission> findSysPermissionByAppid(int roleId, int appId) {
+    public List<SysPermission> findSysPermissionByAppid(int roleId) {
         Map<String, Object> map = new HashMap<>();
-        map.put("appId", appId);
         map.put("roleId", roleId);
         return this.findBy("select_user_permission_by_appid", map);
     }

@@ -30,5 +30,5 @@ public interface SysPermissionService {
 
 	public List<SysPermission> findSysPermissionByRoleid(int roleId);
 
-	public List<SysPermission> findSysPermissionByAppid(int roleId, int appId);
+	public List<SysPermission> findSysPermissionByAppid(int roleId);
 }

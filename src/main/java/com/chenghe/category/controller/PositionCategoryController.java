@@ -5,8 +5,11 @@ import com.chenghe.common.Option;
 import com.chenghe.common.SelectListResponse;
 import com.chenghe.parttime.pojo.Category;
 import com.chenghe.parttime.service.ICategoryService;
+import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
+import com.chenghe.sys.pojo.SysDictionary;
+import com.chenghe.sys.service.ISysDictionaryService;
 import com.chenghe.sys.utils.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +31,8 @@ public class PositionCategoryController {
 
     @Resource
     private ICategoryService categoryService;
-
+    @Resource
+    private ISysDictionaryService sysDictionaryService;
 
     @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     @ResponseBody
@@ -37,7 +41,8 @@ public class PositionCategoryController {
     public BaseResponse addCategory(@RequestParam(value = "pid", defaultValue = "") String pid,
                                     @RequestParam(value = "title", defaultValue = "") String title,
                                     @RequestParam(value = "num", defaultValue = "0") int num,
-                                    @RequestParam(value = "type", defaultValue = "0") int type) {
+                                    @RequestParam(value = "type", defaultValue = "0") int type,
+                                    @RequestParam(value = "appId", defaultValue = "-1") int appId) {
 
         BaseResponse rs = new BaseResponse();
         Category category = new Category();
@@ -46,6 +51,7 @@ public class PositionCategoryController {
         category.setNum(num);
         category.setType(type);
         category.setcTime(new Date());
+        category.setAppId(appId);
 
         String result = categoryService.addCategory(category);
         if (null == result || "".equals(result)) {
@@ -86,7 +92,8 @@ public class PositionCategoryController {
                                        @RequestParam(value = "pid", defaultValue = "") String pid,
                                        @RequestParam(value = "title", defaultValue = "") String title,
                                        @RequestParam(value = "num", defaultValue = "0") int num,
-                                       @RequestParam(value = "type", defaultValue = "0") int type) {
+                                       @RequestParam(value = "type", defaultValue = "0") int type,
+                                       @RequestParam(value = "appId", defaultValue = "-1") int appId) {
 
         BaseResponse rs = new BaseResponse();
         Category category = categoryService.getCategory(id);
@@ -94,6 +101,7 @@ public class PositionCategoryController {
         category.setParentId(pid);
         category.setNum(num);
         category.setType(type);
+        category.setAppId(appId);
         int result = categoryService.updateCategory(category);
 
         if (result > 0) {
@@ -121,6 +129,20 @@ public class PositionCategoryController {
 //            treeNode.setStatus(category.getS);
             treeNode.setType(category.getType());
             treeNode.setNum(category.getNum());
+            treeNode.setAppId(category.getAppId());
+
+            /**
+             * 查询广告分类，需要把app name关联展示出来
+             */
+            if (null != category && "00000002".equals(category.getParentId()) && null != category.getAppId() && category.getAppId()>0) {
+                SysDictionary appDictionary = sysDictionaryService.findSysDictionary("00000001", category.getAppId());
+                if (null != appDictionary) {
+                    treeNode.setAppName(appDictionary.getName());
+                }
+            } else {
+                treeNode.setAppName("");
+            }
+
             nodeList.add(treeNode);
         }
 
@@ -139,7 +161,13 @@ public class PositionCategoryController {
         rs.setStatus(true);
         rs.setMsg("ok");
 
-        List<Category> list = categoryService.listByParent(parentId);
+        List<Category> list = new ArrayList<>();
+        if("00000001".equals(parentId)){
+            list = categoryService.listByParent(parentId, 0);
+        } else {
+            list = categoryService.listByParent(parentId, TokenManager.getAppId());
+        }
+
         if(list!=null && list.size()>0){
             List<Option> optionList = new ArrayList<>();
             for(Category category : list){

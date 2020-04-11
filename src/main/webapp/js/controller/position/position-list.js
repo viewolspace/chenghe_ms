@@ -12,6 +12,7 @@ var requireModules = [
     'request',
     'form-util',
     'position-api',
+    'dictionary-api',
     'table-util',
     'btns',
     'authority',
@@ -33,6 +34,7 @@ layui.use(requireModules, function (
     request,
     formUtil,
     positionApi,
+    dictionaryApi,
     tableUtil,
     btns,
     authority,
@@ -55,6 +57,16 @@ layui.use(requireModules, function (
             MyController.rowBtns = btns.getRowBtns(btnObjs);
             MyController.rowSwitchBtns = btns.getSwitchBtns(MyController.rowBtns);
             MyController.rowIconBtns = btns.getIconBtns(MyController.rowBtns);
+
+            request.request(
+                dictionaryApi.getUrl('listDataDicByApp'),{
+                    parentId: '00000002'
+                }, function(result) {
+                    formUtil.renderSelects('#recommend', result.data, true);
+                    form.render('select');
+                },
+                false
+            );
 
             $('#page-btns').html(btns.renderBtns(MyController.pageBtns) + btns.renderSwitchBtns(MyController.switchPageBtns));
             btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));
@@ -85,11 +97,23 @@ layui.use(requireModules, function (
                             if (d.recommend == 0) {
                                 return '<span>正常</span>';
                             } else if (d.recommend == 1) {
-                                return '<span>首页推荐</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_首页推荐</span>';
                             } else if (d.recommend == 2) {
-                                return '<span>精选</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_精选</span>';
                             } else if (d.recommend == 3) {
-                                return '<span>热门</span>';
+                                return '<span style="background-color:#cfe2f3;">兼职圈_热门</span>';
+                            }else if (d.recommend == 4) {
+                                return '<span style="background-color:#fbe5a4;">土豆_首页推荐</span>';
+                            } else if (d.recommend == 5) {
+                                return '<span style="background-color:#fbe5a4;">土豆_精选</span>';
+                            } else if (d.recommend == 6) {
+                                return '<span style="background-color:#fbe5a4;">土豆_热门</span>';
+                            }else if (d.recommend == 7) {
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_首页推荐</span>';
+                            } else if (d.recommend == 8) {
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_精选</span>';
+                            } else if (d.recommend == 9) {
+                                return '<span style="background-color:#FFCCFF;">彩虹兼职_热门</span>';
                             } else {
                                 return '<span>其它</span>';
                             }
@@ -169,7 +193,7 @@ layui.use(requireModules, function (
 
                         }
                     },
-                    {fixed: 'right', width: 140, align: 'center', toolbar: '#barDemo'}
+                    {fixed: 'right', width: 260, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
         },
@@ -215,6 +239,24 @@ layui.use(requireModules, function (
                 type: 2,
                 title: '修改联系方式',
                 area: ['800px', '450px'],
+                offset: '5%',
+                scrollbar: false,
+                content: url,
+                success: function (ly, index) {
+                    // layer.iframeAuto(index);
+                }
+            });
+        },
+
+        copy: function (rowdata) {
+            var url = request.composeUrl(webName + '/views/position/position-copy.html', rowdata);
+            var index = layer.open({
+                type: 2,
+                title: '修改职位',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['900px', '450px'],
                 offset: '5%',
                 scrollbar: false,
                 content: url,
@@ -277,8 +319,9 @@ layui.use(requireModules, function (
                     MyController.delete(data);
                 } else if (obj.event === 'row-contact') {//修改联系方式
                     MyController.upodateContact(data);
+                } else if (obj.event === 'row-copy') {//复制职位
+                    MyController.copy(data);
                 }
-
 
             });
 

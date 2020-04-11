@@ -43,7 +43,7 @@ public class SysUserServiceImplTest extends BaseTest {
 
 	@Test
 	public void testQuerySysUserByPage() throws Exception {
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(1,0, null, 1, 50);
+		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(0, null, 1, 50);
 		System.out.println(pageHolder.size());
 	}
 }

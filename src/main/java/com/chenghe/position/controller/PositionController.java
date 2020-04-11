@@ -14,6 +14,8 @@ import com.chenghe.parttime.service.IPartTimeService;
 import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.interceptor.Repeat;
 import com.chenghe.sys.log.annotation.MethodLog;
+import com.chenghe.sys.pojo.SysDictionary;
+import com.chenghe.sys.service.ISysDictionaryService;
 import com.chenghe.sys.utils.Constants;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
@@ -52,6 +54,8 @@ public class PositionController {
     private IPartTimeService partTimeService;
     @Resource
     private ICategoryService categoryService;
+    @Resource
+    private ISysDictionaryService sysDictionaryService;
 
     @RequestMapping(value = "/addPosition", method = RequestMethod.POST)
     @ResponseBody
@@ -189,6 +193,74 @@ public class PositionController {
         return rs;
     }
 
+
+    @RequestMapping(value = "/copyPosition", method = RequestMethod.POST)
+    @ResponseBody
+    @MethodLog(module = Constants.SYS_USER, desc = "复制职位")
+    @Repeat
+    public BaseResponse copyPosition(Integer id, Integer companyId, Integer recommend, String categoryId,
+                                       String categoryName, Integer topNum, String title, Integer salary,
+                                       Integer cycle, String lable,
+                                       String content, Integer num, String workTime, String workAddress,
+                                       Integer status, String sTime, String eTime, Integer browseNum,
+                                       Integer copyNum, Integer joinNum, String imageUrl, Integer verify,
+                                       @RequestParam(value = "contactArray", defaultValue = "") String contactArray) {
+        BaseResponse rs = new BaseResponse();
+
+        int result = 0;
+        try {
+            PartTime partTime = partTimeService.getPartTime(id);
+            if (null == partTime) {
+                rs.setStatus(false);
+                rs.setMsg("职位不存在");
+            }
+
+            partTime.setCompanyId(companyId);
+            partTime.setRecommend(recommend);
+            partTime.setCategoryId(categoryId);
+
+            Category category = categoryService.getCategory(categoryId);
+            if (null != category) {
+                partTime.setCategoryName(category.getName());
+
+            }
+            partTime.setTopNum(topNum);
+            partTime.setTitle(title);
+            partTime.setSalary(salary);
+            partTime.setCycle(cycle);
+            partTime.setLable(lable);
+            partTime.setContactType(1);
+            partTime.setContact("");
+            partTime.setContent(content);
+            partTime.setNum(num);
+            partTime.setWorkTime(workTime);
+            partTime.setWorkAddress(workAddress);
+            partTime.setStatus(status);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            partTime.setsTime(dft.parse(sTime));
+            partTime.seteTime(dft.parse(eTime));
+            partTime.setmTime(new Date());
+            partTime.setPic(imageUrl);
+            partTime.setVerify(verify);
+            List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
+            if (!CollectionUtils.isEmpty(list)) {
+                partTime.setExt(JSONObject.toJSONString(list));
+            }
+            result = partTimeService.addPartTime(partTime);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        if (result > 0) {
+            rs.setStatus(true);
+            rs.setMsg("复制成功");
+        } else {
+            rs.setStatus(false);
+            rs.setMsg("复制失败");
+        }
+
+        return rs;
+    }
+
     @RequestMapping(value = "/deletePosition")
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "删除职位")
@@ -225,7 +297,16 @@ public class PositionController {
         }
 
         if (recommend != -1) {
-            query.setRecommend(recommend);
+            query.setRecommend(String.valueOf(recommend));
+        } else {
+            List<SysDictionary> dictionaryList = sysDictionaryService.listByParentAndApp("00000002", TokenManager.getAppId());
+            if (!CollectionUtils.isEmpty(dictionaryList)) {
+                StringBuffer sb = new StringBuffer();
+                for (SysDictionary sysDictionary : dictionaryList) {
+                    sb.append(sysDictionary.getValue()).append(",");
+                }
+                query.setRecommend(sb.toString().substring(0, sb.toString().length()-1));
+            }
         }
         query.setPageIndex(page);
         query.setPageSize(limit);
@@ -320,7 +401,7 @@ public class PositionController {
         try {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             PartTime partTime = partTimeService.getPartTime(id);
-            if(!CollectionUtils.isEmpty(list)){
+            if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
             }
             int result = partTimeService.updatePartTime(partTime);

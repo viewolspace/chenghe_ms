@@ -25,7 +25,7 @@
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">用户名</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input id="username" type="text" name="userName" lay-verify="required" disabled="true"
                        autocomplete="off"
                        placeholder="用户名|登录账户" class="layui-input">
@@ -33,7 +33,7 @@
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">邮箱</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="email" lay-verify="required|email" autocomplete="off" placeholder="请输入邮箱"
                        class="layui-input">
             </div>
@@ -44,14 +44,14 @@
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">手机</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="phone" lay-verify="required|phone" autocomplete="off" placeholder="请输入手机号码"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">真实姓名</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入真实姓名"
                        class="layui-input">
             </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">角色</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="roleId" id="roleId">
                     <option value="">请选择</option>
                 </select>
@@ -79,7 +79,7 @@
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">用户状态</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="radio" name="userStatus" lay-filter="btn-type" value="0" title="冻结">
                 <input type="radio" name="userStatus" lay-filter="btn-type" value="1" title="正常">
             </div>

@@ -55,7 +55,7 @@ public class PermissionController {
 		List<SysPermission> list = null;
 		//给其他角色分配权限时，分配权限的范围不能超过自己。
 		if(appId>0){
-			list = sysPermissionService.findSysPermissionByAppid(TokenManager.getRoleId(), TokenManager.getAppId());
+			list = sysPermissionService.findSysPermissionByAppid(TokenManager.getRoleId());
 		} else {
 //			list = sysPermissionService.findSysPermissionByAppid(TokenManager.getRoleId(), 0);
 			list = sysPermissionService.queryAllSysPermission();
