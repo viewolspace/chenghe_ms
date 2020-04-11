@@ -125,6 +125,12 @@ layui.define(function(exports) {
             name: '修改联系方式',
             event: 'row-contact'
         },
+        'row-copy-layui': {
+            className: baseBtnClass + 'layui-btn-xs',
+            icon: '&#xe630;',
+            name: '复制',
+            event: 'row-copy'
+        },
         'row-reco-layui': {
             className: baseBtnClass + 'layui-btn-xs',
             icon: '&#xe642;',

@@ -183,16 +183,22 @@ public class SysDictionaryController {
      * 加载分类下拉框数据
      *
      * @param parentId
+     * @param all all大于0，查询时不加app字段
      * @return
      */
     @RequestMapping(value = "/listDataDicByApp")
     @ResponseBody
-    public SelectListResponse listDataDicByApp(@RequestParam(value = "parentId", defaultValue = "0") String parentId) {
+    public SelectListResponse listDataDicByApp(@RequestParam(value = "parentId", defaultValue = "0") String parentId,
+                                               @RequestParam(value = "all", defaultValue = "0") int all) {
         SelectListResponse rs = new SelectListResponse();
         rs.setStatus(true);
         rs.setMsg("ok");
 
-        List<SysDictionary> list = sysDictionaryService.listByParentAndApp(parentId, TokenManager.getAppId());
+        int appId = TokenManager.getAppId();
+        if(all >0 ){
+            appId = 0;
+        }
+        List<SysDictionary> list = sysDictionaryService.listByParentAndApp(parentId, appId);
         if (list != null && list.size() > 0) {
             List<Option> optionList = new ArrayList<>();
             for (SysDictionary sysDictionary : list) {

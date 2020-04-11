@@ -193,7 +193,7 @@ layui.use(requireModules, function (
 
                         }
                     },
-                    {fixed: 'right', width: 140, align: 'center', toolbar: '#barDemo'}
+                    {fixed: 'right', width: 260, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
         },
@@ -239,6 +239,24 @@ layui.use(requireModules, function (
                 type: 2,
                 title: '修改联系方式',
                 area: ['800px', '450px'],
+                offset: '5%',
+                scrollbar: false,
+                content: url,
+                success: function (ly, index) {
+                    // layer.iframeAuto(index);
+                }
+            });
+        },
+
+        copy: function (rowdata) {
+            var url = request.composeUrl(webName + '/views/position/position-copy.html', rowdata);
+            var index = layer.open({
+                type: 2,
+                title: '修改职位',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['900px', '450px'],
                 offset: '5%',
                 scrollbar: false,
                 content: url,
@@ -301,8 +319,9 @@ layui.use(requireModules, function (
                     MyController.delete(data);
                 } else if (obj.event === 'row-contact') {//修改联系方式
                     MyController.upodateContact(data);
+                } else if (obj.event === 'row-copy') {//复制职位
+                    MyController.copy(data);
                 }
-
 
             });
 

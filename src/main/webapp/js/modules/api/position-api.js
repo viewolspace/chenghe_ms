@@ -20,6 +20,10 @@ layui.define('base-url', function (exports) {
             type: 'POST',
             url: "updatePosition.do"
         },
+        "copyPosition": {
+            type: 'POST',
+            url: "copyPosition.do"
+        },
         "positionList": {
             type: 'POST',
             url: "positionList.do"

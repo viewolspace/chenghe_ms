@@ -86,7 +86,7 @@
 			<if test=" parentId != null and parentId != '' ">
 				AND parent_id=#{parentId}
 			</if>
-			<if test=" appId != null and appId != '' ">
+			<if test=" appId != null and appId > 0 ">
 				and app_id=#{appId}
 			</if>
 		</trim>

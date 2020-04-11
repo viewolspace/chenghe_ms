@@ -161,7 +161,13 @@ public class PositionCategoryController {
         rs.setStatus(true);
         rs.setMsg("ok");
 
-        List<Category> list = categoryService.listByParent(parentId, TokenManager.getAppId());
+        List<Category> list = new ArrayList<>();
+        if("00000001".equals(parentId)){
+            list = categoryService.listByParent(parentId, 0);
+        } else {
+            list = categoryService.listByParent(parentId, TokenManager.getAppId());
+        }
+
         if(list!=null && list.size()>0){
             List<Option> optionList = new ArrayList<>();
             for(Category category : list){
