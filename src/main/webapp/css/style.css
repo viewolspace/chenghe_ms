@@ -469,10 +469,15 @@ html body .skin-3 .layui-nav .layui-nav-item a:hover {
 }
 
 html body .skin-3,
-html body .skin-3 .my-header,
+/*html body .skin-3 .my-header,*/
 html body .skin-3 .layui-nav,
 html body .skin-3 .layui-nav-child {
-    background: #50314F;
+    background: #2F4056;
+}
+
+html body .skin-3,
+html body .skin-3 .my-header {
+    background: #01AAED;
 }
 
 html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a {
@@ -483,21 +488,20 @@ html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this,
 html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this > a,
 html body .skin-3 .layui-nav-tree .layui-nav-item:hover > a,
 html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd:hover > a {
-    background: #7A4D7B;
+    background: #01AAED;
 }
 
 html body .skin-3 .layui-nav .layui-nav-itemed > a {
-    background-color: #50314F !important;
+    background-color: #2F4056 !important;
 }
 
 html body .skin-3 .layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
-    background-color: #7A4D7B;
+    background-color: #01AAED;
     color: #fff;
 }
 
 .layui-btn-normal {
-    background-color: #7A4D7B;
-}
+    background-color: #01AAED;}
 
 /* tools */
 .fl {
