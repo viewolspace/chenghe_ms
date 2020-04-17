@@ -107,7 +107,9 @@ public class PositionController {
 
             if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
-            }
+            }else{
+				partTime.setExt("[]");
+			}
 
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
@@ -177,7 +179,9 @@ public class PositionController {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
-            }
+            }else{
+				partTime.setExt("[]");
+			}
             result = partTimeService.updatePartTime(partTime);
         } catch (Exception e) {
             log.error(e);
@@ -401,9 +405,12 @@ public class PositionController {
         try {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             PartTime partTime = partTimeService.getPartTime(id);
+			
             if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
-            }
+            }else{
+				partTime.setExt("[]");
+			}
             int result = partTimeService.updatePartTime(partTime);
             if (result > 0) {
                 rs.setStatus(true);
