@@ -472,7 +472,7 @@ html body .skin-3,
 /*html body .skin-3 .my-header,*/
 html body .skin-3 .layui-nav,
 html body .skin-3 .layui-nav-child {
-    background: #2F4056;
+    background: #01AAED;
 }
 
 html body .skin-3,
@@ -488,15 +488,15 @@ html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this,
 html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this > a,
 html body .skin-3 .layui-nav-tree .layui-nav-item:hover > a,
 html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd:hover > a {
-    background: #01AAED;
+    background: #009688;
 }
 
 html body .skin-3 .layui-nav .layui-nav-itemed > a {
-    background-color: #2F4056 !important;
+    background-color: #01AAED !important;
 }
 
 html body .skin-3 .layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
-    background-color: #01AAED;
+    background-color: #009688;
     color: #fff;
 }
 
