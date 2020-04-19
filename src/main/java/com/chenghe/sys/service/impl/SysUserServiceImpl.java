@@ -1,5 +1,7 @@
 package com.chenghe.sys.service.impl;
 
+import com.chenghe.parttime.pojo.Company;
+import com.chenghe.parttime.service.ICompanyService;
 import com.youguu.core.util.PageHolder;
 import com.chenghe.sys.dao.SysUserDAO;
 import com.chenghe.sys.pojo.SysRole;
@@ -21,6 +23,8 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserDAO sysUserDAO;
 	@Resource
 	private SysRoleService sysRoleService;
+	@Resource
+	private ICompanyService companyService;
 
 	@Override
 	public int saveSysUser(SysUser sysUser) {
@@ -51,8 +55,14 @@ public class SysUserServiceImpl implements SysUserService {
 	public SysUser findSysUserByUserName(String username) {
 		SysUser sysUser = sysUserDAO.findSysUserByUserName(username);
 		if(null != sysUser){
-			SysRole sysRole = sysRoleService.getSysRole(sysUser.getRoleId());
-			sysUser.setAppId(sysRole.getAppId());
+			try {
+				Company company = companyService.getCompany(Integer.parseInt(sysUser.getCompanyId()));
+				if (null != company) {
+					sysUser.setAppId(company.getAppId());
+				}
+			} catch (NumberFormatException e) {
+				// TODO 不处理
+			}
 		}
 
 		return sysUser;

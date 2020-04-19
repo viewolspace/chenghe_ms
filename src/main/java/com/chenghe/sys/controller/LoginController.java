@@ -2,6 +2,8 @@ package com.chenghe.sys.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.common.BaseResponse;
+import com.chenghe.parttime.pojo.Company;
+import com.chenghe.parttime.service.ICompanyService;
 import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.pojo.SysUser;
 import com.chenghe.sys.pojo.SysUserRole;
@@ -81,6 +83,8 @@ public class LoginController {
         }
         try {
             TokenManager.login(user, true);
+            TokenManager.setAppId(user.getAppId());
+
         } catch (DisabledAccountException e) {
             rs.setStatus(false);
             rs.setMsg(e.getMessage());

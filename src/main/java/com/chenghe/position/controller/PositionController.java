@@ -250,7 +250,9 @@ public class PositionController {
             List<Contact> list = JSONArray.parseArray(contactArray, Contact.class);   //联系方式
             if (!CollectionUtils.isEmpty(list)) {
                 partTime.setExt(JSONObject.toJSONString(list));
-            }
+            }else{
+				partTime.setExt("[]");
+			}
             result = partTimeService.addPartTime(partTime);
         } catch (Exception e) {
             log.error(e);

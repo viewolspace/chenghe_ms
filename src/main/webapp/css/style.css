@@ -192,7 +192,8 @@
 .login-box button.btn-submit {
     width: 190px;
 }
-.login-main{
+
+.login-main {
     position: fixed;
     top: 0;
     right: 0;
@@ -201,6 +202,7 @@
     width: 350px;
     margin: 0 auto;
 }
+
 .login-main header {
     margin-top: 150px;
     height: 35px;
@@ -209,12 +211,15 @@
     font-weight: 100;
     text-align: center;
 }
+
 .login-main header, .login-main form, .login-main form .layui-input-inline {
     margin-bottom: 15px;
 }
-.login-main form .layui-input-inline, .login-main form .layui-input-inline input, .login-main form .layui-input-inline button{
+
+.login-main form .layui-input-inline, .login-main form .layui-input-inline input, .login-main form .layui-input-inline button {
     width: 100%;
 }
+
 .login-main form .login-btn {
     margin-bottom: 5px;
 }
@@ -403,49 +408,100 @@ html body .skin-1 .layui-nav .layui-nav-item a,
 html body .skin-1 .layui-nav .layui-nav-item a:hover {
     color: #555;
 }
+
 html body .skin-1,
 html body .skin-1 .my-header,
 html body .skin-1 .layui-nav,
 html body .skin-1 .layui-nav-child {
     background: white;
 }
-html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a{
+
+html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a {
     color: white;
 }
+
 html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this,
-html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this>a,
-html body .skin-1 .layui-nav-tree .layui-nav-item:hover>a,
-html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd:hover>a {
+html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this > a,
+html body .skin-1 .layui-nav-tree .layui-nav-item:hover > a,
+html body .skin-1 .layui-nav .layui-nav-item .layui-nav-child dd:hover > a {
     color: white;
     background: #999;
 }
-html body .skin-1 .layui-nav .layui-nav-itemed>a {
+
+html body .skin-1 .layui-nav .layui-nav-itemed > a {
     background: #666 !important;
 }
+
 /* skin2 */
 html body .skin-2 .my-header .my-header-logo,
 html body .skin-2 .layui-nav .layui-nav-item a,
 html body .skin-2 .layui-nav .layui-nav-item a:hover {
     color: white;
 }
+
 html body .skin-2,
 html body .skin-2 .my-header,
 html body .skin-2 .layui-nav,
 html body .skin-2 .layui-nav-child {
     background: #01AAED;
 }
-html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a{
+
+html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a {
     color: white;
 }
+
 html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this,
-html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this>a,
-html body .skin-2 .layui-nav-tree .layui-nav-item:hover>a,
-html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd:hover>a {
+html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this > a,
+html body .skin-2 .layui-nav-tree .layui-nav-item:hover > a,
+html body .skin-2 .layui-nav .layui-nav-item .layui-nav-child dd:hover > a {
     background: #00C0F7;
 }
-html body .skin-2 .layui-nav .layui-nav-itemed>a {
+
+html body .skin-2 .layui-nav .layui-nav-itemed > a {
     background-color: #0187BB !important;
 }
+
+/* skin3 */
+html body .skin-3 .my-header .my-header-logo,
+html body .skin-3 .layui-nav .layui-nav-item a,
+html body .skin-3 .layui-nav .layui-nav-item a:hover {
+    color: white;
+}
+
+html body .skin-3,
+/*html body .skin-3 .my-header,*/
+html body .skin-3 .layui-nav,
+html body .skin-3 .layui-nav-child {
+    background: #01AAED;
+}
+
+html body .skin-3,
+html body .skin-3 .my-header {
+    background: #01AAED;
+}
+
+html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this a {
+    color: white;
+}
+
+html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this,
+html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd.layui-this > a,
+html body .skin-3 .layui-nav-tree .layui-nav-item:hover > a,
+html body .skin-3 .layui-nav .layui-nav-item .layui-nav-child dd:hover > a {
+    background: #009688;
+}
+
+html body .skin-3 .layui-nav .layui-nav-itemed > a {
+    background-color: #01AAED !important;
+}
+
+html body .skin-3 .layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
+    background-color: #009688;
+    color: #fff;
+}
+
+.layui-btn-normal {
+    background-color: #01AAED;}
 
 /* tools */
 .fl {
@@ -463,8 +519,9 @@ html body .skin-2 .layui-nav .layui-nav-itemed>a {
 .block {
     display: block;
 }
-.mt20{
-	margin-top: 20px;
+
+.mt20 {
+    margin-top: 20px;
 }
 
 
@@ -473,29 +530,31 @@ html body .layui-nav .layui-nav-bar {
     opacity: 0 !important;
     overflow: hidden !important;
 }
+
 .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
     background-color: transparent;
 }
 
-.layui-btn-group{
-	margin: 0 0;
+.layui-btn-group {
+    margin: 0 0;
 }
 
-.layui-table-view{
+.layui-table-view {
     margin: 3px 0;
 }
+
 /*自定义追加样式*/
-.layui-btn[class*='row-']{
-	margin-left: 15px;
-	margin-top: 10px;
+.layui-btn[class*='row-'] {
+    margin-left: 15px;
+    margin-top: 10px;
 }
 
-.layui-table{
-	width: 100%;
+.layui-table {
+    width: 100%;
 }
 
-.layui-table th{
-	text-align: center;
+.layui-table th {
+    text-align: center;
 }
 
 /* media */

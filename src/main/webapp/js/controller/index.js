@@ -11,18 +11,15 @@ var requireModules = [
     'util',
     'authority',
     'login',
-    'login-api',
     'laytpl',
     'request',
     'key-bind',
     'valid-login',
-    'toast',
-    'form',
-    'dictionary-api'
+    'toast'
 ]
-window.top.registeModule(window, requireModules, '');
+window.top.registeModule(window, requireModules,'');
 
-layui.use(requireModules, function (layer, element, util, authority, login, loginApi, laytpl, ajax, keyBind, validLogin, toast, form, dictionaryApi) {
+layui.use(requireModules, function(layer,element,util,authority,login,laytpl,ajax,keyBind,validLogin,toast) {
 
     var $ = layui.jquery;
 
@@ -31,7 +28,7 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     var footer = $('.my-footer');
 
     // 监听导航栏收缩
-    $('body').on('click', '.btn-nav', function (e) {
+    $('body').on('click', '.btn-nav', function(e) {
         if (localStorage.log == 0) {
             $(this).find('.layui-icon').html('&#xe603;');
             navShow(50);
@@ -45,15 +42,15 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     //顶部导航显示登录人真实姓名
     var loginObj = JSON.parse(sessionStorage.getItem("login"));
     //清理浏览器缓存后，loginObj为null
-    if (loginObj == null) {
+    if(loginObj==null){
         login.backToLogin();
     }
 
     $("#displayName").text(loginObj.name);
 
     var navsTpl = navs.innerHTML;
-    var navData = authority.getNavs().success(function (result) {
-        laytpl(navsTpl).render(result.data, function (html) {
+    var navData = authority.getNavs().success(function(result) {
+        laytpl(navsTpl).render(result.data, function(html) {
             //动态渲染左侧导航
             navview.innerHTML = html;
             element.init();
@@ -61,7 +58,7 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     });
 
 
-    $('#logout').click(function () {
+    $('#logout').click(function() {
         login.backToLogin();
     });
 
@@ -96,20 +93,20 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     }
 
     // 监听导航(side)点击切换页面
-    element.on('nav(side)', function (elem) {
+    element.on('nav(side)', function(elem) {
         // 添加tab方法
         addTab(element, elem);
     });
 
     // 监听顶部左侧导航
-    element.on('nav(side-left)', function (elem) {
+    element.on('nav(side-left)', function(elem) {
         // 添加tab方法
         addTab(element, elem);
 
     });
 
     // 监听顶部右侧导航
-    element.on('nav(side-right)', function (elem) {
+    element.on('nav(side-right)', function(elem) {
         // 修改skin
         if ($(this).parent().attr('data-skin')) {
             localStorage.skin = $(this).parent().attr('data-skin');
@@ -122,24 +119,24 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     });
 
 
-    $('#clearCache').on('click', function () {
-        toast.smile("如有系统升级，可通过快捷键Ctrl+Shift+Delete清除浏览器缓存，只需清理缓存的图片和文件。");
-    });
+    // $('#clearCache').on('click', function() {
+    //     toast.smile("如有系统升级，可通过快捷键Ctrl+Shift+Delete清除浏览器缓存，只需清理缓存的图片和文件。");
+    // });
 
     if (window.sessionStorage.getItem("locksys") == "true") {
         lockPage();
     }
 
     //ALT+L锁屏
-    $(document).on('keydown', function (e) {
-        if (e.keyCode == 76 && e.altKey) {
+    $(document).on('keydown', function(e) {
+        if(e.keyCode == 76 && e.altKey) {
             window.sessionStorage.setItem("locksys", true);
             lockPage();
         }
     });
 
     //点击锁屏按钮锁屏
-    $('#lock').on('click', function () {
+    $('#lock').on('click', function() {
         window.sessionStorage.setItem("locksys", true);
         lockPage();
     });
@@ -154,16 +151,16 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
             anim: 6,
             content: $('#lock-temp').html(),
             shade: [0.9, '#393D49'],
-            success: function (layero, lockIndex) {
+            success: function(layero, lockIndex) {
                 var $lockBox = $('div#lock-box');
                 var loginUser = login.getLoginInfo();
                 $lockBox.find('div#lockUserName').html(loginUser.name);
 
                 //绑定解锁按钮的点击事件
-                layero.find('button#unlock').on('click', function () {
+                layero.find('button#unlock').on('click', function() {
                     var userName = loginUser.userName;
                     var pwd = $lockBox.find('input[name=lockPwd]').val();
-                    if (pwd == '' || pwd.length == 0) {
+                    if(pwd == '' || pwd.length == 0) {
                         layer.msg('请输入密码', {
                             icon: 2,
                             time: 1000
@@ -174,10 +171,10 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
                 });
 
                 //解锁操作方法
-                var unlock = function (userName, pwd) {
+                var unlock = function(userName, pwd) {
 
                     var isSuccess = login.unlock(userName, pwd);
-                    if (isSuccess) {
+                    if(isSuccess){
                         //关闭锁屏层
                         window.sessionStorage.setItem("locksys", false);
                         layer.close(lockIndex);
@@ -229,7 +226,7 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
     // 根据导航栏text获取lay-id
     function getTitleId(card, title) {
         var id = -1;
-        $(document).find(".layui-tab[lay-filter=" + card + "] ul li").each(function () {
+        $(document).find(".layui-tab[lay-filter=" + card + "] ul li").each(function() {
             if (title === $(this).find('span').html()) {
                 id = $(this).attr('lay-id');
             }
@@ -248,7 +245,7 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
                     left: 10,
                     bottom: 54
                 },
-                click: function (type) {
+                click: function(type) {
                     if (type === 'bar1') {
                         //iframe层
                         layer.open({
@@ -282,11 +279,12 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
         layout.removeClass('skin-0');
         layout.removeClass('skin-1');
         layout.removeClass('skin-2');
+        skin = 3;//蓝白
         layout.addClass('skin-' + skin);
     }
 
     // 自适应
-    $(window).on('resize', function () {
+    $(window).on('resize', function() {
         if ($(this).width() > 1024) {
             if (localStorage.log == 0) {
 
@@ -316,12 +314,6 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
         _util();
         // skin
         skin();
-        //app选择下拉框
-        var loginUser = login.getLoginInfo();
-        if ("admin" === loginUser.userName) {
-            appInit();
-        }
-
         // 选项卡高度
         cardTitleHeight = $(document).find(".layui-tab[lay-filter='card'] ul.layui-tab-title").height();
         // 需要减去的高度
@@ -339,45 +331,5 @@ layui.use(requireModules, function (layer, element, util, authority, login, logi
 
     // 初始化
     init();
-
-    function appInit() {
-        $('.component').empty();
-
-        var appSelect = '<select lay-search lay-filter="component">';
-        ajax.request(
-            dictionaryApi.getUrl('listDataDic'), {
-                parentId: '00000001'
-            }, function (result) {
-                $.each(result.data, function (index, item) {
-                    // alert(item.key + ", " + item.value);
-                    if(item.select){
-                        appSelect += '<option selected value="' + item.key + '">' + item.value + '</option>'
-                    } else {
-                        appSelect += '<option value="' + item.key + '">' + item.value + '</option>'
-                    }
-                });
-            },
-            false
-        );
-        appSelect += '</select>';
-
-        $('.component').append($(appSelect));
-        form.render('select', 'LAY-site-header-component');
-
-        //切换APP
-        form.on('select(component)', function (data) {
-            var appId = data.value;
-            ajax.request(
-                loginApi.getUrl('selectApp'), {
-                    appId: appId
-                }, function (result) {
-                    toast.msg(result.msg);
-                    location.reload();
-                },
-                false
-            );
-        });
-    }
-
     window.elementParent = element;
 });
