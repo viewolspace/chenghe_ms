@@ -8,6 +8,7 @@ import com.chenghe.common.LayeditResponse;
 import com.chenghe.parttime.pojo.Category;
 import com.chenghe.parttime.pojo.Contact;
 import com.chenghe.parttime.pojo.PartTime;
+import com.chenghe.parttime.pojo.PartTimeStat;
 import com.chenghe.parttime.query.PartTimeQuery;
 import com.chenghe.parttime.service.ICategoryService;
 import com.chenghe.parttime.service.IPartTimeService;
@@ -323,6 +324,22 @@ public class PositionController {
             for (PartTime partTime : pageHolder.getList()) {
                 partTime.setContent("");
             }
+
+            /**
+             * 查询推荐位数据字典，页面显示推荐位置中文使用
+             */
+            List<SysDictionary> recomList =  sysDictionaryService.listByParent("00000002");
+            Map<String, String> recoMap = new HashMap<>();
+            if(!CollectionUtils.isEmpty(recomList)){
+                for (SysDictionary sysDictionary : recomList) {
+                    recoMap.put(sysDictionary.getValue(), sysDictionary.getName());
+                }
+            }
+
+            for(PartTime partTime : pageHolder.getList()){
+                partTime.setRecommendName(recoMap.get(String.valueOf(partTime.getRecommend())));
+            }
+
             rs.setData(pageHolder.getList());
             rs.setCount(pageHolder.getTotalCount());
         }
