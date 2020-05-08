@@ -89,65 +89,24 @@ layui.use(requireModules, function (
                 , cols: [[ //表头
                     {type: 'numbers'},
 
-                    {field: 'id', title: '职位', width: 60},
+                    {field: 'id', title: '职位ID', width: 60},
                     {field: 'title', title: '标题', width: 200},
-                    {field: 'companyId', title: '商户id', width: 70},
-                    // {
-                    //     field: 'recommend', title: '推荐', width: 150, templet: function (d) {
-                    //         if (d.recommend == 0) {
-                    //             return '<span>正常</span>';
-                    //         } else if (d.recommend == 1) {
-                    //             return '<span style="background-color:#cfe2f3;">兼职圈_首页推荐</span>';
-                    //         } else if (d.recommend == 2) {
-                    //             return '<span style="background-color:#cfe2f3;">兼职圈_精选</span>';
-                    //         } else if (d.recommend == 3) {
-                    //             return '<span style="background-color:#cfe2f3;">兼职圈_热门</span>';
-                    //         }else if (d.recommend == 4) {
-                    //             return '<span style="background-color:#fbe5a4;">土豆_首页推荐</span>';
-                    //         } else if (d.recommend == 5) {
-                    //             return '<span style="background-color:#fbe5a4;">土豆_精选</span>';
-                    //         } else if (d.recommend == 6) {
-                    //             return '<span style="background-color:#fbe5a4;">土豆_热门</span>';
-                    //         }else if (d.recommend == 7) {
-                    //             return '<span style="background-color:#FFCCFF;">彩虹兼职_首页推荐</span>';
-                    //         } else if (d.recommend == 8) {
-                    //             return '<span style="background-color:#FFCCFF;">彩虹兼职_精选</span>';
-                    //         } else if (d.recommend == 9) {
-                    //             return '<span style="background-color:#FFCCFF;">彩虹兼职_热门</span>';
-                    //         } else {
-                    //             return '<span>其它</span>';
-                    //         }
-                    //     }
-                    // },
                     {field: 'recommendName', title: '推荐', width: 150},
-                    // {field: 'categoryId', title: '职位分类id', width: 120},
+                    {field: 'topNum', title: '置顶顺序', width: 120},
+
                     {field: 'categoryName', title: '职位分类', width: 100},
-                    {field: 'topNum', title: '顺序', width: 120},
-                    {field: 'salary', title: '薪水', width: 120},
                     {
                         field: 'status', title: '状态', width: 100, templet: function (d) {
-                            if (d.status == 0) {
-                                return '<span>有效</span>';
-                            } else {
-                                return '<span>无效</span>';
-                            }
+                        if (d.status == 0) {
+                            return '<span>有效</span>';
+                        } else {
+                            return '<span>无效</span>';
                         }
+                    }
                     },
-                    // {field: 'cycle', title: '周期0小时1天2周3月4季度', width: 120},
-                    // {field: 'lable', title: '多个标签空格分隔例如：日结长期男女不限', width: 120},
-                    // {
-                    //     field: 'contactType', title: '联系方式类型', width: 120, templet: function (d) {
-                    //         if (d.contactType == 1) {
-                    //             return '<span>QQ</span>';
-                    //         } else if (d.contactType == 2) {
-                    //             return '<span>微信</span>';
-                    //         } else {
-                    //             return '<span>手机</span>';
-                    //         }
-                    //     }
-                    // },
-                    // {field: 'contact', title: '联系方式', width: 120},
-                    // {field: 'content', title: '详细内容', width: 120},
+                    {field: 'companyId', title: '商户id', width: 70},
+                    {field: 'salary', title: '薪水', width: 120},
+
                     {field: 'num', title: '招聘人数', width: 120},
                     {field: 'workTime', title: '工作时间', width: 120},
                     {field: 'workAddress', title: '工作地点', width: 120},

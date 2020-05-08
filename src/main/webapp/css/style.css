@@ -101,6 +101,7 @@
 
 .body {
     padding: 0px;
+    font-family:"微软雅黑";
 }
 
 .my-body .layui-tab, .my-body .layui-tab .layui-tab-content {
