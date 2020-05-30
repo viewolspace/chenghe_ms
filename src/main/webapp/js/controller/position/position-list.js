@@ -107,7 +107,22 @@ layui.use(requireModules, function (
                     {field: 'companyId', title: '商户id', width: 70},
                     {field: 'salary', title: '薪水', width: 120},
 
-                    {field: 'num', title: '招聘人数', width: 120},
+                    {field: 'ext', title: '联系方式', width: 350, templet: function (d) {
+                            if(d.ext == undefined){
+                                return "";
+                            }
+                            var contact = JSON.parse(d.ext);
+                            if(contact.length>0){
+                                var tempQQ = "";
+                                $.each(contact, function (index, obj) {
+                                    tempQQ = tempQQ + obj.contact + ";";
+                                });
+                                return tempQQ;
+                            } else {
+                                return "";
+                            }
+                        }
+                    },
                     {field: 'workTime', title: '工作时间', width: 120},
                     {field: 'workAddress', title: '工作地点', width: 120},
                     // {field: 'browseNum', title: '浏览人数', width: 120},
