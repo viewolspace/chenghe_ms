@@ -97,7 +97,7 @@ layui.use(requireModules, function (
                             }
                         }
                     },
-                    {field: 'url', title: '跳转地址', width: 150},
+                    {field: 'url', title: '跳转地址', width: 500},
                     {field: 'num', title: '顺序', width: 120},
                     {
                         field: 'status', title: '状态', width: 100, templet: function (d) {
