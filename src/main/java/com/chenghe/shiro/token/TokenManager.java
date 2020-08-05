@@ -1,12 +1,17 @@
 package com.chenghe.shiro.token;
 
+import com.chenghe.position.controller.PositionController;
 import com.chenghe.sys.pojo.SysUser;
+import com.youguu.core.logging.Log;
+import com.youguu.core.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 
 /**
  * Created by leo on 2017/11/27.
  */
 public class TokenManager {
+
+    private static Log log = LogFactory.getLog(TokenManager.class);
 
     public static SysUser getToken() {
         SysUser token = (SysUser) SecurityUtils.getSubject().getPrincipal();
@@ -32,9 +37,10 @@ public class TokenManager {
 
     public static Integer getAppId() {
         if (getToken() == null) {
+            log.debug("getToken() is null, return appId: 0");
             return 0;
         }
-
+        log.debug("getToken() is not null, return appId: {}", getToken().getAppId());
         return getToken().getAppId();
     }
 

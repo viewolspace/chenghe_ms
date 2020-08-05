@@ -2,8 +2,6 @@ package com.chenghe.sys.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.common.BaseResponse;
-import com.chenghe.parttime.pojo.Company;
-import com.chenghe.parttime.service.ICompanyService;
 import com.chenghe.shiro.token.TokenManager;
 import com.chenghe.sys.pojo.SysUser;
 import com.chenghe.sys.pojo.SysUserRole;
@@ -13,13 +11,14 @@ import com.chenghe.sys.service.SysUserRoleService;
 import com.chenghe.sys.service.SysUserService;
 import com.chenghe.sys.utils.SecurityCode;
 import com.chenghe.sys.utils.SecurityImage;
+import com.youguu.core.logging.Log;
+import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.MD5;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -32,6 +31,8 @@ import java.util.Date;
 @Controller
 @RequestMapping("login")
 public class LoginController {
+    private static Log log = LogFactory.getLog(LoginController.class);
+
     @Resource
     private SysPermissionService sysPermissionService;
     @Resource
@@ -264,13 +265,15 @@ public class LoginController {
     }
 
     /**
-	 * 管理员登录成功后，切换APP调用
+     * 管理员登录成功后，切换APP调用
+     *
      * @param appId
      * @return
      */
     @RequestMapping(value = "/selectApp", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponse selectApp(int appId) {
+        log.debug("selectApp is call, appId: {}", appId);
         BaseResponse rs = new BaseResponse();
         rs.setStatus(true);
         rs.setMsg("切换App成功");
