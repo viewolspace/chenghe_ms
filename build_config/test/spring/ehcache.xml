@@ -5,10 +5,10 @@
     <defaultCache
             maxElementsInMemory="10000"
             eternal="false"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
             maxElementsOnDisk="10000000"
-            diskExpiryThreadIntervalSeconds="120"
+            diskExpiryThreadIntervalSeconds="86400"
             memoryStoreEvictionPolicy="LRU">
         <persistence strategy="localTempSwap"/>
     </defaultCache>
@@ -16,10 +16,10 @@
     <cache name="bos"
            maxElementsInMemory="10000"
            eternal="false"
-           timeToIdleSeconds="120"
-           timeToLiveSeconds="120"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="86400"
            maxElementsOnDisk="10000000"
-           diskExpiryThreadIntervalSeconds="120"
+           diskExpiryThreadIntervalSeconds="86400"
            memoryStoreEvictionPolicy="LRU">
         <persistence strategy="localTempSwap"/>
     </cache>
@@ -27,10 +27,10 @@
     <cache name="standard"
            maxElementsInMemory="10000"
            eternal="false"
-           timeToIdleSeconds="120"
-           timeToLiveSeconds="120"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="86400"
            maxElementsOnDisk="10000000"
-           diskExpiryThreadIntervalSeconds="120"
+           diskExpiryThreadIntervalSeconds="86400"
            memoryStoreEvictionPolicy="LRU">
         <persistence strategy="localTempSwap"/>
     </cache>
