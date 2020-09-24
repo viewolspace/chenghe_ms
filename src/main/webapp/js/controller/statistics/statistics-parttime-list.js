@@ -87,7 +87,12 @@ layui.use(requireModules, function (
                     {field: 'browseNum', title: '总浏览次数', width: 120},
                     {field: 'browseUserNum', title: '总浏览人数', width: 150},
                     {field: 'copyNum', title: '总复制人数', width: 150},
-                    {field: 'joinNum', title: '总报名人数', width: 150}
+                    {field: 'joinNum', title: '总报名人数', width: 150},
+                    {
+                        field: 'totalNum', title: '复制+报名人数', width: 200, templet: function (d) {
+                            return d.copyNum + d.joinNum;
+                        }
+                    }
                 ]]
             });
         },
