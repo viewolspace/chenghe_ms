@@ -29,7 +29,7 @@ import java.util.Date;
 public class RegionalController {
 
 	@Resource
-	private SysUserService sysUserService;
+	private SysUserService systemUserService;
 	@Resource
 	private SysUserRoleService sysUserRoleService;
 
@@ -48,7 +48,7 @@ public class RegionalController {
 		sysUser.setUserStatus(userStatus);
 		sysUser.setCreateTime(new Date());
 		sysUser.setExpoId(expoId);
-		int result = sysUserService.saveSysUser(sysUser);
+		int result = systemUserService.saveSysUser(sysUser);
 
 		BaseResponse rs = new BaseResponse();
 		if(result>0){
@@ -80,7 +80,7 @@ public class RegionalController {
 			rs.setMsg("无权限修改，请联系超级管理员");
 			return rs;
 		}
-		SysUser sysUser = sysUserService.getSysUser(id);
+		SysUser sysUser = systemUserService.getSysUser(id);
 		if(null==sysUser){
 			rs.setStatus(false);
 			rs.setMsg("用户不存在或系统异常");
@@ -92,7 +92,7 @@ public class RegionalController {
 		sysUser.setPhone(phone);
 		sysUser.setUserStatus(userStatus);
 		sysUser.setExpoId(expoId);
-		int result = sysUserService.updateSysUser(sysUser);
+		int result = systemUserService.updateSysUser(sysUser);
 
 		if(result>0){
 			SysUserRole userRole = new SysUserRole();
@@ -122,7 +122,7 @@ public class RegionalController {
 			return rs;
 		}
 
-		int result = sysUserService.deleteSysUser(id);
+		int result = systemUserService.deleteSysUser(id);
 		if(result>0){
 			sysUserRoleService.deleteSysUserRoleByUid(id);
 			rs.setStatus(true);
@@ -146,7 +146,7 @@ public class RegionalController {
 		rs.setCode(0);
 		rs.setMsg("ok");
 
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(userId, realName, page, limit);
+		PageHolder<SysUser> pageHolder = systemUserService.querySysUserByPage(userId, realName, page, limit);
 		if(null != pageHolder.getList()){
 			rs.setData(pageHolder.getList());
 			rs.setCount(pageHolder.getTotalCount());

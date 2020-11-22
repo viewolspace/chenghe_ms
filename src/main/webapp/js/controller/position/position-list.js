@@ -122,10 +122,10 @@ layui.use(requireModules, function (
                     {field: 'recommendName', title: '推荐', width: 150},
                     // {field: 'categoryId', title: '职位分类id', width: 120},
                     {field: 'categoryName', title: '职位分类', width: 100},
-                    {field: 'topNum', title: '顺序', width: 120},
-                    {field: 'salary', title: '薪水', width: 120},
+                    {field: 'topNum', title: '顺序', width: 60},
+                    {field: 'salary', title: '薪水', width: 60},
                     {
-                        field: 'status', title: '状态', width: 100, templet: function (d) {
+                        field: 'status', title: '状态', width: 60, templet: function (d) {
                             if (d.status == 0) {
                                 return '<span>有效</span>';
                             } else {

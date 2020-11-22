@@ -16,11 +16,11 @@ import java.util.Date;
 /**
  * Created by leo on 2017/11/23.
  */
-@Service("sysUserService")
+@Service("systemUserService")
 public class SysUserServiceImpl implements SysUserService {
 
 	@Resource
-	private SysUserDAO sysUserDAO;
+	private SysUserDAO systemUserDAO;
 	@Resource
 	private SysRoleService sysRoleService;
 	@Resource
@@ -28,32 +28,32 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public int saveSysUser(SysUser sysUser) {
-		return sysUserDAO.saveSysUser(sysUser);
+		return systemUserDAO.saveSysUser(sysUser);
 	}
 
 	@Override
 	public int updateSysUser(SysUser sysUser) {
-		return sysUserDAO.updateSysUser(sysUser);
+		return systemUserDAO.updateSysUser(sysUser);
 	}
 
 	@Override
 	public int deleteSysUser(int id) {
-		return sysUserDAO.deleteSysUser(id);
+		return systemUserDAO.deleteSysUser(id);
 	}
 
 	@Override
 	public SysUser getSysUser(int id) {
-		return sysUserDAO.getSysUser(id);
+		return systemUserDAO.getSysUser(id);
 	}
 
 	@Override
 	public PageHolder<SysUser> querySysUserByPage(int userId, String realName, int pageIndex, int pageSize) {
-		return sysUserDAO.querySysUserByPage(userId, realName, pageIndex, pageSize);
+		return systemUserDAO.querySysUserByPage(userId, realName, pageIndex, pageSize);
 	}
 
 	@Override
 	public SysUser findSysUserByUserName(String username) {
-		SysUser sysUser = sysUserDAO.findSysUserByUserName(username);
+		SysUser sysUser = systemUserDAO.findSysUserByUserName(username);
 		if(null != sysUser){
 			try {
 				Company company = companyService.getCompany(Integer.parseInt(sysUser.getCompanyId()));
@@ -70,12 +70,12 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public int updateLastLoginTime(String userName, Date lastLoginTime) {
-		return sysUserDAO.updateLastLoginTime(userName, lastLoginTime);
+		return systemUserDAO.updateLastLoginTime(userName, lastLoginTime);
 	}
 
 	@Override
 	public int updatePwd(String userName, String oldPwd, String newPwd) {
-		return sysUserDAO.updatePwd(userName, oldPwd, newPwd);
+		return systemUserDAO.updatePwd(userName, oldPwd, newPwd);
 	}
 
 }

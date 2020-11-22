@@ -18,23 +18,23 @@ import java.util.List;
 public class SysDictionaryServiceImpl implements ISysDictionaryService {
 
     @Resource
-    private ISysDictionaryDAO sysDictionaryDAO;
+    private ISysDictionaryDAO systemDictionaryDAO;
 
     @Resource
-    private ISysDictionarySeqDAO sysDictionarySeqDAO;
+    private ISysDictionarySeqDAO systemDictionarySeqDAO;
 
 
     private String getNextValue(String parentId) {
         int seq = 1;
-        SysDictionarySeq sysDictionarySeq = sysDictionarySeqDAO.getSysDictionarySeq(parentId);
+        SysDictionarySeq sysDictionarySeq = systemDictionarySeqDAO.getSysDictionarySeq(parentId);
         if (sysDictionarySeq == null) {
             sysDictionarySeq = new SysDictionarySeq();
             sysDictionarySeq.setParentId(parentId);
             sysDictionarySeq.setSeq(seq);
-            sysDictionarySeqDAO.addSysDictionarySeq(sysDictionarySeq);
+            systemDictionarySeqDAO.addSysDictionarySeq(sysDictionarySeq);
         } else {
             seq = sysDictionarySeq.getSeq() + 1;
-            sysDictionarySeqDAO.updateSysDictionarySeq(parentId);
+            systemDictionarySeqDAO.updateSysDictionarySeq(parentId);
         }
         String seq_str = String.valueOf(seq);
         if (seq_str.length() < 4) {
@@ -51,7 +51,7 @@ public class SysDictionaryServiceImpl implements ISysDictionaryService {
         String parentId = sysDictionary.getParentId();
         String id = getNextValue(parentId);
         sysDictionary.setId(id);
-        int result = sysDictionaryDAO.addSysDictionary(sysDictionary);
+        int result = systemDictionaryDAO.addSysDictionary(sysDictionary);
         if (result > 0) {
             return id;
         } else {
@@ -62,36 +62,36 @@ public class SysDictionaryServiceImpl implements ISysDictionaryService {
 
     @Override
     public int delSysDictionary(String id) {
-        return sysDictionaryDAO.delSysDictionary(id);
+        return systemDictionaryDAO.delSysDictionary(id);
     }
 
     @Override
     public int updateSysDictionary(SysDictionary sysDictionary) {
-        return sysDictionaryDAO.updateSysDictionary(sysDictionary);
+        return systemDictionaryDAO.updateSysDictionary(sysDictionary);
     }
 
     @Override
     public SysDictionary getSysDictionary(String id) {
-        return sysDictionaryDAO.getSysDictionary(id);
+        return systemDictionaryDAO.getSysDictionary(id);
     }
 
     @Override
     public List<SysDictionary> listByParent(String parentId) {
-        return sysDictionaryDAO.listByParent(parentId);
+        return systemDictionaryDAO.listByParent(parentId);
     }
 
     @Override
     public List<SysDictionary> listByParentAndApp(String parentId, int appId) {
-        return sysDictionaryDAO.listByParentAndApp(parentId, appId);
+        return systemDictionaryDAO.listByParentAndApp(parentId, appId);
     }
 
     @Override
     public List<SysDictionary> listAll(String parentId) {
-        return sysDictionaryDAO.listAll(parentId);
+        return systemDictionaryDAO.listAll(parentId);
     }
 
     @Override
     public SysDictionary findSysDictionary(String parentId, int appId) {
-        return sysDictionaryDAO.findSysDictionary(parentId, appId);
+        return systemDictionaryDAO.findSysDictionary(parentId, appId);
     }
 }

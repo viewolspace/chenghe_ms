@@ -11,12 +11,12 @@ var requireModules = [
     'layer',
     'request',
     'form-util',
-    'ad-api',
-    'position-category-api',
+    'channel-api',
     'btns',
     'authority',
     'toast',
-    'table'
+    'table',
+    'dictionary-api'
 
 ];
 
@@ -31,12 +31,12 @@ layui.use(requireModules, function (
     layer,
     request,
     formUtil,
-    adApi,
-    positionCategoryApi,
+    channelApi,
     btns,
     authority,
     toast,
-    table
+    table,
+    dictionaryApi
 ) {
 
     var $ = layui.jquery;
@@ -59,10 +59,10 @@ layui.use(requireModules, function (
             btns.renderLayuiTableBtns(MyController.rowIconBtns, $("#barDemo"));
 
             request.request(
-                positionCategoryApi.getUrl('listDataDic'),{
-                    parentId: '00000002'
-                }, function(result) {
-                    formUtil.renderSelects('#categoryId', result.data, true);
+                dictionaryApi.getUrl('listDataDic'), {
+                    parentId: '00000001'
+                }, function (result) {
+                    formUtil.renderSelects('#appId', result.data, true);
                     form.render('select');
                 },
                 false
@@ -77,59 +77,29 @@ layui.use(requireModules, function (
         },
         renderTable: function () {
             return $table.render({
-                elem: '#ad-list'
+                elem: '#channel-list'
                 , height: 'full-100'
-                , url: adApi.getUrl('adList').url
+                , url: channelApi.getUrl('channelViewList').url
                 , method: 'post'
                 , page: true
                 , limits: [10, 50, 100, 200]
                 , cols: [[
                     {type: 'numbers'},
-                    {field: 'id', title: '广告ID', width: 80},
-                    {field: 'title', title: '标题', width: 220},
-                    {field: 'categoryName', title: '所属分类', width: 120},
+                    {field: 'id', title: '主键', width: 100},
+                    {field: 'appId', title: 'App Id', width: 150},
+                    {field: 'appName', title: 'App名称', width: 150},
+                    {field: 'channel', title: '渠道', width: 300},
+                    {field: 'version', title: '版本号', width: 200},
                     {
-                        field: 'imageUrl', title: '图片地址', width: 100, templet: function (d) {
-                            if (d.imageUrl) {
-                                return "<img src='" + d.imageUrl + "' />";
+                        field: 'type', title: '类型', width: 300, templet: function (d) {
+                            if (d.type == 1) {
+                                return '<span>职位信息</span>';
                             } else {
-                                return "";
+                                return '<span>其它</span>';
                             }
                         }
                     },
-                    {field: 'url', title: '跳转地址', width: 500},
-                    {field: 'viewUrl', title: '审核跳转地址', width: 500},
-                    {field: 'num', title: '顺序', width: 60},
-                    {
-                        field: 'status', title: '状态', width: 60, templet: function (d) {
-                            if (d.status == 0) {
-                                return '<span>有效</span>';
-                            } else {
-                                return '<span>无效</span>';
-                            }
-                        }
-                    },
-                    {
-                        field: 'cTime', title: '创建时间', width: 160, templet: function (d) {
-                            if (d.cTime) {
-                                return moment(d.cTime).format("YYYY-MM-DD HH:mm:ss");
-                            } else {
-                                return "";
-                            }
-
-                        }
-                    },
-                    {
-                        field: 'mTime', title: '修改时间', width: 160, templet: function (d) {
-                            if (d.mTime) {
-                                return moment(d.mTime).format("YYYY-MM-DD HH:mm:ss");
-                            } else {
-                                return "";
-                            }
-
-                        }
-                    },
-                    {fixed: 'right', width: 140, align: 'center', toolbar: '#barDemo'}
+                    {fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
         },
@@ -137,37 +107,37 @@ layui.use(requireModules, function (
         add: function () {
             var index = layer.open({
                 type: 2,
-                title: "添加广告",
-                area: ['700px', '420px'],
+                title: "添加渠道",
+                area: ['1000px', '700px'],
                 offset: '5%',
                 scrollbar: false,
-                content: webName + '/views/advertise/advertise-add.html',
+                content: webName + '/views/channel/channel-add.html',
                 success: function (ly, index) {
-                    layer.iframeAuto(index);
+                    // layer.iframeAuto(index);
                 }
             });
         },
 
         modify: function (rowdata) {
-            var url = request.composeUrl(webName + '/views/advertise/advertise-update.html', rowdata);
+            var url = request.composeUrl(webName + '/views/channel/channel-update.html', rowdata);
             var index = layer.open({
                 type: 2,
-                title: "修改广告",
-                area: ['700px', '420px'],
+                title: "修改渠道",
+                area: ['1000px', '700px'],
                 offset: '5%',
                 scrollbar: false,
                 content: url,
                 success: function (ly, index) {
-                    layer.iframeAuto(index);
+                    // layer.iframeAuto(index);
                 }
             });
         },
 
         view: function (rowdata) {
-            var url = request.composeUrl(webName + '/views/advertise/advertise-view.html', rowdata);
+            var url = request.composeUrl(webName + '/views/channel/channel-view.html', rowdata);
             var index = layer.open({
                 type: 2,
-                title: "查看广告",
+                title: "查看渠道",
                 area: '60%',
                 offset: '10%',
                 scrollbar: false,
@@ -189,7 +159,7 @@ layui.use(requireModules, function (
                 });
                 layer.close(index);
 
-                request.request(adApi.getUrl('deleteAd'), {
+                request.request(channelApi.getUrl('delChannelView'), {
                     id: rowdata.id
                 }, function () {
                     layer.closeAll('loading');

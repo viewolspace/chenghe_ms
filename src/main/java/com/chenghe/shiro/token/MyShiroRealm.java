@@ -23,7 +23,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Autowired
 	private SysPermissionService sysPermissionService;
 	@Autowired
-	private SysUserService sysUserService;
+	private SysUserService systemUserService;
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
 
@@ -39,7 +39,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		String username = token.getUsername();
 		String pwd = token.getPswd();
 
-		SysUser user = sysUserService.findSysUserByUserName(username);
+		SysUser user = systemUserService.findSysUserByUserName(username);
 		if(null == user){
 			throw new AccountException("帐号或密码不正确。");
 		} else if(!pwd.equals(user.getPswd())){
@@ -47,7 +47,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		} else if(0 == user.getUserStatus()){
 			throw new DisabledAccountException("帐号已经禁止登录！");
 		} else {
-			sysUserService.updateLastLoginTime(username, new Date());
+			systemUserService.updateLastLoginTime(username, new Date());
 		}
 		return new SimpleAuthenticationInfo(user, user.getPswd(), getName());
 	}

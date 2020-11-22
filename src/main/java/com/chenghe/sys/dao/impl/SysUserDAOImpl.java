@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by leo on 2017/11/23.
  */
-@Repository
+@Repository("systemUserDAO")
 public class SysUserDAOImpl extends ChengheMsDAO<SysUser> implements SysUserDAO {
     @Override
     public int saveSysUser(SysUser sysUser) {

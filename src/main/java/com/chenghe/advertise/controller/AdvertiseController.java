@@ -51,7 +51,7 @@ public class AdvertiseController {
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "添加广告")
     @Repeat
-    public BaseResponse addAd(String categoryId, String title, String imageUrl, String url, Integer num, Integer status, Integer companyId) {
+    public BaseResponse addAd(String categoryId, String title, String imageUrl, String url, Integer num, Integer status, Integer companyId, String viewUrl) {
         Ad ad = new Ad();
         ad.setNum(num);
         ad.setStatus(status);
@@ -61,6 +61,7 @@ public class AdvertiseController {
         ad.setCategoryId(categoryId);
         ad.setcTime(new Date());
         ad.setCompanyId(companyId);
+        ad.setViewUrl(viewUrl);
 
         int result = adService.addAd(ad);
 
@@ -79,7 +80,7 @@ public class AdvertiseController {
     @ResponseBody
     @MethodLog(module = Constants.SYS_USER, desc = "修改广告")
     @Repeat
-    public BaseResponse updateAd(Integer id, String title, String categoryId, String imageUrl, String url, Integer num, Integer status, Integer companyId) {
+    public BaseResponse updateAd(Integer id, String title, String categoryId, String imageUrl, String url, Integer num, Integer status, Integer companyId, String viewUrl) {
         BaseResponse rs = new BaseResponse();
 
         Ad ad = adService.getAd(id);
@@ -97,6 +98,7 @@ public class AdvertiseController {
         ad.setCategoryId(categoryId);
         ad.setmTime(new Date());
         ad.setCompanyId(companyId);
+        ad.setViewUrl(viewUrl);
 
         int result = adService.updateAd(ad);
 
@@ -153,7 +155,7 @@ public class AdvertiseController {
                 for (Category category : categoryList) {
                     sb.append(category.getId()).append(",");
                 }
-                query.setCategoryId(sb.toString().substring(0, sb.toString().length()-1));
+                query.setCategoryId(sb.toString().substring(0, sb.toString().length() - 1));
             }
         }
 
@@ -204,7 +206,7 @@ public class AdvertiseController {
                 for (Category category : categoryList) {
                     sb.append(category.getId()).append(",");
                 }
-                query.setCategoryId(sb.toString().substring(0, sb.toString().length()-1));
+                query.setCategoryId(sb.toString().substring(0, sb.toString().length() - 1));
             }
 
             PageHolder<AdStat> pageHolder = adStatService.queryAdStatStat(query);
@@ -213,13 +215,13 @@ public class AdvertiseController {
                  * 根据类别ID查询类别名称，页面显示
                  */
                 Map<String, String> categoryMap = new HashMap<>();
-                if(!CollectionUtils.isEmpty(categoryList)){
+                if (!CollectionUtils.isEmpty(categoryList)) {
                     for (Category category : categoryList) {
                         categoryMap.put(category.getId(), category.getName());
                     }
                 }
 
-                for(AdStat adStat : pageHolder.getList()){
+                for (AdStat adStat : pageHolder.getList()) {
                     adStat.setCategoryName(categoryMap.get(adStat.getCategoryId()));
                 }
 

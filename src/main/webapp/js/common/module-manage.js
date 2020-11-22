@@ -66,7 +66,8 @@ function registeModule(window,modulesYouWanted,otherModules) {
 			'select-api':'api/select-api',
 			'seekers-api':'api/seekers-api',
 			'statistics-api':'api/statistics-api',
-			'dictionary-api':'api/dictionary-api'
+			'dictionary-api':'api/dictionary-api',
+			'channel-api':'api/channel-api'
 		}
 
 		//刨除系统自带modules

@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class SysUserServiceImplTest extends BaseTest {
 
-	SysUserService sysUserService = SysServiceFactory.getSysUserService();
+	SysUserService systemUserService = SysServiceFactory.getSysUserService();
 
 
 	@Test
@@ -23,7 +23,7 @@ public class SysUserServiceImplTest extends BaseTest {
 		user.setCreateTime(new Date());
 //		user.setStatus(SysUser._1);
 
-		sysUserService.saveSysUser(user);
+		systemUserService.saveSysUser(user);
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class SysUserServiceImplTest extends BaseTest {
 
 	@Test
 	public void testQuerySysUserByPage() throws Exception {
-		PageHolder<SysUser> pageHolder = sysUserService.querySysUserByPage(0, null, 1, 50);
+		PageHolder<SysUser> pageHolder = systemUserService.querySysUserByPage(0, null, 1, 50);
 		System.out.println(pageHolder.size());
 	}
 }

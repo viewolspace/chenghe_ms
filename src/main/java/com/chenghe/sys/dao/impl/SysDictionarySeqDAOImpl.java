@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by lenovo on 2018/6/28.
  */
-@Repository("sysDictionarySeqDAO")
+@Repository("systemDictionarySeqDAO")
 public class SysDictionarySeqDAOImpl extends ChengheMsDAO<SysDictionarySeq> implements ISysDictionarySeqDAO {
     @Override
     public int addSysDictionarySeq(SysDictionarySeq sysDictionarySeq) {

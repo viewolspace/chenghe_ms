@@ -36,7 +36,7 @@ public class LoginController {
     @Resource
     private SysPermissionService sysPermissionService;
     @Resource
-    private SysUserService sysUserService;
+    private SysUserService systemUserService;
     @Resource
     private SysUserRoleService sysUserRoleService;
 
@@ -74,7 +74,7 @@ public class LoginController {
         }
 
         password = new MD5().getMD5ofStr(password).toLowerCase();
-        SysUser user = sysUserService.findSysUserByUserName(userName);
+        SysUser user = systemUserService.findSysUserByUserName(userName);
         user.setUserName(userName);
         user.setPswd(password);
 
@@ -122,7 +122,7 @@ public class LoginController {
         rs.setMsg("解锁成功");
 
         password = new MD5().getMD5ofStr(password).toLowerCase();
-        SysUser user = sysUserService.findSysUserByUserName(userName);
+        SysUser user = systemUserService.findSysUserByUserName(userName);
         if (null == user) {
             rs.setStatus(false);
             rs.setMsg("Session失效，请重新登录");
@@ -220,7 +220,7 @@ public class LoginController {
         sysUser.setPswd(new MD5().getMD5ofStr(password).toLowerCase());
         sysUser.setUserStatus(1);
         sysUser.setCreateTime(new Date());
-        int result = sysUserService.saveSysUser(sysUser);
+        int result = systemUserService.saveSysUser(sysUser);
 
         if (result > 0) {
             SysUserRole userRole = new SysUserRole();

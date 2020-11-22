@@ -9,7 +9,7 @@ public class SysServiceFactory {
 	private static SysRolePermissionService sysRolePermissionService = null;
 	private static SysRoleService sysRoleService = null;
 	private static SysUserRoleService sysUserRoleService = null;
-	private static SysUserService sysUserService = null;
+	private static SysUserService systemUserService = null;
 
 	public static synchronized SysPermissionService getSysPermissionService() {
 		if (sysPermissionService == null) {
@@ -60,13 +60,13 @@ public class SysServiceFactory {
 	}
 
 	public static synchronized SysUserService getSysUserService() {
-		if (sysUserService == null) {
+		if (systemUserService == null) {
 			try {
-				sysUserService = new AnnotationConfigApplicationContext(ContextLoader.class).getBean("sysUserService", SysUserService.class);
+				systemUserService = new AnnotationConfigApplicationContext(ContextLoader.class).getBean("systemUserService", SysUserService.class);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return sysUserService;
+		return systemUserService;
 	}
 }
